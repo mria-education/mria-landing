@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRIA: MetaReality Relational Intelligence Architecture</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&family=Noto+Serif+KR:wght@300;400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:    #1D9E75;
+    --teal-l:  #5DCAA5;
+    --teal-d:  #085041;
+    --purple:  #7F77DD;
+    --purple-l:#AFA9EC;
+    --purple-d:#3C3489;
+    --amber:   #EF9F27;
+    --amber-l: #FAC775;
+    --amber-d: #854F0B;
+    --coral:   #D85A30;
+    --coral-l: #F0997B;
+    --blue:    #378ADD;
+    --blue-l:  #85B7EB;
+    --gold:    #c9a84c;
+    --gold-l:  #e8d5a3;
+    --ink:     #0e0e10;
+    --ink2:    #1a1a1f;
+    --ink3:    #242430;
+    --fog:     rgba(255,255,255,0.06);
+    --fog2:    rgba(255,255,255,0.12);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--ink);
+    color: #e8e4d8;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  #canvas-wrap {
+    position: fixed; inset: 0;
+  }
+
+  canvas { display: block; width: 100%; height: 100%; }
+
+  /* Custom cursor */
+  #cursor {
+    position: fixed; width: 12px; height: 12px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%,-50%);
+    transition: transform 0.08s ease, border-color 0.2s;
+    z-index: 9999;
+    mix-blend-mode: difference;
+  }
+  #cursor.hover { transform: translate(-50%,-50%) scale(2.5); border-color: white; }
+
+  /* Header */
+  #header {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 20px 32px 16px;
+    display: flex; flex-direction: column; align-items: center;
+    background: linear-gradient(to bottom, rgba(14,14,16,0.95) 60%, transparent);
+    z-index: 100;
+    pointer-events: none;
+  }
+  #header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 26px; font-weight: 400;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+  #header p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300;
+    letter-spacing: 0.12em;
+    color: rgba(232,228,216,0.4);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* Instructions */
+  #hint {
+    position: fixed; bottom: 72px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 0.18em;
+    color: rgba(232,228,216,0.3);
+    font-style: italic;
+    text-align: center;
+    pointer-events: none;
+    z-index: 100;
+    transition: opacity 1s;
+  }
+
+  /* Detail panel */
+  #panel {
+    position: fixed; top: 50%; right: 0;
+    transform: translateY(-50%) translateX(100%);
+    width: 560px;
+    background: rgba(14,14,16,0.92);
+    border-left: 1px solid rgba(201,168,76,0.18);
+    border-top: 1px solid rgba(201,168,76,0.08);
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    padding: 32px 28px;
+    z-index: 200;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  #panel.open { transform: translateY(-50%) translateX(0); }
+
+  #panel-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 28px; height: 28px;
+    background: none; border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 50%;
+    color: var(--gold-l); font-size: 14px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  #panel-close:hover { background: rgba(201,168,76,0.1); }
+
+  #panel-lang-toggle {
+    position: absolute; top: 16px; right: 54px;
+    height: 28px;
+    padding: 0 10px;
+    background: none;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 14px;
+    color: var(--gold-l);
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px; letter-spacing: 0.06em;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  #panel-lang-toggle:hover { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.45); }
+  #panel-lang-toggle.ko-active {
+    background: rgba(201,168,76,0.15);
+    border-color: rgba(201,168,76,0.5);
+    color: var(--gold);
+  }
+  #panel-lang-toggle.translating {
+    opacity: 0.5; pointer-events: none;
+  }
+
+  #panel-type {
+    font-family: 'Cinzel', serif;
+    font-size: 18px; letter-spacing: 0.3em;
+    color: rgba(232,228,216,0.35);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  #panel-title {
+    font-family: 'Cinzel', serif;
+    font-size: 33px; font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  #panel-subtitle {
+    font-size: 22.5px; font-style: italic;
+    color: rgba(232,228,216,0.55);
+    margin-bottom: 20px;
+    letter-spacing: 0.04em;
+  }
+  #panel-divider {
+    width: 40px; height: 1px;
+    background: var(--gold);
+    margin-bottom: 18px;
+    opacity: 0.4;
+  }
+  #panel-body { font-size: 24px; line-height: 1.8; color: rgba(232,228,216,0.8); }
+  #panel-body p { margin-bottom: 14px; }
+
+  .panel-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 18px; letter-spacing: 0.12em;
+    font-family: 'Cinzel', serif;
+    margin: 4px 4px 0 0;
+    border: 1px solid;
+  }
+
+  .wwwrow {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px; margin-top: 16px;
+  }
+  .wwwcell {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 10px 8px;
+    font-size: 21px; line-height: 1.6;
+  }
+  .wwwcell strong {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 18px; letter-spacing: 0.2em;
+    margin-bottom: 4px;
+    color: var(--gold-l);
+  }
+
+  .arc-row {
+    margin-top: 14px;
+    font-size: 21px; font-style: italic;
+    color: rgba(232,228,216,0.45);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* Class buttons */
+  .classes-section {
+    margin-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 14px;
+  }
+  .classes-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px; letter-spacing: 0.28em;
+    color: rgba(232,228,216,0.3);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .classes-grid {
+    display: flex; flex-wrap: wrap; gap: 7px;
+  }
+  .class-btn {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-style: italic;
+    letter-spacing: 0.06em;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: rgba(232,228,216,0.65);
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s, color 0.18s;
+    line-height: 1;
+  }
+  .class-btn:hover {
+    background: rgba(255,255,255,0.09);
+    color: rgba(232,228,216,0.95);
+    border-color: rgba(255,255,255,0.28);
+  }
+  .class-btn.active {
+    color: var(--ink);
+    border-color: transparent;
+  }
+
+  /* Node label tooltip */
+  #tooltip {
+    position: fixed;
+    pointer-events: none;
+    z-index: 150;
+    background: rgba(14,14,16,0.88);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--gold-l);
+    white-space: nowrap;
+    transform: translate(14px, -50%);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  /* Grain overlay */
+  #grain {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 50;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* scrollbar */
+  #panel::-webkit-scrollbar { width: 3px; }
+  #panel::-webkit-scrollbar-track { background: transparent; }
+  #panel::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 2px; }
+
+  /* Node notes section */
+  .notes-section {
+    margin-top: 22px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 16px;
+  }
+  .notes-label {
+    font-family: 'Cinzel', serif;
+    font-size: 15px; letter-spacing: 0.28em;
+    color: rgba(232,228,216,0.3);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .notes-saved {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16.5px; letter-spacing: 0.05em;
+    color: var(--teal-l);
+    font-style: italic;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .notes-saved.show { opacity: 1; }
+  #panel-notes {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 6px;
+    color: rgba(232,228,216,0.8);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px; line-height: 1.7;
+    padding: 12px 14px;
+    resize: vertical;
+    min-height: 90px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #panel-notes:focus { border-color: rgba(201,168,76,0.4); }
+  #panel-notes::placeholder { color: rgba(232,228,216,0.2); font-style: italic; }
+
+  /* Contact button */
+  #contact-btn {
+    position: fixed; bottom: 28px; left: 28px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 0.22em;
+    color: var(--gold-l);
+    background: rgba(14,14,16,0.8);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 9px 18px;
+    cursor: pointer;
+    z-index: 200;
+    transition: background 0.2s, border-color 0.2s;
+    text-transform: uppercase;
+  }
+  #contact-btn:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.45); }
+
+  /* Contact drawer (slides from left) */
+  #contact-drawer {
+    position: fixed; top: 50%; left: 0;
+    transform: translateY(-50%) translateX(-100%);
+    width: 360px;
+    background: rgba(14,14,16,0.94);
+    border-right: 1px solid rgba(201,168,76,0.18);
+    border-top: 1px solid rgba(201,168,76,0.08);
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    padding: 36px 30px 30px;
+    z-index: 200;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  #contact-drawer.open { transform: translateY(-50%) translateX(0); }
+  #contact-drawer::-webkit-scrollbar { width: 3px; }
+  #contact-drawer::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 2px; }
+
+  #contact-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 28px; height: 28px;
+    background: none; border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 50%;
+    color: var(--gold-l); font-size: 14px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  #contact-close:hover { background: rgba(201,168,76,0.1); }
+
+  .contact-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 11px; letter-spacing: 0.28em;
+    color: rgba(232,228,216,0.3);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .contact-title {
+    font-family: 'Cinzel', serif;
+    font-size: 20px; font-weight: 500;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .contact-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; font-style: italic;
+    color: rgba(232,228,216,0.45);
+    margin-bottom: 22px;
+    letter-spacing: 0.04em;
+  }
+  .contact-divider {
+    width: 40px; height: 1px;
+    background: var(--gold);
+    margin-bottom: 22px;
+    opacity: 0.4;
+  }
+  .contact-field {
+    margin-bottom: 16px;
+  }
+  .contact-field label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 9px; letter-spacing: 0.25em;
+    color: rgba(232,228,216,0.35);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .contact-field input,
+  .contact-field select,
+  .contact-field textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 6px;
+    color: rgba(232,228,216,0.85);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; line-height: 1.5;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .contact-field input:focus,
+  .contact-field select:focus,
+  .contact-field textarea:focus { border-color: rgba(201,168,76,0.4); }
+  .contact-field input::placeholder,
+  .contact-field textarea::placeholder { color: rgba(232,228,216,0.18); font-style: italic; }
+  .contact-field select option { background: #1a1a1f; color: #e8e4d8; }
+  .contact-field textarea { resize: vertical; min-height: 80px; }
+
+  .contact-actions {
+    display: flex; gap: 10px; margin-top: 20px;
+  }
+  .btn-save-contact {
+    flex: 1;
+    font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 11px 0;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 6px;
+    color: var(--gold-l);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-save-contact:hover { background: rgba(201,168,76,0.22); }
+  .btn-clear-contact {
+    font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 11px 16px;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    color: rgba(232,228,216,0.3);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-clear-contact:hover { border-color: rgba(255,255,255,0.18); color: rgba(232,228,216,0.55); }
+  .contact-status {
+    margin-top: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-style: italic;
+    color: var(--teal-l);
+    text-align: center;
+    min-height: 20px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .contact-status.show { opacity: 1; }
+
+  /* Always-visible 2D node labels */
+  #labels-container {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 80;
+  }
+  .node-label {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    text-align: center;
+    pointer-events: none;
+    white-space: nowrap;
+    padding-bottom: 8px;
+    transition: opacity 0.2s;
+  }
+  .node-label-abbr {
+    font-family: 'Cinzel', serif;
+    font-size: 11px; font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    display: block;
+    text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1);
+  }
+  .node-label-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px; font-weight: 300;
+    font-style: italic;
+    color: rgba(232,228,216,0.65);
+    letter-spacing: 0.07em;
+    display: block;
+    text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1);
+  }
+  /* Bottom bar */
+  #bottom-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    padding: 18px 32px 20px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    background: linear-gradient(to top, rgba(14,14,16,0.95) 60%, transparent);
+    z-index: 100;
+    pointer-events: none;
+  }
+  #bottom-description {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 300; font-style: italic;
+    line-height: 1.55;
+    color: rgba(232,228,216,0.38);
+    letter-spacing: 0.04em;
+    text-align: center;
+    max-width: 90vw;
+  }
+  #bottom-contact {
+    font-family: 'Cinzel', serif;
+    font-size: 18px; letter-spacing: 0.28em;
+    color: var(--gold);
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    pointer-events: all;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+  #bottom-contact:hover { color: var(--gold-l); border-color: rgba(201,168,76,0.6); }
+</style>
+</head>
+<body>
+
+<div id="grain"></div>
+<div id="cursor"></div>
+<div id="labels-container"></div>
+
+<!-- Contact trigger button (hidden — replaced by bottom bar) -->
+
+<!-- Contact drawer (slides from left) -->
+<div id="contact-drawer">
+  <button id="contact-close">✕</button>
+  <div class="contact-heading">MRIA · MetaGenesis Commons</div>
+  <div class="contact-title">Student Contact</div>
+  <div class="contact-sub">Your information is saved locally on this device</div>
+  <div style="margin-bottom:18px">
+    <a href="mailto:hello@mria.education" style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.15em;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.3);padding-bottom:1px;">hello@mria.education</a>
+  </div>
+  <div class="contact-divider"></div>
+
+  <div class="contact-field">
+    <label>Full Name</label>
+    <input type="text" id="cf-name" placeholder="이름 / Your name" />
+  </div>
+  <div class="contact-field">
+    <label>Email Address</label>
+    <input type="email" id="cf-email" placeholder="email@example.com" />
+  </div>
+  <div class="contact-field">
+    <label>Institution / Program</label>
+    <input type="text" id="cf-institution" placeholder="Handong Global University · …" />
+  </div>
+  <div class="contact-field">
+    <label>Role</label>
+    <select id="cf-role">
+      <option value="">— Select —</option>
+      <option value="undergraduate">Undergraduate Student</option>
+      <option value="graduate">Graduate Student</option>
+      <option value="faculty">Faculty</option>
+      <option value="researcher">Researcher</option>
+      <option value="practitioner">Formation Practitioner</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div class="contact-field">
+    <label>Cohort / Course</label>
+    <input type="text" id="cf-cohort" placeholder="e.g. GEK20071-01 · Spring 2026" />
+  </div>
+  <div class="contact-field">
+    <label>Reflection Note (optional)</label>
+    <textarea id="cf-reflection" placeholder="What resonated with you from this session?"></textarea>
+  </div>
+
+  <div class="contact-actions">
+    <button class="btn-save-contact" id="btn-save-contact">Save Information</button>
+    <button class="btn-clear-contact" id="btn-clear-contact">Clear</button>
+  </div>
+  <div class="contact-status" id="contact-status"></div>
+</div>
+
+<div id="header">
+  <h1>MRIA: MetaReality Relational Intelligence Architecture</h1>
+  <p>MetaGenesis · MetaWay · MetaCommon · 5C Ecosystem</p>
+</div>
+
+<div id="hint">drag to orbit &nbsp;·&nbsp; scroll to zoom &nbsp;·&nbsp; click node to explore</div>
+
+<!-- Bottom bar: contact info only -->
+<div id="bottom-bar">
+  <div id="bottom-contact">Contact Info</div>
+</div>
+
+<div id="canvas-wrap"><canvas id="c"></canvas></div>
+
+<div id="tooltip"></div>
+
+<div id="panel">
+  <button id="panel-close">✕</button>
+  <button id="panel-lang-toggle" title="Toggle Korean / English">한국어</button>
+  <div id="panel-type"></div>
+  <div id="panel-title"></div>
+  <div id="panel-subtitle"></div>
+  <div id="panel-divider"></div>
+  <div id="panel-body"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────────
+const NODES = [
+  // MetaReality — centre
+  {
+    id: 'MR', label: 'MetaReality', type: 'architecture',
+    subtitle: 'Relational Intelligence Architecture',
+    color: 0xc9a84c, size: 1.1, pos: [0, 0, 0],
+    tags: ['WHERE · WHO · WHAT', 'Matrix Space', 'Human + AI era'],
+    body: `<p>MRIA is a MetaReality Relational Intelligence Architecture grounded in relational formation, relational ontology, and embodied becoming. Built upon the WHERE–WHO–WHAT framework, MRIA cultivates Human + AI participatory ecosystems where relational spaces shape identity and embodied action discloses future becoming.</p><p>MetaReality is the overarching relational intelligence architecture — the charged field that holds MetaGenesis, MetaWay, and MetaCommon together as a relational formation ecosystem.</p><p>It names the governing topology: <em>the Matrix Space of Becoming</em> — a constitutive in-between through which persons and communities cross thresholds, name Future Selves, and arrive irreversibly at new relational becoming.</p><p>MetaReality does not impose formation from above. It cultivates the structural conditions in which Inherent Formation Capacity — carried by every person as image-bearer — can be freely exercised.</p>`,
+    wwww: ['Where the ecosystem is rooted', 'WHO the architecture serves — all persons as image-bearers', 'WHAT it enacts — truth · love · justice · grace · peace'],
+    arc: 'truth · love · justice · grace · peace — for the flourishing of others in the Human + AI era'
+  },
+
+  // Three nodes
+  {
+    id: 'MG', label: 'MetaGenesis', type: 'node',
+    subtitle: 'Formation Operating System',
+    color: 0x1D9E75, size: 0.78, pos: [-3.2, 1.2, 1.0],
+    tags: ['Formation OS', 'Cognition', 'Care'],
+    body: `<p>MetaGenesis is the formation operating system — the infrastructural layer that cultivates interpretive capacity and holds rupture with covenantal care.</p><p>It is the space where persons become <em>aware of where they are</em> before any formation movement can begin. It refuses to rush the Three-Stage triage: Cyclical Imprisonment must be named before formation modes are applied.</p><p>MetaGenesis primarily carries <strong>Cognition in Motion</strong> (wisdom, discernment, transformative understanding) and <strong>Care in Motion</strong> (accompaniment, dignity recovery, restoration).</p>`,
+    wwww: ['WHERE — situatedness of knowing; rupture not yet received', 'WHO — interpreter becoming; dignity received again', 'WHAT — participatory interpretation; covenantal presence'],
+    arc: 'Information → Disruptive encounter → Embodied wisdom'
+  },
+  {
+    id: 'MW', label: 'MetaWay', type: 'node',
+    subtitle: 'Movement Engine',
+    color: 0x7F77DD, size: 0.78, pos: [3.2, 1.2, 1.0],
+    tags: ['Movement engine', 'Communication', 'Communion'],
+    body: `<p>MetaWay is the movement engine — the how of crossing. It powers the navigational protocols through which persons move between Emic and Etic worlds, carrying the WHO they are becoming across thresholds of difference.</p><p>MetaWay is not a destination. It is the pathway itself — the KAIROS-recognition mechanics, the Emic↔Etic navigation, the relational momentum that makes crossing possible.</p><p>It primarily carries <strong>Communication in Motion</strong> (interpretive crossing, relational listening) and <strong>Communion in Motion</strong> (completing the arc into shared communal life). MetaWay feeds MetaCommon.</p>`,
+    wwww: ['WHERE — boundary between worlds; post-crossing isolation', 'WHO — boundary-crosser emerging; communal Future Self', 'WHAT — mutual repositioning; embodied covenantal life'],
+    arc: 'Separation → Relational encounter → Interpretive crossing → Communal arrival'
+  },
+  {
+    id: 'MC', label: 'MetaCommon', type: 'node',
+    subtitle: 'Embodied Relational Network',
+    color: 0xEF9F27, size: 0.78, pos: [0, -2.8, 1.4],
+    tags: ['Embodied network', 'Culture', 'Care', 'Communion'],
+    body: `<p>MetaCommon is the embodied relational network — the <em>where</em> of shared life. It is not a pathway but a commons: the space where cultural difference is held without domination, where Care is practiced communally, and where the communal Future Self is received, named, and sent.</p><p>MetaCommon does not generate movement — it receives, holds, and sends. It is the institutional expression of the eschatological vision: a city with gates that never shut (Rev 21:25), where the healing of the nations is the organizing principle.</p><p>It carries <strong>Culture in Motion</strong>, <strong>Care in Motion</strong> (jointly with MetaGenesis), and <strong>Communion in Motion</strong> (jointly with MetaWay).</p>`,
+    wwww: ['WHERE — cultural inheritance; center/margin dynamics named', 'WHO — repositioned cultural self; communal Future Self received', 'WHAT — restorative coexistence; vocational sending'],
+    arc: 'Enclosure → Encounter → Shared humanity → Sending toward the Outside'
+  },
+
+  // ── Layer Nodes ────────────────────────────────────────────────────────────
+  {
+    id: 'FFL', label: 'Formation Framework', type: 'layer',
+    subtitle: 'Interpretive Grammar of MRIA',
+    color: 0xc9a84c, size: 0.62, pos: [0, 4.8, -2.2],
+    tags: ['WHERE', 'WHO', 'WHAT', 'EMBODIED'],
+    body: `<p>The interpretive grammar that runs through all ecosystems.</p>
+      <p><strong>WHERE</strong> — formation begins with relational location.</p>
+      <p><strong>WHO</strong> — identity emerges through relational participation.</p>
+      <p><strong>WHAT</strong> — action reveals becoming and vocation.</p>
+      <p><strong>EMBODIED</strong> — formation becomes real through lived practice.</p>`,
+    wwww: ['WHERE — relational location as prior condition of all formation', 'WHO — identity emerging through participation, not possession', 'WHAT — vocation disclosed through embodied action'],
+    arc: 'Location → Participation → Vocation → Embodiment'
+  },
+  {
+    id: 'LA', label: 'Learning Architecture', type: 'layer',
+    subtitle: 'High-Tech · High-Touch',
+    color: 0x378ADD, size: 0.60, pos: [-6.8, 1.0, -2.5],
+    tags: ['High-Tech', 'High-Touch', 'Adaptive', 'Active'],
+    body: `<p>The dual-axis learning architecture of MRIA — holding the tension between technological intelligence and embodied human formation.</p>
+      <p><strong>High-Tech</strong> — AI, adaptive systems, automation, digital intelligence.</p>
+      <p><strong>High-Touch</strong> — Embodied care, relational presence, human formation.</p>
+      <p><strong>Adaptive Learning</strong> — Individual MetaReality formation.</p>
+      <p><strong>Active Learning</strong> — Communal MetaReality participation.</p>`,
+    wwww: ['WHERE — the learning space between digital and embodied worlds', 'WHO — the formation learner navigating both intelligences', 'WHAT — adaptive and active practices that embody formation'],
+    arc: 'Digital intelligence ↔ Embodied presence → Integrated formation'
+  },
+  {
+    id: 'MVS', label: 'MediaVerse', type: 'layer',
+    subtitle: 'Public Expression Layer',
+    color: 0xD85A30, size: 0.60, pos: [6.8, 1.0, -2.5],
+    tags: ['YouTube', 'Podcast', 'LectureVerse', 'SermonVerse', 'Media Companion'],
+    body: `<p>The public expression layer of MRIA — translating formation into visual, auditory, narrative, educational, and public-facing experiences.</p>
+      <p><strong>YouTube Channels</strong> — Visual formation content.</p>
+      <p><strong>Podcast Ecosystem</strong> — Audio-native formation narratives.</p>
+      <p><strong>LectureVerse</strong> — Educational formation content.</p>
+      <p><strong>SermonVerse</strong> — Proclamation and homiletical formation.</p>
+      <p><strong>Media Companion</strong> — Integrated media accompaniment layer.</p>`,
+    wwww: ['WHERE — the public relational field; formation made visible', 'WHO — the public participant encountering MRIA formation', 'WHAT — translation of formation into accessible expression'],
+    arc: 'Internal formation → Public expression → Participatory encounter'
+  },
+  {
+    id: 'AVS', label: 'AppVerse', type: 'layer',
+    subtitle: 'Participatory Application Layer',
+    color: 0xAFA9EC, size: 0.60, pos: [5.2, -6.2, -1.8],
+    tags: ['Adaptive App', 'Active App', 'Facilitator App', 'MetaBus Navigator'],
+    body: `<p>The participatory application layer of MRIA — where students and participants enter, practice, track, and embody formation.</p>
+      <p><strong>Adaptive Learning App</strong> — Individual formation pathway.</p>
+      <p><strong>Active Learning App</strong> — Communal participation platform.</p>
+      <p><strong>Facilitator App</strong> — Formation guide and instructor interface.</p>
+      <p><strong>MetaBus Navigator App</strong> — Spatial formation route navigation.</p>
+      <p><strong>Media Companion App</strong> — Integrated media engagement layer.</p>`,
+    wwww: ['WHERE — the digital formation environment entered by the learner', 'WHO — the learner actively practicing and tracking becoming', 'WHAT — embodied formation enacted through participatory apps'],
+    arc: 'Encounter → Entry → Practice → Embodiment → Sending'
+  },
+  {
+    id: 'CPL', label: 'Commons Participation', type: 'layer',
+    subtitle: 'Entry into the Living Relational Field',
+    color: 0x5DCAA5, size: 0.60, pos: [-5.2, -6.2, -1.8],
+    tags: ['Collaborate', 'Learn', 'Participate', 'Build Together'],
+    body: `<p>Not simply "Contact," but entry into the living relational field of MetaGenesis Commons.</p>
+      <p><strong>Collaborate</strong> — Co-creative relational engagement.</p>
+      <p><strong>Learn</strong> — Formation participation and interpretive growth.</p>
+      <p><strong>Participate</strong> — Active entry into the Commons ecosystem.</p>
+      <p><strong>Build Together</strong> — Generative co-construction of the relational field.</p>`,
+    wwww: ['WHERE — the Commons as living relational field, not institutional portal', 'WHO — the collaborator entering as co-builder, not consumer', 'WHAT — co-creative participation that builds the field itself'],
+    arc: 'Contact → Entry → Participation → Co-creation → Belonging'
+  },
+
+  // Five Cs
+  {
+    id: 'C1', label: 'Cognition', type: '5c',
+    subtitle: 'in Motion',
+    color: 0x5DCAA5, size: 0.55, pos: [-5.2, 2.8, -0.8],
+    tags: ['Wisdom', 'Discernment', 'MG · MW'],
+    classes: ['Wisdom', 'Learning', 'Biblical Studies', 'Hermeneutics', 'AI + Education', 'Transformative Understanding'],
+    body: `<p>Cognition in Motion holds open the matrix space where perception is disrupted, assumptions exposed, and understanding becomes embodied wisdom.</p><p>It refuses extractive education — the commodification of knowledge, the gatekeeping of interpretation. Learning here is participatory relocation: the knower is moved, not merely informed.</p>`,
+    wwww: ['WHERE — situatedness of knowing; named position before interpretation', 'WHO — interpreter becoming; knower relocated not merely informed', 'WHAT — participatory interpretation; understanding embodied into action'],
+    arc: 'Information → Disruptive encounter → Embodied wisdom · Shield: against Extractive Education'
+  },
+  {
+    id: 'C2', label: 'Communication', type: '5c',
+    subtitle: 'in Motion',
+    color: 0xAFA9EC, size: 0.55, pos: [5.2, 2.8, -0.8],
+    tags: ['Dialogue', 'Crossing', 'MW'],
+    classes: ['Language', 'Dialogue', 'Cultural Translation', 'Interpretation Across Cultures', 'Global Relational Literacy'],
+    body: `<p>Communication in Motion holds open the matrix space between worlds — where language fails, difference becomes gift, and genuine dialogue crosses the boundary neither party could cross alone.</p><p>It insists that the margin's voice reconfigures the center — not the reverse. The interpretive crossing produces mutual repositioning: neither party unchanged.</p>`,
+    wwww: ['WHERE — boundary between worlds; disorientation as threshold', 'WHO — boundary-crosser emerging; carrier of meaning across difference', 'WHAT — mutual repositioning; neither party unchanged'],
+    arc: 'Separation → Relational encounter → Interpretive crossing · Shield: against Domestication of narrative'
+  },
+  {
+    id: 'C3', label: 'Culture', type: '5c',
+    subtitle: 'in Motion',
+    color: 0xFAC775, size: 0.55, pos: [0, -5.0, -0.4],
+    tags: ['Shared story', 'Dignity', 'MC'],
+    classes: ['Human Stories', 'Food', 'Music', 'Memory', 'Dignity', 'Justice', 'Cross-Cultural Formation'],
+    body: `<p>Culture in Motion holds open the matrix space of shared human worlds — where memory, creativity, dignity, and difference meet, and where the center/margin topology of every cultural arrangement is exposed and reordered.</p><p>Culture is the visible geometry of relational life. Power is the configuration of space. MRIA asks of every cultural topology: Where is God in this arrangement?</p>`,
+    wwww: ['WHERE — cultural inheritance; center/margin dynamics named', 'WHO — repositioned cultural self; neither enclosed nor rootless', 'WHAT — restorative coexistence; healing the center/margin fracture'],
+    arc: 'Enclosure → Encounter with the other → Shared humanity · Shield: against Institutional Capture'
+  },
+  {
+    id: 'C4', label: 'Care', type: '5c',
+    subtitle: 'in Motion',
+    color: 0xF0997B, size: 0.55, pos: [-3.8, -3.6, 2.0],
+    tags: ['Healing', 'Accompaniment', 'MG · MC', '⫞ Sabbath'],
+    classes: ['Counseling', 'Healing Journeys', 'Relational Care', 'Family & Community Support', 'High-Touch Restoration'],
+    body: `<p>Care in Motion holds open the matrix space of rupture — where fragmentation, wound, and loss have disrupted the relational field, and where covenantal accompaniment makes re-entry into life-giving relationship possible again.</p><p><em>Not rescue — accompaniment.</em> The Three-Stage triage is mandatory: never apply formation modes to a person in Cyclical Imprisonment. That misdiagnosis is pastoral malpractice.</p><p><strong>Sabbath Brake ⫞</strong> operative here: no AI mediation for dying, acute grief, trauma, crisis. Embodied human presence only.</p>`,
+    wwww: ['WHERE — cyclical imprisonment; rupture not yet received', 'WHO — dignity received again; person ready to cross threshold', 'WHAT — covenantal presence; not rescue but accompaniment'],
+    arc: 'Rupture → Covenantal accompaniment → Crossing made possible · Shield: against Authoritarian Leadership'
+  },
+  {
+    id: 'C5', label: 'Communion', type: '5c',
+    subtitle: 'in Motion',
+    color: 0x85B7EB, size: 0.55, pos: [3.8, -3.6, 2.0],
+    tags: ['Shared life', 'Future Self', 'MW · MC'],
+    classes: ['Shared Life', 'Table Fellowship', 'Worship', 'Community Formation', 'Spiritual Participation', 'Embodied Coexistence'],
+    body: `<p>Communion in Motion holds open the matrix space of shared life — where isolated becoming gives way to communal becoming, and where the Future Self is not only individual but communal.</p><p>This is the ecosystem's eschatological pressure point. It asks: <em>are we trusting in deceptive words — "relational commons, relational commons" — while failing to practice justice at our own margins?</em></p><p>The communal Future Self is named with Formation Permanence: once arrived, it does not revert.</p>`,
+    wwww: ['WHERE — post-crossing isolation; Future Self arrived, not yet held', 'WHO — communal Future Self; named with Formation Permanence', 'WHAT — embodied covenantal life; sent toward the Outside together'],
+    arc: 'Isolation → Communal reception of Future Self → Vocational sending · Shield: all five prophetic targets'
+  }
+];
+
+// ─── NODE LABEL FULL NAMES ────────────────────────────────────────────────
+const LABEL_NAMES = {
+  'MR': 'MetaReality',
+  'MG': 'MetaGenesis',
+  'MW': 'MetaWay',
+  'MC': 'MetaCommon',
+  'FFL': 'Formation Framework',
+  'LA': 'Learning Architecture',
+  'MVS': 'MediaVerse',
+  'AVS': 'AppVerse',
+  'CPL': 'Commons Participation',
+  'C1': 'Cognition',
+  'C2': 'Communication',
+  'C3': 'Culture',
+  'C4': 'Care',
+  'C5': 'Communion'
+};
+
+// Create label DOM elements
+const labelsContainer = document.getElementById('labels-container');
+const labelEls = {};
+NODES.forEach(n => {
+  const div = document.createElement('div');
+  div.className = 'node-label';
+  div.innerHTML = `<span class="node-label-abbr">${n.id}</span><span class="node-label-name">${LABEL_NAMES[n.id] || n.label}</span>`;
+  labelsContainer.appendChild(div);
+  labelEls[n.id] = div;
+});
+
+const EDGES = [
+  // MetaReality to nodes
+  ['MR','MG'], ['MR','MW'], ['MR','MC'],
+  // Node interconnections
+  ['MG','MW'], ['MW','MC'], ['MG','MC'],
+  // Nodes to their 5Cs
+  ['MG','C1'], ['MG','C4'],
+  ['MW','C2'], ['MW','C5'],
+  ['MC','C3'], ['MC','C4'], ['MC','C5'],
+  // 5C lateral rhizome connections
+  ['C1','C2'], ['C2','C5'], ['C5','C3'],
+  ['C3','C4'], ['C4','C1'], ['C1','C3'],
+  ['C4','C5'],
+  // Layer node connections
+  ['MR','FFL'], ['MG','FFL'], ['MW','FFL'], ['MC','FFL'],
+  ['MG','LA'],
+  ['MW','MVS'],
+  ['MG','AVS'], ['MC','AVS'],
+  ['MC','CPL'],
+  ['LA','AVS'], ['MVS','AVS']
+];
+
+// ─── THREE.JS SETUP ────────────────────────────────────────────────────────
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x0e0e10, 1);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
+camera.position.set(0, 1, 14);
+
+function resize() {
+  const w = canvas.parentElement.clientWidth;
+  const h = canvas.parentElement.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Ambient + point lights
+scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+const ptLight = new THREE.PointLight(0xc9a84c, 1.2, 30);
+ptLight.position.set(0, 4, 6);
+scene.add(ptLight);
+const ptLight2 = new THREE.PointLight(0x1D9E75, 0.6, 20);
+ptLight2.position.set(-5, -3, 2);
+scene.add(ptLight2);
+const ptLight3 = new THREE.PointLight(0x7F77DD, 0.5, 20);
+ptLight3.position.set(5, -3, 2);
+scene.add(ptLight3);
+
+// ─── BUILD NODES ──────────────────────────────────────────────────────────
+const nodeMeshes = {};
+const nodeGroup = new THREE.Group();
+scene.add(nodeGroup);
+
+NODES.forEach(n => {
+  const geo = new THREE.IcosahedronGeometry(n.size, n.type === 'architecture' ? 3 : 2);
+  const mat = new THREE.MeshPhongMaterial({
+    color: n.color,
+    emissive: n.color,
+    emissiveIntensity: n.type === 'architecture' ? 0.35 : 0.18,
+    shininess: 60,
+    transparent: true,
+    opacity: 0.92
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(...n.pos);
+  mesh.userData = n;
+  nodeGroup.add(mesh);
+  nodeMeshes[n.id] = mesh;
+
+  // Glow ring for main node
+  if (n.type === 'architecture') {
+    const ringGeo = new THREE.TorusGeometry(1.6, 0.015, 8, 80);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.3 });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 2;
+    mesh.add(ring);
+
+    const ring2 = new THREE.Mesh(
+      new THREE.TorusGeometry(2.0, 0.008, 8, 80),
+      new THREE.MeshBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.12 })
+    );
+    ring2.rotation.x = Math.PI / 3;
+    mesh.add(ring2);
+  }
+
+  // Orbital dot for 5C nodes
+  if (n.type === '5c') {
+    const dotGeo = new THREE.SphereGeometry(0.06, 8, 8);
+    const dotMat = new THREE.MeshBasicMaterial({ color: n.color });
+    const dot = new THREE.Mesh(dotGeo, dotMat);
+    dot.position.set(n.size + 0.12, 0, 0);
+    mesh.add(dot);
+  }
+});
+
+// ─── BUILD EDGES ──────────────────────────────────────────────────────────
+const edgeGroup = new THREE.Group();
+scene.add(edgeGroup);
+
+EDGES.forEach(([aId, bId]) => {
+  const a = nodeMeshes[aId];
+  const b = nodeMeshes[bId];
+  if (!a || !b) return;
+
+  const aData = NODES.find(n => n.id === aId);
+  const bData = NODES.find(n => n.id === bId);
+
+  // Determine edge style
+  const isCoreLink = (aId === 'MR' || bId === 'MR');
+  const isNodeLink = ['MG','MW','MC'].includes(aId) && ['MG','MW','MC'].includes(bId);
+
+  const points = [];
+  const pa = a.position.clone();
+  const pb = b.position.clone();
+  const mid = pa.clone().lerp(pb, 0.5);
+  mid.y += (isCoreLink ? 0.5 : 0.2);
+  mid.z += (isCoreLink ? 0.3 : 0.15);
+
+  // Cubic bezier via CatmullRom
+  const curve = new THREE.CatmullRomCurve3([pa, mid, pb]);
+  const pts = curve.getPoints(40);
+
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  const col = isCoreLink ? 0xc9a84c : (isNodeLink ? 0x888780 : 0x444441);
+  const opacity = isCoreLink ? 0.35 : (isNodeLink ? 0.22 : 0.14);
+
+  const mat = new THREE.LineBasicMaterial({ color: col, transparent: true, opacity });
+  const line = new THREE.Line(geo, mat);
+  line.userData = { aId, bId, baseOpacity: opacity };
+  edgeGroup.add(line);
+});
+
+// ─── PARTICLES (rhizome field) ─────────────────────────────────────────────
+const particleCount = 320;
+const pPositions = new Float32Array(particleCount * 3);
+for (let i = 0; i < particleCount; i++) {
+  pPositions[i * 3]     = (Math.random() - 0.5) * 22;
+  pPositions[i * 3 + 1] = (Math.random() - 0.5) * 16;
+  pPositions[i * 3 + 2] = (Math.random() - 0.5) * 14;
+}
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+const pMat = new THREE.PointsMaterial({ color: 0xc9a84c, size: 0.04, transparent: true, opacity: 0.25 });
+scene.add(new THREE.Points(pGeo, pMat));
+
+// ─── ORBIT CONTROLS (manual) ──────────────────────────────────────────────
+let isDragging = false;
+let prevMouse = { x: 0, y: 0 };
+let spherical = { theta: 0, phi: Math.PI / 2.2, r: 14 };
+let targetSpherical = { ...spherical };
+let autoRotate = true;
+let autoRotateTimer = null;
+
+function sphericalToCart(s) {
+  return {
+    x: s.r * Math.sin(s.phi) * Math.sin(s.theta),
+    y: s.r * Math.cos(s.phi),
+    z: s.r * Math.sin(s.phi) * Math.cos(s.theta)
+  };
+}
+
+canvas.addEventListener('mousedown', e => {
+  isDragging = true;
+  autoRotate = false;
+  prevMouse = { x: e.clientX, y: e.clientY };
+  clearTimeout(autoRotateTimer);
+});
+window.addEventListener('mouseup', () => {
+  isDragging = false;
+  autoRotateTimer = setTimeout(() => { autoRotate = true; }, 4000);
+});
+window.addEventListener('mousemove', e => {
+  if (isDragging) {
+    const dx = e.clientX - prevMouse.x;
+    const dy = e.clientY - prevMouse.y;
+    targetSpherical.theta -= dx * 0.008;
+    targetSpherical.phi = Math.max(0.3, Math.min(Math.PI - 0.3, targetSpherical.phi + dy * 0.008));
+    prevMouse = { x: e.clientX, y: e.clientY };
+  }
+});
+canvas.addEventListener('wheel', e => {
+  targetSpherical.r = Math.max(6, Math.min(22, targetSpherical.r + e.deltaY * 0.02));
+});
+
+// ─── RAYCASTING / HOVER / CLICK ───────────────────────────────────────────
+const raycaster = new THREE.Raycaster();
+const mouse2D = new THREE.Vector2();
+let hoveredNode = null;
+const cursor = document.getElementById('cursor');
+const tooltip = document.getElementById('tooltip');
+const panel = document.getElementById('panel');
+
+window.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  tooltip.style.left = e.clientX + 'px';
+  tooltip.style.top = e.clientY + 'px';
+
+  const rect = canvas.getBoundingClientRect();
+  mouse2D.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse2D.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(mouse2D, camera);
+  const meshArr = Object.values(nodeMeshes);
+  const hits = raycaster.intersectObjects(meshArr);
+
+  if (hits.length > 0) {
+    const hit = hits[0].object;
+    hoveredNode = hit;
+    cursor.classList.add('hover');
+    tooltip.style.opacity = '1';
+    tooltip.textContent = hit.userData.label + (hit.userData.subtitle ? ' — ' + hit.userData.subtitle : '');
+    // highlight
+    meshArr.forEach(m => { m.material.emissiveIntensity = 0.08; });
+    hit.material.emissiveIntensity = 0.7;
+    // highlight connected edges
+    edgeGroup.children.forEach(l => {
+      const { aId, bId, baseOpacity } = l.userData;
+      const id = hit.userData.id;
+      l.material.opacity = (aId === id || bId === id) ? Math.min(baseOpacity * 3.5, 0.9) : baseOpacity * 0.4;
+    });
+  } else {
+    hoveredNode = null;
+    cursor.classList.remove('hover');
+    tooltip.style.opacity = '0';
+    Object.values(nodeMeshes).forEach(m => {
+      m.material.emissiveIntensity = m.userData.type === 'architecture' ? 0.35 : 0.18;
+    });
+    edgeGroup.children.forEach(l => {
+      l.material.opacity = l.userData.baseOpacity;
+    });
+  }
+});
+
+canvas.addEventListener('click', () => {
+  if (!hoveredNode) return;
+  openPanel(hoveredNode.userData);
+});
+
+document.getElementById('panel-close').addEventListener('click', () => {
+  panel.classList.remove('open');
+});
+
+// ─── LANGUAGE SYSTEM ──────────────────────────────────────────────────────
+const koCache = {};           // session cache: nodeId → translated data object
+let currentPanelData = null;
+let currentLang = 'en';
+
+const langToggle = document.getElementById('panel-lang-toggle');
+
+langToggle.addEventListener('click', async () => {
+  if (!currentPanelData) return;
+  if (currentLang === 'en') {
+    // Switch to KO
+    const id = currentPanelData.id;
+    if (!koCache[id]) {
+      langToggle.textContent = '번역 중…';
+      langToggle.classList.add('translating');
+      try {
+        koCache[id] = await translateNode(currentPanelData);
+      } catch(e) {
+        langToggle.textContent = '한국어';
+        langToggle.classList.remove('translating');
+        console.error('Translation error:', e);
+        return;
+      }
+      langToggle.classList.remove('translating');
+    }
+    currentLang = 'ko';
+    langToggle.textContent = 'English';
+    langToggle.classList.add('ko-active');
+    applyPanelContent(currentPanelData, koCache[id]);
+  } else {
+    // Switch back to EN
+    currentLang = 'en';
+    langToggle.textContent = '한국어';
+    langToggle.classList.remove('ko-active');
+    applyPanelContent(currentPanelData, null);
+  }
+});
+
+async function translateNode(data) {
+  const payload = {
+    subtitle:  data.subtitle  || '',
+    body:      data.body      || '',
+    wwww:      data.wwww      || [],
+    arc:       data.arc       || '',
+    tags:      data.tags      || [],
+    classes:   data.classes   || []
+  };
+
+  const prompt = `You are a bilingual Korean-English translator specialising in theological formation and relational pedagogy.
+
+Translate the following JSON object into Korean. Rules:
+- Translate all string values to natural, scholarly Korean.
+- Preserve all HTML tags (<p>, <strong>, <em>, etc.) exactly as-is inside the "body" field.
+- Preserve MRIA technical terms in English within the Korean text: WHERE, WHO, WHAT, MetaReality, MRIA, KAIROS, MetaGenesis, MetaWay, MetaCommon, WHERE-WHO-WHAT, Matrix Space, 5C, High-Tech, High-Touch.
+- Respond ONLY with the translated JSON object. No preamble, no markdown fences, no extra keys.
+
+JSON to translate:
+${JSON.stringify(payload)}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  const result = await res.json();
+  const raw = result.content.find(b => b.type === 'text')?.text || '{}';
+  const clean = raw.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+function buildPanelHtml(data, ko, col) {
+  const d = {
+    subtitle: ko?.subtitle  || data.subtitle  || '',
+    body:     ko?.body      || data.body      || '',
+    wwww:     ko?.wwww      || data.wwww      || [],
+    arc:      ko?.arc       || data.arc       || '',
+    tags:     ko?.tags      || data.tags      || [],
+    classes:  ko?.classes   || data.classes   || []
+  };
+
+  const tagsHtml = d.tags.map(t =>
+    `<span class="panel-tag" style="color:${col};border-color:${col}33;background:${col}11">${t}</span>`
+  ).join('');
+
+  const wwwHtml = d.wwww.length ? `<div class="wwwrow">
+    <div class="wwwcell"><strong>WHERE</strong>${d.wwww[0].replace(/^WHERE\s*[—-]\s*/,'').replace(/^WHERE\s*/,'')}</div>
+    <div class="wwwcell"><strong>WHO</strong>${d.wwww[1].replace(/^WHO\s*[—-]\s*/,'').replace(/^WHO\s*/,'')}</div>
+    <div class="wwwcell"><strong>WHAT</strong>${d.wwww[2].replace(/^WHAT\s*[—-]\s*/,'').replace(/^WHAT\s*/,'')}</div>
+  </div>` : '';
+
+  const arcHtml = d.arc ? `<div class="arc-row">↳ ${d.arc}</div>` : '';
+
+  const classLabel = ko ? '수업 트랙' : 'Course Tracks';
+  const classesHtml = d.classes.length ? `
+    <div class="classes-section">
+      <div class="classes-label">${classLabel}</div>
+      <div class="classes-grid">
+        ${d.classes.map(c => `<button class="class-btn" style="--btn-col:${col}" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'${col}':'';this.style.color=this.classList.contains('active')?'var(--ink)':'';">${c}</button>`).join('')}
+      </div>
+    </div>` : '';
+
+  const notePlaceholder = ko
+    ? `${data.label}에 대한 성찰을 기록하세요…`
+    : `Write your reflections on ${data.label}…`;
+  const noteLabel = ko ? '나의 노트' : 'My Notes';
+  const noteSaved = ko ? '저장됨 ✓' : 'saved ✓';
+
+  const savedNote = localStorage.getItem('mria_note_' + data.id) || '';
+
+  return {
+    subtitle: d.subtitle,
+    bodyHtml:
+      `<div style="margin-bottom:14px">${tagsHtml}</div>` +
+      d.body + wwwHtml + arcHtml + classesHtml +
+      `<div class="notes-section">
+        <div class="notes-label">
+          <span>${noteLabel}</span>
+          <span class="notes-saved" id="notes-saved">${noteSaved}</span>
+        </div>
+        <textarea id="panel-notes" placeholder="${notePlaceholder}">${savedNote}</textarea>
+      </div>`
+  };
+}
+
+function applyPanelContent(data, ko) {
+  const tagColors = {
+    'architecture': '#c9a84c',
+    'node':  { 'MG': '#1D9E75', 'MW': '#7F77DD', 'MC': '#EF9F27' }[data.id] || '#888',
+    'layer': { 'FFL': '#c9a84c', 'LA': '#378ADD', 'MVS': '#D85A30', 'AVS': '#AFA9EC', 'CPL': '#5DCAA5' }[data.id] || '#aaa',
+    '5c':    { 'C1': '#1D9E75', 'C2': '#7F77DD', 'C3': '#EF9F27', 'C4': '#D85A30', 'C5': '#378ADD' }[data.id] || '#888'
+  };
+  const col = tagColors[data.type] || '#888';
+  const typeLabel = data.type === 'architecture' ? 'MetaReality Architecture'
+    : data.type === 'node' ? 'Ecosystem Node'
+    : data.type === 'layer' ? 'MRIA Layer'
+    : '5C Ecosystem';
+
+  document.getElementById('panel-type').textContent = typeLabel;
+  document.getElementById('panel-title').textContent = data.label;
+  document.getElementById('panel-title').style.color = col;
+  document.getElementById('panel-divider').style.background = col;
+
+  const built = buildPanelHtml(data, ko, col);
+  document.getElementById('panel-subtitle').textContent = built.subtitle;
+  document.getElementById('panel-body').innerHTML = built.bodyHtml;
+
+  // Re-attach notes autosave
+  const notesEl = document.getElementById('panel-notes');
+  if (notesEl) {
+    let saveTimer;
+    notesEl.addEventListener('input', () => {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        localStorage.setItem('mria_note_' + data.id, notesEl.value);
+        const savedEl = document.getElementById('notes-saved');
+        if (savedEl) {
+          savedEl.classList.add('show');
+          setTimeout(() => savedEl.classList.remove('show'), 2000);
+        }
+      }, 600);
+    });
+  }
+}
+
+function openPanel(data) {
+  currentPanelData = data;
+  currentLang = 'en';
+  langToggle.textContent = '한국어';
+  langToggle.classList.remove('ko-active', 'translating');
+
+  applyPanelContent(data, null);
+  panel.classList.add('open');
+}
+
+// ─── CONTACT DRAWER ───────────────────────────────────────────────────────
+const contactDrawer = document.getElementById('contact-drawer');
+const contactBtn    = document.getElementById('bottom-contact');
+const contactClose  = document.getElementById('contact-close');
+const contactFields = ['cf-name','cf-email','cf-institution','cf-role','cf-cohort','cf-reflection'];
+
+// Load saved contact info on init
+function loadContactInfo() {
+  contactFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const saved = localStorage.getItem('mria_contact_' + id);
+    if (saved) el.value = saved;
+  });
+}
+loadContactInfo();
+
+contactBtn.addEventListener('click', () => {
+  contactDrawer.classList.toggle('open');
+});
+contactClose.addEventListener('click', () => {
+  contactDrawer.classList.remove('open');
+});
+
+document.getElementById('btn-save-contact').addEventListener('click', () => {
+  contactFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) localStorage.setItem('mria_contact_' + id, el.value);
+  });
+  const status = document.getElementById('contact-status');
+  status.textContent = 'Information saved to this device ✓';
+  status.classList.add('show');
+  setTimeout(() => status.classList.remove('show'), 3000);
+});
+
+document.getElementById('btn-clear-contact').addEventListener('click', () => {
+  if (!confirm('Clear all saved contact information?')) return;
+  contactFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+    localStorage.removeItem('mria_contact_' + id);
+  });
+  const status = document.getElementById('contact-status');
+  status.textContent = 'Information cleared.';
+  status.classList.add('show');
+  setTimeout(() => status.classList.remove('show'), 2000);
+});
+
+// ─── HINT FADE ────────────────────────────────────────────────────────────
+setTimeout(() => { document.getElementById('hint').style.opacity = '0'; }, 5000);
+
+// ─── ANIMATION LOOP ───────────────────────────────────────────────────────
+let t = 0;
+function animate() {
+  requestAnimationFrame(animate);
+  t += 0.008;
+
+  // Auto-rotate
+  if (autoRotate) {
+    targetSpherical.theta += 0.002;
+  }
+
+  // Smooth camera
+  spherical.theta += (targetSpherical.theta - spherical.theta) * 0.06;
+  spherical.phi   += (targetSpherical.phi   - spherical.phi)   * 0.06;
+  spherical.r     += (targetSpherical.r     - spherical.r)     * 0.06;
+
+  const cp = sphericalToCart(spherical);
+  camera.position.set(cp.x, cp.y, cp.z);
+  camera.lookAt(0, 0, 0);
+
+  // Gentle node pulsing
+  Object.values(nodeMeshes).forEach((m, i) => {
+    const d = m.userData;
+    const pulse = 1 + 0.04 * Math.sin(t * 0.9 + i * 1.3);
+    m.scale.setScalar(pulse);
+    m.rotation.y = t * (d.type === 'architecture' ? 0.12 : 0.08) + i * 0.5;
+    m.rotation.x = t * 0.05 * (i % 2 === 0 ? 1 : -1);
+  });
+
+  // Pulse point light
+  ptLight.intensity = 1.0 + 0.3 * Math.sin(t * 0.7);
+
+  // Update 2D label positions (project 3D → screen)
+  const cw = renderer.domElement.clientWidth;
+  const ch = renderer.domElement.clientHeight;
+  NODES.forEach(n => {
+    const mesh = nodeMeshes[n.id];
+    const labelEl = labelEls[n.id];
+    if (!mesh || !labelEl) return;
+
+    // Project a point above the ball in world space
+    const worldPos = mesh.position.clone();
+    worldPos.y += n.size * mesh.scale.y * 2.1;
+    worldPos.project(camera);
+
+    // Hide if behind camera
+    if (worldPos.z > 1) {
+      labelEl.style.opacity = '0';
+      return;
+    }
+    labelEl.style.opacity = '1';
+
+    const sx = (worldPos.x * 0.5 + 0.5) * cw;
+    const sy = (-worldPos.y * 0.5 + 0.5) * ch;
+    labelEl.style.left = sx + 'px';
+    labelEl.style.top  = sy + 'px';
+  });
+
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
