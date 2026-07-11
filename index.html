@@ -1,1369 +1,1848 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRIA: MetaReality Relational Intelligence Architecture</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>MRIA Education | MetaReality Relational Intelligence Architecture</title>
+<meta name="description" content="MRIA Education — interdisciplinary relational formation for the Human + AI era, grounded in biblical studies. Explore the MetaReality rhizome: MetaGenesis, MetaWay, MetaCommon, and the WHERE–WHO–WHAT–EMBODIED formation arc." />
 <style>
+  /* ============================================================
+     MRIA Rhizome — derived working prototype
+     Accessibility + mobile + bilingual remediation of the original.
+     Fonts load from Google Fonts as PROGRESSIVE ENHANCEMENT only;
+     web-safe serif fallbacks are declared so the page works offline.
+     ============================================================ */
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&family=Noto+Serif+KR:wght@300;400&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --teal:    #1D9E75;
-    --teal-l:  #5DCAA5;
-    --teal-d:  #085041;
-    --purple:  #7F77DD;
-    --purple-l:#AFA9EC;
-    --purple-d:#3C3489;
-    --amber:   #EF9F27;
-    --amber-l: #FAC775;
-    --amber-d: #854F0B;
-    --coral:   #D85A30;
-    --coral-l: #F0997B;
-    --blue:    #378ADD;
-    --blue-l:  #85B7EB;
-    --gold:    #c9a84c;
-    --gold-l:  #e8d5a3;
-    --ink:     #0e0e10;
-    --ink2:    #1a1a1f;
-    --ink3:    #242430;
-    --fog:     rgba(255,255,255,0.06);
-    --fog2:    rgba(255,255,255,0.12);
+    --gold:     #c9a84c;
+    --gold-l:   #e8d5a3;
+    --ink:      #0e0e10;
+    --ink2:     #17171c;
+    --ink3:     #20202a;
+    --paper:    #e8e4d8;
+    --paper-dim:rgba(232,228,216,0.62);
+    --line:     rgba(201,168,76,0.20);
+    --line-soft:rgba(255,255,255,0.08);
+    --focus:    #86c5ff;
+    --serif:    'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --display:  'Cinzel', Georgia, serif;
+    --ko:       'Noto Serif KR', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
+    --radius:   10px;
+    --maxw:     620px;
   }
 
   html, body {
-    width: 100%; height: 100%;
     background: var(--ink);
-    color: #e8e4d8;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    overflow: hidden;
-    cursor: none;
+    color: var(--paper);
+    font-family: var(--serif);
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+  }
+  html:lang(ko) body, body.lang-ko { font-family: var(--ko); }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
 
-  #canvas-wrap {
-    position: fixed; inset: 0;
-  }
+  a { color: var(--gold-l); }
 
-  canvas { display: block; width: 100%; height: 100%; }
+  /* ---- Skip link ---- */
+  .skip-link {
+    position: absolute; left: 8px; top: -60px;
+    background: var(--ink3); color: var(--paper);
+    padding: 10px 16px; border-radius: 8px; z-index: 1000;
+    border: 1px solid var(--line);
+    transition: top 0.15s;
+  }
+  .skip-link:focus { top: 8px; }
 
-  /* Custom cursor */
-  #cursor {
-    position: fixed; width: 12px; height: 12px;
-    border: 1px solid var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%,-50%);
-    transition: transform 0.08s ease, border-color 0.2s;
-    z-index: 9999;
-    mix-blend-mode: difference;
-  }
-  #cursor.hover { transform: translate(-50%,-50%) scale(2.5); border-color: white; }
-
-  /* Header */
-  #header {
-    position: fixed; top: 0; left: 0; right: 0;
-    padding: 20px 32px 16px;
-    display: flex; flex-direction: column; align-items: center;
-    background: linear-gradient(to bottom, rgba(14,14,16,0.95) 60%, transparent);
-    z-index: 100;
-    pointer-events: none;
-  }
-  #header h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 26px; font-weight: 400;
-    letter-spacing: 0.25em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    text-align: center;
-  }
-  #header p {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 300;
-    letter-spacing: 0.12em;
-    color: rgba(232,228,216,0.4);
-    font-style: italic;
-    text-align: center;
-  }
-
-  /* Instructions */
-  #hint {
-    position: fixed; bottom: 72px; left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px; letter-spacing: 0.18em;
-    color: rgba(232,228,216,0.3);
-    font-style: italic;
-    text-align: center;
-    pointer-events: none;
-    z-index: 100;
-    transition: opacity 1s;
-  }
-
-  /* Detail panel */
-  #panel {
-    position: fixed; top: 50%; right: 0;
-    transform: translateY(-50%) translateX(100%);
-    width: 560px;
-    background: rgba(14,14,16,0.92);
-    border-left: 1px solid rgba(201,168,76,0.18);
-    border-top: 1px solid rgba(201,168,76,0.08);
-    border-bottom: 1px solid rgba(201,168,76,0.08);
-    padding: 32px 28px;
-    z-index: 200;
-    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
-    max-height: 80vh;
-    overflow-y: auto;
-  }
-  #panel.open { transform: translateY(-50%) translateX(0); }
-
-  #panel-close {
-    position: absolute; top: 16px; right: 16px;
-    width: 28px; height: 28px;
-    background: none; border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 50%;
-    color: var(--gold-l); font-size: 14px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s;
-  }
-  #panel-close:hover { background: rgba(201,168,76,0.1); }
-
-  #panel-lang-toggle {
-    position: absolute; top: 16px; right: 54px;
-    height: 28px;
-    padding: 0 10px;
-    background: none;
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 14px;
-    color: var(--gold-l);
-    font-family: 'Noto Serif KR', serif;
-    font-size: 11px; letter-spacing: 0.06em;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, border-color 0.2s;
-    white-space: nowrap;
-  }
-  #panel-lang-toggle:hover { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.45); }
-  #panel-lang-toggle.ko-active {
-    background: rgba(201,168,76,0.15);
-    border-color: rgba(201,168,76,0.5);
-    color: var(--gold);
-  }
-  #panel-lang-toggle.translating {
-    opacity: 0.5; pointer-events: none;
-  }
-
-  #panel-type {
-    font-family: 'Cinzel', serif;
-    font-size: 18px; letter-spacing: 0.3em;
-    color: rgba(232,228,216,0.35);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  #panel-title {
-    font-family: 'Cinzel', serif;
-    font-size: 33px; font-weight: 500;
-    line-height: 1.3;
-    margin-bottom: 4px;
-  }
-  #panel-subtitle {
-    font-size: 22.5px; font-style: italic;
-    color: rgba(232,228,216,0.55);
-    margin-bottom: 20px;
-    letter-spacing: 0.04em;
-  }
-  #panel-divider {
-    width: 40px; height: 1px;
-    background: var(--gold);
-    margin-bottom: 18px;
-    opacity: 0.4;
-  }
-  #panel-body { font-size: 24px; line-height: 1.8; color: rgba(232,228,216,0.8); }
-  #panel-body p { margin-bottom: 14px; }
-
-  .panel-tag {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 18px; letter-spacing: 0.12em;
-    font-family: 'Cinzel', serif;
-    margin: 4px 4px 0 0;
-    border: 1px solid;
-  }
-
-  .wwwrow {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px; margin-top: 16px;
-  }
-  .wwwcell {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 6px;
-    padding: 10px 8px;
-    font-size: 21px; line-height: 1.6;
-  }
-  .wwwcell strong {
-    display: block;
-    font-family: 'Cinzel', serif;
-    font-size: 18px; letter-spacing: 0.2em;
-    margin-bottom: 4px;
-    color: var(--gold-l);
-  }
-
-  .arc-row {
-    margin-top: 14px;
-    font-size: 21px; font-style: italic;
-    color: rgba(232,228,216,0.45);
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding-top: 12px;
-    line-height: 1.6;
-  }
-
-  /* Class buttons */
-  .classes-section {
-    margin-top: 18px;
-    border-top: 1px solid rgba(255,255,255,0.07);
-    padding-top: 14px;
-  }
-  .classes-label {
-    font-family: 'Cinzel', serif;
-    font-size: 9px; letter-spacing: 0.28em;
-    color: rgba(232,228,216,0.3);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .classes-grid {
-    display: flex; flex-wrap: wrap; gap: 7px;
-  }
-  .class-btn {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px; font-style: italic;
-    letter-spacing: 0.06em;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.04);
-    color: rgba(232,228,216,0.65);
-    cursor: pointer;
-    transition: background 0.18s, border-color 0.18s, color 0.18s;
-    line-height: 1;
-  }
-  .class-btn:hover {
-    background: rgba(255,255,255,0.09);
-    color: rgba(232,228,216,0.95);
-    border-color: rgba(255,255,255,0.28);
-  }
-  .class-btn.active {
-    color: var(--ink);
-    border-color: transparent;
-  }
-
-  /* Node label tooltip */
-  #tooltip {
-    position: fixed;
-    pointer-events: none;
-    z-index: 150;
-    background: rgba(14,14,16,0.88);
-    border: 1px solid rgba(201,168,76,0.2);
+  /* ---- Global focus visibility ---- */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
     border-radius: 4px;
-    padding: 6px 12px;
-    font-family: 'Cinzel', serif;
-    font-size: 10px; letter-spacing: 0.15em;
-    color: var(--gold-l);
-    white-space: nowrap;
-    transform: translate(14px, -50%);
-    opacity: 0;
-    transition: opacity 0.15s;
   }
 
-  /* Grain overlay */
-  #grain {
-    position: fixed; inset: 0;
-    pointer-events: none; z-index: 50;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    background-size: 200px 200px;
+  /* ============================ HEADER ============================ */
+  header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    background: linear-gradient(to bottom, var(--ink2), var(--ink));
   }
-
-  /* scrollbar */
-  #panel::-webkit-scrollbar { width: 3px; }
-  #panel::-webkit-scrollbar-track { background: transparent; }
-  #panel::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 2px; }
-
-  /* Node notes section */
-  .notes-section {
-    margin-top: 22px;
-    border-top: 1px solid rgba(255,255,255,0.07);
-    padding-top: 16px;
-  }
-  .notes-label {
-    font-family: 'Cinzel', serif;
-    font-size: 15px; letter-spacing: 0.28em;
-    color: rgba(232,228,216,0.3);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .notes-saved {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16.5px; letter-spacing: 0.05em;
-    color: var(--teal-l);
-    font-style: italic;
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-  .notes-saved.show { opacity: 1; }
-  #panel-notes {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: 6px;
-    color: rgba(232,228,216,0.8);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 21px; line-height: 1.7;
-    padding: 12px 14px;
-    resize: vertical;
-    min-height: 90px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  #panel-notes:focus { border-color: rgba(201,168,76,0.4); }
-  #panel-notes::placeholder { color: rgba(232,228,216,0.2); font-style: italic; }
-
-  /* Contact button */
-  #contact-btn {
-    position: fixed; bottom: 28px; left: 28px;
-    font-family: 'Cinzel', serif;
-    font-size: 10px; letter-spacing: 0.22em;
-    color: var(--gold-l);
-    background: rgba(14,14,16,0.8);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 20px;
-    padding: 9px 18px;
-    cursor: pointer;
-    z-index: 200;
-    transition: background 0.2s, border-color 0.2s;
-    text-transform: uppercase;
-  }
-  #contact-btn:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.45); }
-
-  /* Contact drawer (slides from left) */
-  #contact-drawer {
-    position: fixed; top: 50%; left: 0;
-    transform: translateY(-50%) translateX(-100%);
-    width: 360px;
-    background: rgba(14,14,16,0.94);
-    border-right: 1px solid rgba(201,168,76,0.18);
-    border-top: 1px solid rgba(201,168,76,0.08);
-    border-bottom: 1px solid rgba(201,168,76,0.08);
-    padding: 36px 30px 30px;
-    z-index: 200;
-    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
-    max-height: 85vh;
-    overflow-y: auto;
-  }
-  #contact-drawer.open { transform: translateY(-50%) translateX(0); }
-  #contact-drawer::-webkit-scrollbar { width: 3px; }
-  #contact-drawer::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 2px; }
-
-  #contact-close {
-    position: absolute; top: 16px; right: 16px;
-    width: 28px; height: 28px;
-    background: none; border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 50%;
-    color: var(--gold-l); font-size: 14px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s;
-  }
-  #contact-close:hover { background: rgba(201,168,76,0.1); }
-
-  .contact-heading {
-    font-family: 'Cinzel', serif;
-    font-size: 11px; letter-spacing: 0.28em;
-    color: rgba(232,228,216,0.3);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .contact-title {
-    font-family: 'Cinzel', serif;
-    font-size: 20px; font-weight: 500;
+  .titles { text-align: center; margin-bottom: 14px; }
+  header h1 {
+    font-family: var(--display);
+    font-size: clamp(16px, 4.4vw, 24px);
+    font-weight: 500;
+    letter-spacing: 0.14em;
     color: var(--gold);
-    margin-bottom: 4px;
+    line-height: 1.35;
   }
-  .contact-sub {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px; font-style: italic;
-    color: rgba(232,228,216,0.45);
-    margin-bottom: 22px;
-    letter-spacing: 0.04em;
+  body.lang-ko header h1 { letter-spacing: 0.02em; }
+  header p.tagline {
+    margin-top: 6px;
+    font-size: clamp(13px, 3.2vw, 17px);
+    font-style: italic;
+    color: var(--paper-dim);
+    letter-spacing: 0.06em;
   }
-  .contact-divider {
-    width: 40px; height: 1px;
-    background: var(--gold);
-    margin-bottom: 22px;
-    opacity: 0.4;
-  }
-  .contact-field {
-    margin-bottom: 16px;
-  }
-  .contact-field label {
-    display: block;
-    font-family: 'Cinzel', serif;
-    font-size: 9px; letter-spacing: 0.25em;
-    color: rgba(232,228,216,0.35);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .contact-field input,
-  .contact-field select,
-  .contact-field textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: 6px;
-    color: rgba(232,228,216,0.85);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px; line-height: 1.5;
-    padding: 10px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .contact-field input:focus,
-  .contact-field select:focus,
-  .contact-field textarea:focus { border-color: rgba(201,168,76,0.4); }
-  .contact-field input::placeholder,
-  .contact-field textarea::placeholder { color: rgba(232,228,216,0.18); font-style: italic; }
-  .contact-field select option { background: #1a1a1f; color: #e8e4d8; }
-  .contact-field textarea { resize: vertical; min-height: 80px; }
 
-  .contact-actions {
-    display: flex; gap: 10px; margin-top: 20px;
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
   }
-  .btn-save-contact {
-    flex: 1;
-    font-family: 'Cinzel', serif;
-    font-size: 10px; letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 11px 0;
-    background: rgba(201,168,76,0.12);
-    border: 1px solid rgba(201,168,76,0.35);
-    border-radius: 6px;
-    color: var(--gold-l);
-    cursor: pointer;
-    transition: background 0.2s;
+  .control-group {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
   }
-  .btn-save-contact:hover { background: rgba(201,168,76,0.22); }
-  .btn-clear-contact {
-    font-family: 'Cinzel', serif;
-    font-size: 10px; letter-spacing: 0.15em;
+  .control-group[role="group"] { padding: 0; }
+  .seg-btn, .toggle-btn {
+    font-family: var(--display);
+    font-size: 11px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 11px 16px;
+    color: var(--paper-dim);
     background: none;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 6px;
-    color: rgba(232,228,216,0.3);
+    border: none;
+    padding: 9px 16px;
     cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
+    min-height: 40px;
+    transition: background 0.18s, color 0.18s;
   }
-  .btn-clear-contact:hover { border-color: rgba(255,255,255,0.18); color: rgba(232,228,216,0.55); }
-  .contact-status {
-    margin-top: 12px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px; font-style: italic;
-    color: var(--teal-l);
-    text-align: center;
-    min-height: 20px;
-    opacity: 0;
-    transition: opacity 0.4s;
+  body.lang-ko .seg-btn, body.lang-ko .toggle-btn { font-family: var(--ko); letter-spacing: 0.02em; }
+  .seg-btn:hover, .toggle-btn:hover { color: var(--paper); background: rgba(201,168,76,0.08); }
+  .seg-btn[aria-pressed="true"], .seg-btn.active {
+    color: var(--ink);
+    background: var(--gold);
   }
-  .contact-status.show { opacity: 1; }
+  .toggle-btn {
+    border: 1px solid var(--line);
+    border-radius: 22px;
+  }
+  .toggle-btn[aria-pressed="true"] {
+    color: var(--gold);
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.12);
+  }
 
-  /* Always-visible 2D node labels */
-  #labels-container {
-    position: fixed; inset: 0;
-    pointer-events: none;
-    z-index: 80;
-  }
-  .node-label {
-    position: absolute;
-    transform: translate(-50%, -100%);
+  /* ============================ MAIN ============================ */
+  main { flex: 1; position: relative; display: flex; flex-direction: column; }
+
+  #hint {
     text-align: center;
-    pointer-events: none;
-    white-space: nowrap;
-    padding-bottom: 8px;
-    transition: opacity 0.2s;
-  }
-  .node-label-abbr {
-    font-family: 'Cinzel', serif;
-    font-size: 11px; font-weight: 500;
-    color: var(--gold);
-    letter-spacing: 0.18em;
-    display: block;
-    text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1);
-  }
-  .node-label-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 10px; font-weight: 300;
+    font-size: 12px;
     font-style: italic;
-    color: rgba(232,228,216,0.65);
-    letter-spacing: 0.07em;
-    display: block;
-    text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1);
+    color: rgba(232,228,216,0.4);
+    letter-spacing: 0.08em;
+    padding: 10px 16px 0;
   }
-  /* Bottom bar */
-  #bottom-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    padding: 18px 32px 20px;
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-    background: linear-gradient(to top, rgba(14,14,16,0.95) 60%, transparent);
-    z-index: 100;
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ---- MAP (2D SVG) view ---- */
+  #view-map { flex: 1; }
+  .map-wrap {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 8px 8px 24px;
+  }
+  svg.rhizome {
+    width: 100%;
+    height: auto;
+    display: block;
+    touch-action: manipulation;
+  }
+  .edge { stroke: rgba(201,168,76,0.16); stroke-width: 1.4; }
+  .node-hit { cursor: pointer; }
+  .node-dot { transition: filter 0.2s; }
+  .node-hit:hover .node-dot,
+  .node-hit:focus .node-dot { filter: brightness(1.35); }
+  .node-hit:focus { outline: none; }
+  .node-hit:focus-visible .focus-ring { opacity: 1; }
+  .focus-ring { fill: none; stroke: var(--focus); stroke-width: 3; opacity: 0; }
+  .node-label {
+    font-family: var(--display);
+    fill: var(--paper);
+    paint-order: stroke;
+    stroke: var(--ink);
+    stroke-width: 3px;
     pointer-events: none;
   }
-  #bottom-description {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px; font-weight: 300; font-style: italic;
-    line-height: 1.55;
-    color: rgba(232,228,216,0.38);
-    letter-spacing: 0.04em;
-    text-align: center;
-    max-width: 90vw;
+  /* Sizes are in viewBox pixel units (viewBox is ~1160 wide, drawn at CSS px scale). */
+  .node-label.abbr { font-size: 17px; font-weight: 500; letter-spacing: 0.04em; }
+  .node-label.name { font-size: 13px; fill: var(--paper-dim); }
+  body.lang-ko .node-label { font-family: var(--ko); }
+
+  /* gentle motion, disabled under reduced-motion */
+  @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .breathe .node-dot { animation: floaty 6s ease-in-out infinite; }
+
+  /* ---- LIST view ---- */
+  #view-list { padding: 8px 16px 40px; }
+  .list-inner { max-width: var(--maxw); margin: 0 auto; }
+  .group { margin-top: 26px; }
+  .group h2 {
+    font-family: var(--display);
+    font-size: 12px; letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 4px;
   }
-  #bottom-contact {
-    font-family: 'Cinzel', serif;
-    font-size: 18px; letter-spacing: 0.28em;
-    color: var(--gold);
-    text-transform: uppercase;
-    white-space: nowrap;
+  body.lang-ko .group h2 { letter-spacing: 0.06em; }
+  .group .group-desc { font-size: 13px; color: rgba(232,228,216,0.4); font-style: italic; margin-bottom: 12px; }
+  ul.node-list { list-style: none; display: grid; gap: 10px; }
+  .node-card {
+    width: 100%; text-align: left;
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line-soft);
+    border-left: 3px solid var(--nodecolor, var(--gold));
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    color: var(--paper);
     cursor: pointer;
-    pointer-events: all;
-    border-bottom: 1px solid rgba(201,168,76,0.25);
-    padding-bottom: 1px;
-    transition: color 0.2s, border-color 0.2s;
-    flex-shrink: 0;
+    font-family: inherit;
+    transition: background 0.16s, border-color 0.16s;
+    min-height: 44px;
   }
-  #bottom-contact:hover { color: var(--gold-l); border-color: rgba(201,168,76,0.6); }
+  .node-card:hover { background: rgba(201,168,76,0.07); }
+  .node-card .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--nodecolor); margin-top: 5px; flex: none; }
+  .node-card .nc-body { flex: 1; }
+  .node-card .nc-title { font-family: var(--display); font-size: 16px; letter-spacing: 0.06em; }
+  body.lang-ko .node-card .nc-title { font-family: var(--ko); letter-spacing: 0.01em; }
+  .node-card .nc-sub { font-size: 14px; font-style: italic; color: var(--paper-dim); margin-top: 2px; }
+
+  /* ---- 3D view ---- */
+  #view-3d { flex: 1; position: relative; min-height: 60vh; }
+  #canvas-wrap { position: relative; width: 100%; height: 68vh; min-height: 380px; }
+  #c { width: 100%; height: 100%; display: block; cursor: grab; }
+  #c:active { cursor: grabbing; }
+  #threed-status {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 24px;
+    font-style: italic; color: var(--paper-dim);
+    pointer-events: none;
+  }
+  #threed-hint {
+    text-align: center; font-size: 12px; font-style: italic;
+    color: rgba(232,228,216,0.4); padding: 8px;
+  }
+
+  /* ============================ PANEL ============================ */
+  #overlay {
+    position: fixed; inset: 0;
+    background: rgba(6,6,8,0.55);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s;
+    z-index: 500;
+  }
+  #overlay.open { opacity: 1; visibility: visible; }
+
+  #panel {
+    position: fixed;
+    z-index: 600;
+    background: var(--ink2);
+    border: 1px solid var(--line);
+    display: flex; flex-direction: column;
+    /* desktop: right side sheet */
+    top: 0; right: 0; bottom: 0;
+    width: min(92vw, 560px);
+    transform: translateX(105%);
+    transition: transform 0.42s cubic-bezier(0.16,1,0.3,1);
+  }
+  #panel.open { transform: none; }
+
+  .panel-head {
+    position: sticky; top: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--ink2);
+  }
+  .panel-head .ph-type {
+    font-family: var(--display); font-size: 11px; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--paper-dim);
+  }
+  body.lang-ko .panel-head .ph-type { letter-spacing: 0.04em; }
+  .icon-btn {
+    width: 40px; height: 40px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    background: none; border: 1px solid var(--line);
+    border-radius: 50%; color: var(--gold-l);
+    font-size: 18px; cursor: pointer;
+    transition: background 0.18s;
+  }
+  .icon-btn:hover { background: rgba(201,168,76,0.12); }
+
+  .panel-body-wrap { overflow-y: auto; padding: 20px 20px 40px; flex: 1; }
+
+  #p-title { font-family: var(--display); font-size: clamp(20px,5vw,26px); font-weight: 500; line-height: 1.25; }
+  body.lang-ko #p-title { font-family: var(--ko); }
+  #p-sub { font-size: 15px; font-style: italic; color: var(--paper-dim); margin-top: 4px; }
+  .p-divider { width: 44px; height: 2px; background: var(--gold); opacity: 0.5; margin: 16px 0; }
+
+  .p-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+  .p-tag {
+    font-family: var(--display); font-size: 11px; letter-spacing: 0.08em;
+    padding: 4px 11px; border-radius: 12px; border: 1px solid;
+  }
+  body.lang-ko .p-tag { font-family: var(--ko); }
+
+  #p-body { font-size: 16.5px; line-height: 1.75; color: rgba(232,228,216,0.85); }
+  body.lang-ko #p-body { font-size: 15px; line-height: 1.9; }
+  #p-body p { margin-bottom: 13px; }
+  #p-body strong { color: var(--gold-l); }
+
+  .www {
+    display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 18px;
+  }
+  @media (min-width: 480px) { .www { grid-template-columns: 1fr 1fr 1fr; } }
+  .www-cell {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--line-soft);
+    border-radius: 8px; padding: 11px; font-size: 14px; line-height: 1.55;
+  }
+  body.lang-ko .www-cell { font-size: 13px; }
+  .www-cell strong {
+    display: block; font-family: var(--display); font-size: 11px;
+    letter-spacing: 0.2em; margin-bottom: 5px; color: var(--gold-l);
+  }
+  body.lang-ko .www-cell strong { font-family: var(--ko); letter-spacing: 0.02em; }
+
+  .arc {
+    margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--line-soft);
+    font-size: 14.5px; font-style: italic; color: rgba(232,228,216,0.55); line-height: 1.6;
+  }
+  .arc .arc-label {
+    font-family: var(--display); font-style: normal; font-size: 10px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--paper-dim);
+    display: block; margin-bottom: 5px;
+  }
+  body.lang-ko .arc .arc-label { font-family: var(--ko); letter-spacing: 0.04em; }
+
+  .classes { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+  .classes .cl-label {
+    font-family: var(--display); font-size: 10px; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--paper-dim); margin-bottom: 10px;
+  }
+  body.lang-ko .classes .cl-label { font-family: var(--ko); letter-spacing: 0.04em; }
+  .classes .cl-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+  .cl-chip {
+    font-size: 13px; font-style: italic; padding: 5px 12px; border-radius: 18px;
+    border: 1px solid var(--line-soft); background: rgba(255,255,255,0.04);
+    color: rgba(232,228,216,0.7);
+  }
+  .pathway-launch {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--display); font-size: 12px; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none;
+    color: var(--ink); background: var(--pl-color, var(--gold));
+    border-radius: 24px; padding: 12px 20px; min-height: 46px; margin-top: 4px;
+    transition: filter 0.16s;
+  }
+  body.lang-ko .pathway-launch { font-family: var(--ko); letter-spacing: 0.02em; }
+  .pathway-launch:hover { filter: brightness(1.08); }
+  .pathway-note { display:block; margin-top:8px; font-size:12px; font-style:italic; color: var(--paper-dim); }
+
+  /* mobile: bottom sheet */
+  @media (max-width: 620px) {
+    #panel {
+      top: auto; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      max-height: 88vh;
+      border-radius: 16px 16px 0 0;
+      transform: translateY(105%);
+    }
+    #panel.open { transform: none; }
+  }
+
+  /* ============================ FOOTER ============================ */
+  footer {
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line-soft);
+    text-align: center;
+    font-size: 12px; color: rgba(232,228,216,0.35);
+    font-style: italic; line-height: 1.6;
+  }
+
+  .visually-hidden {
+    position: absolute !important; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ============================ LANGUAGE BLOCKS ============================ */
+  /* Semantic sections carry full parallel EN/KO content in static HTML
+     (search-readable in both languages). The body language class controls
+     which is visible; the toggle itself is progressive enhancement. */
+  body.lang-en .only-ko { display: none !important; }
+  body.lang-ko .only-en { display: none !important; }
+
+  /* ============================ SITE NAV ============================ */
+  .site-nav {
+    display: flex; flex-wrap: wrap; gap: 4px 14px;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 0 6px;
+  }
+  .site-nav a {
+    font-family: var(--display);
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--paper-dim); text-decoration: none;
+    padding: 8px 6px; min-height: 40px; display: inline-flex; align-items: center;
+    border-bottom: 1px solid transparent;
+    transition: color 0.16s, border-color 0.16s;
+  }
+  body.lang-ko .site-nav a { font-family: var(--ko); letter-spacing: 0.03em; }
+  .site-nav a:hover { color: var(--gold-l); border-bottom-color: var(--line); }
+
+  /* ============================ SEMANTIC SECTIONS ============================ */
+  .sem {
+    max-width: 880px; margin: 0 auto;
+    padding: 56px 20px 8px;
+    scroll-margin-top: 24px;
+  }
+  .sem .kicker {
+    font-family: var(--display); font-size: 11px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+  }
+  body.lang-ko .sem .kicker { font-family: var(--ko); letter-spacing: 0.08em; }
+  .sem h2 {
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(20px, 5vw, 30px); line-height: 1.3;
+    color: var(--paper);
+  }
+  body.lang-ko .sem h2 { font-family: var(--ko); }
+  .sem .lead {
+    margin-top: 14px; font-size: 17px; line-height: 1.8;
+    color: rgba(232,228,216,0.82); max-width: 46em;
+  }
+  body.lang-ko .sem .lead { font-size: 15.5px; line-height: 1.95; }
+  .sem .lead strong { color: var(--gold-l); font-weight: 500; }
+
+  .card-grid { display: grid; gap: 12px; margin-top: 26px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .card-grid { grid-template-columns: repeat(var(--cols, 3), 1fr); } }
+  .sem-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line-soft);
+    border-top: 3px solid var(--cardcolor, var(--gold));
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    scroll-margin-top: 24px;
+  }
+  .sem-card h3 {
+    font-family: var(--display); font-weight: 500; font-size: 16px;
+    letter-spacing: 0.05em; color: var(--cardcolor, var(--gold-l));
+    line-height: 1.35;
+  }
+  body.lang-ko .sem-card h3 { font-family: var(--ko); letter-spacing: 0.01em; }
+  .sem-card .sub {
+    font-size: 13px; font-style: italic; color: var(--paper-dim); margin-top: 2px;
+  }
+  .sem-card p { margin-top: 10px; font-size: 14.5px; line-height: 1.7; color: rgba(232,228,216,0.78); }
+  body.lang-ko .sem-card p { font-size: 13.5px; line-height: 1.85; }
+  .status-chip {
+    display: inline-block; margin-top: 10px;
+    font-family: var(--display); font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--paper-dim);
+    border: 1px solid var(--line); border-radius: 12px; padding: 4px 10px;
+  }
+  body.lang-ko .status-chip { font-family: var(--ko); letter-spacing: 0.04em; }
+
+  /* hero */
+  #orientation { padding-top: 40px; text-align: center; }
+  #orientation .lead { margin-left: auto; margin-right: auto; }
+  .arc-strip {
+    display: grid; gap: 10px; margin: 28px auto 0;
+    grid-template-columns: 1fr 1fr; max-width: 720px;
+  }
+  @media (min-width: 640px) { .arc-strip { grid-template-columns: repeat(4, 1fr); } }
+  .arc-cell {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 14px 10px;
+  }
+  .arc-cell strong {
+    display: block; font-family: var(--display); font-size: 12px;
+    letter-spacing: 0.24em; color: var(--gold); margin-bottom: 6px;
+  }
+  body.lang-ko .arc-cell strong { letter-spacing: 0.1em; }
+  .arc-cell span { font-size: 13px; font-style: italic; color: rgba(232,228,216,0.7); line-height: 1.55; display: block; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px; }
+  .btn-gold, .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--display); font-size: 12px; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none;
+    border-radius: 24px; padding: 13px 24px; min-height: 46px;
+    transition: filter 0.16s, background 0.16s;
+  }
+  body.lang-ko .btn-gold, body.lang-ko .btn-ghost { font-family: var(--ko); letter-spacing: 0.03em; }
+  .btn-gold { color: var(--ink); background: var(--gold); }
+  .btn-gold:hover { filter: brightness(1.08); }
+  .btn-ghost { color: var(--gold-l); border: 1px solid var(--line); background: rgba(255,255,255,0.03); }
+  .btn-ghost:hover { background: rgba(201,168,76,0.1); }
+
+  /* rhizome section anchor spacing */
+  #rhizome { scroll-margin-top: 24px; padding-top: 34px; }
+  #rhizome .sem-intro { max-width: 880px; margin: 0 auto; padding: 0 20px 6px; text-align: center; }
+
+  /* roadmap */
+  .roadmap-list { margin-top: 26px; display: grid; gap: 12px; }
+  .roadmap-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 16px;
+  }
+  .roadmap-item .status-chip { margin-top: 2px; flex: none; min-width: 96px; text-align: center; }
+  .roadmap-item p { font-size: 14.5px; line-height: 1.7; color: rgba(232,228,216,0.78); }
+  body.lang-ko .roadmap-item p { font-size: 13.5px; line-height: 1.85; }
+
+  /* participation / notes */
+  .note-grid { display: grid; gap: 12px; margin-top: 26px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .note-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  .note-cell {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 14px 14px;
+    font-size: 13px; line-height: 1.7; color: rgba(232,228,216,0.66);
+  }
+  .note-cell strong {
+    display: block; font-family: var(--display); font-size: 10px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-l); margin-bottom: 6px;
+  }
+  body.lang-ko .note-cell strong { font-family: var(--ko); letter-spacing: 0.05em; }
+
+  .sem-divider {
+    width: 44px; height: 2px; background: var(--gold); opacity: 0.4;
+    margin: 56px auto 0;
+  }
+
+  /* ============================ REDUCED MOTION ============================ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+  body.reduce-motion .breathe .node-dot { animation: none; }
+  body.reduce-motion #panel { transition: none; }
+  body.reduce-motion #overlay { transition: none; }
 </style>
 </head>
-<body>
+<body class="lang-en breathe">
+  <a href="#main" class="skip-link" data-i18n="skip">Skip to the rhizome</a>
 
-<div id="grain"></div>
-<div id="cursor"></div>
-<div id="labels-container"></div>
+  <header>
+    <div class="titles">
+      <h1 id="site-title"></h1>
+      <p class="tagline" id="site-tagline"></p>
+    </div>
+    <div class="controls">
+      <div class="control-group" role="group" aria-label="View mode" id="view-switch">
+        <button class="seg-btn" data-view="map" aria-pressed="true" data-i18n="view_map">Map</button>
+        <button class="seg-btn" data-view="list" aria-pressed="false" data-i18n="view_list">List</button>
+        <button class="seg-btn" data-view="3d" aria-pressed="false" data-i18n="view_3d">3D</button>
+      </div>
+      <div class="control-group" role="group" aria-label="Language / 언어">
+        <button class="seg-btn active" data-lang="en" aria-pressed="true">EN</button>
+        <button class="seg-btn" data-lang="ko" aria-pressed="false">한국어</button>
+      </div>
+      <button class="toggle-btn" id="motion-toggle" aria-pressed="false" data-i18n="reduce_motion">Reduce motion</button>
+    </div>
+    <nav class="site-nav" aria-label="Sections / 섹션">
+      <a href="#rhizome" data-i18n="nav_rhizome">Rhizome</a>
+      <a href="#about" data-i18n="nav_about">About</a>
+      <a href="#core" data-i18n="nav_core">Meta Core</a>
+      <a href="#formation" data-i18n="nav_formation">Formation</a>
+      <a href="#motions" data-i18n="nav_motions">Five Motions</a>
+      <a href="#learning" data-i18n="nav_learning">Learning</a>
+      <a href="#roadmap" data-i18n="nav_roadmap">Roadmap</a>
+      <a href="#participation" data-i18n="nav_contact">Contact</a>
+    </nav>
+  </header>
 
-<!-- Contact trigger button (hidden — replaced by bottom bar) -->
+  <main id="main">
 
-<!-- Contact drawer (slides from left) -->
-<div id="contact-drawer">
-  <button id="contact-close">✕</button>
-  <div class="contact-heading">MRIA · MetaGenesis Commons</div>
-  <div class="contact-title">Student Contact</div>
-  <div class="contact-sub">Your information is saved locally on this device</div>
-  <div style="margin-bottom:18px">
-    <a href="mailto:hello@mria.education" style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.15em;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.3);padding-bottom:1px;">hello@mria.education</a>
+    <!-- ============ OPENING ORIENTATION ============ -->
+    <section class="sem" id="orientation" aria-labelledby="orientation-h">
+      <p class="kicker">MRIA Education</p>
+      <div class="only-en">
+        <h2 id="orientation-h">Relational formation for the Human + AI era.</h2>
+        <p class="lead">MRIA Education develops a <strong>MetaReality Relational Intelligence Architecture</strong> — interdisciplinary relational formation across embodied, digital, communal, interpretive, cultural, ecological, and transformative realities, grounded in biblical studies. Built upon the WHERE–WHO–WHAT framework, MRIA cultivates Human + AI participatory ecosystems where relational spaces shape identity and embodied action discloses future becoming.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <h2>인간 + AI 시대를 위한 관계적 형성.</h2>
+        <p class="lead">MRIA Education은 <strong>MetaReality 관계적 지성 아키텍처</strong>를 세워갑니다 — 성서학에 기반하여, 구현적·디지털적·공동체적·해석적·문화적·생태적·변혁적 현실을 가로지르는 학제간 관계적 형성입니다. WHERE–WHO–WHAT 프레임워크를 토대로, MRIA는 관계적 공간이 정체성을 형성하고 구현된 행동이 미래의 됨을 드러내는 인간 + AI 참여 생태계를 가꿉니다.</p>
+      </div>
+      <div class="arc-strip" role="list" aria-label="Formation arc / 형성 아크">
+        <div class="arc-cell" role="listitem"><strong>WHERE</strong>
+          <span class="only-en">Relational spaces shape becoming</span>
+          <span class="only-ko" lang="ko">관계적 공간이 됨(becoming)을 형성합니다</span></div>
+        <div class="arc-cell" role="listitem"><strong>WHO</strong>
+          <span class="only-en">Identity emerges through relation</span>
+          <span class="only-ko" lang="ko">정체성은 관계를 통해 출현합니다</span></div>
+        <div class="arc-cell" role="listitem"><strong>WHAT</strong>
+          <span class="only-en">Embodied action discloses becoming</span>
+          <span class="only-ko" lang="ko">구현된 행동이 됨을 드러냅니다</span></div>
+        <div class="arc-cell" role="listitem"><strong>EMBODIED</strong>
+          <span class="only-en">The future self enacted in present practice</span>
+          <span class="only-ko" lang="ko">현재의 실천으로 실행되는 미래 자아</span></div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-gold" href="#rhizome"><span class="only-en">Explore the rhizome</span><span class="only-ko" lang="ko">리좀 탐색하기</span></a>
+        <a class="btn-ghost" href="#about"><span class="only-en">About MRIA</span><span class="only-ko" lang="ko">MRIA 소개</span></a>
+      </div>
+    </section>
+
+    <!-- ============ RHIZOME EXPLORER ============ -->
+    <section id="rhizome" aria-labelledby="rhizome-h">
+      <div class="sem-intro">
+        <h2 id="rhizome-h" class="visually-hidden">Rhizome / 리좀</h2>
+      </div>
+      <p id="hint" data-i18n="hint_map">Select any node to explore its relational world. Use Tab and Enter, or tap.</p>
+
+      <!-- MAP VIEW -->
+      <section id="view-map" class="view active" aria-label="Rhizome map">
+        <div class="map-wrap" id="map-wrap"></div>
+      </section>
+
+      <!-- LIST VIEW -->
+      <section id="view-list" class="view" aria-label="Rhizome node list" hidden>
+        <div class="list-inner" id="list-inner"></div>
+      </section>
+
+      <!-- 3D VIEW -->
+      <section id="view-3d" class="view" aria-label="Rhizome 3D exploration (optional)" hidden>
+        <div id="canvas-wrap">
+          <canvas id="c" tabindex="-1" aria-hidden="true"></canvas>
+          <div id="threed-status"></div>
+        </div>
+        <p id="threed-hint" data-i18n="hint_3d">Drag to rotate · scroll or pinch to zoom · click a node to explore. The Map and List views are fully accessible alternatives.</p>
+      </section>
+      <noscript>
+        <p class="sem-intro" style="font-style:italic; padding-bottom:20px;">
+          <span lang="en">The interactive rhizome needs JavaScript. All public content remains readable in the sections below.</span><br />
+          <span lang="ko">인터랙티브 리좀에는 JavaScript가 필요합니다. 모든 공개 콘텐츠는 아래 섹션에서 읽을 수 있습니다.</span>
+        </p>
+      </noscript>
+    </section>
+
+    <div class="sem-divider" role="presentation"></div>
+
+    <!-- ============ ABOUT MRIA ============ -->
+    <section class="sem" id="about" aria-labelledby="about-h">
+      <div class="only-en">
+        <p class="kicker">About MRIA</p>
+        <h2 id="about-h">A MetaReality architecture for relational becoming.</h2>
+        <p class="lead">MRIA understands education not merely as information transfer but as relational becoming within MetaReality. Human beings are formed through relational spaces, embodied participation, communal interpretation, and unfolding futures. WHERE shapes WHO, and WHO unfolds through WHAT becomes embodied in present participation. MRIA is never merely a school, church, app, website, platform, or institution — it is a living relational architecture.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">MRIA 소개</p>
+        <h2>관계적 됨을 위한 MetaReality 아키텍처.</h2>
+        <p class="lead">MRIA는 교육을 단순한 정보 전달이 아니라 MetaReality 안에서의 관계적 됨(becoming)으로 이해합니다. 인간은 관계적 공간, 구현된 참여, 공동체적 해석, 펼쳐지는 미래를 통해 형성됩니다. WHERE가 WHO를 형성하고, WHO는 현재의 참여 속에 구현되는 WHAT을 통해 펼쳐집니다. MRIA는 결코 단순한 학교, 교회, 앱, 웹사이트, 플랫폼, 기관이 아닙니다 — 살아 있는 관계적 아키텍처입니다.</p>
+      </div>
+      <div class="card-grid" style="--cols:3">
+        <article class="sem-card">
+          <h3><span class="only-en">Relational Ontology</span><span class="only-ko" lang="ko">관계적 존재론</span></h3>
+          <p class="only-en">Reality is dynamic, relational, participatory, and in motion rather than static and isolated.</p>
+          <p class="only-ko" lang="ko">실재는 정적이고 고립된 것이 아니라 역동적이고 관계적이며 참여적인, 운동 중의 실재입니다.</p>
+        </article>
+        <article class="sem-card">
+          <h3><span class="only-en">Relational Formation</span><span class="only-ko" lang="ko">관계적 형성</span></h3>
+          <p class="only-en">Identity emerges through covenantal participation, interpretation, wisdom, ethics, and communal relation.</p>
+          <p class="only-ko" lang="ko">정체성은 언약적 참여, 해석, 지혜, 윤리, 공동체적 관계를 통해 출현합니다.</p>
+        </article>
+        <article class="sem-card">
+          <h3><span class="only-en">Embodied Becoming</span><span class="only-ko" lang="ko">구현된 됨</span></h3>
+          <p class="only-en">The future self unfolds through present relational participation and embodied practice.</p>
+          <p class="only-ko" lang="ko">미래 자아는 현재의 관계적 참여와 구현된 실천을 통해 펼쳐집니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ TRIADIC META CORE ============ -->
+    <section class="sem" id="core" aria-labelledby="core-h">
+      <div class="only-en">
+        <p class="kicker">Triadic Meta Core</p>
+        <h2 id="core-h">MetaGenesis generates. MetaWay moves. MetaCommon gathers.</h2>
+        <p class="lead">MetaReality is the charged field that holds the three together — a Human + AI participatory ecosystem where technology supports relational wisdom, care, formation, language, culture, and embodied becoming.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">삼중 메타 코어</p>
+        <h2>MetaGenesis는 생성하고, MetaWay는 움직이며, MetaCommon은 모읍니다.</h2>
+        <p class="lead">MetaReality는 이 셋을 함께 붙드는 역동적 장입니다 — 기술이 관계적 지혜, 돌봄, 형성, 언어, 문화, 구현된 됨을 뒷받침하는 인간 + AI 참여 생태계입니다.</p>
+      </div>
+      <div class="card-grid" style="--cols:3">
+        <article class="sem-card" style="--cardcolor:#1D9E75">
+          <h3>MetaGenesis</h3>
+          <p class="sub"><span class="only-en">Formation Operating System</span><span class="only-ko" lang="ko">형성 운영 체계</span></p>
+          <p class="only-en">Cultivating interpretive capacity and holding rupture with covenantal care.</p>
+          <p class="only-ko" lang="ko">해석적 역량을 기르고 언약적 돌봄으로 파열을 붙듭니다.</p>
+        </article>
+        <article class="sem-card" style="--cardcolor:#7F77DD">
+          <h3>MetaWay</h3>
+          <p class="sub"><span class="only-en">Movement Engine</span><span class="only-ko" lang="ko">운동 엔진</span></p>
+          <p class="only-en">The how of crossing between worlds — carrying the WHO across thresholds of difference.</p>
+          <p class="only-ko" lang="ko">세계들 사이 건넘의 방법 — 차이의 문턱을 넘어 WHO를 이끕니다.</p>
+        </article>
+        <article class="sem-card" style="--cardcolor:#EF9F27">
+          <h3>MetaCommon</h3>
+          <p class="sub"><span class="only-en">Embodied Relational Network</span><span class="only-ko" lang="ko">구현된 관계 네트워크</span></p>
+          <p class="only-en">The commons of shared life — receiving, holding, and sending.</p>
+          <p class="only-ko" lang="ko">공유된 삶의 공유지 — 받아들이고, 붙들고, 파송합니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ FORMATION ============ -->
+    <section class="sem" id="formation" aria-labelledby="formation-h">
+      <div class="only-en">
+        <p class="kicker">Formation</p>
+        <h2 id="formation-h">WHERE → WHO → WHAT → EMBODIED</h2>
+        <p class="lead">The interpretive grammar that runs through the whole ecosystem. <strong>EMBODIED is never optional</strong> — it is the destination that gives every prior step its direction.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">형성</p>
+        <h2>WHERE → WHO → WHAT → EMBODIED</h2>
+        <p class="lead">생태계 전체를 관통하는 해석적 위상학입니다. <strong>EMBODIED는 결코 선택 사항이 아닙니다</strong> — 앞선 모든 단계에 방향을 주는 종착점입니다.</p>
+      </div>
+      <div class="card-grid" style="--cols:4">
+        <article class="sem-card">
+          <h3>WHERE</h3>
+          <p class="only-en">Formation begins with relational location.</p>
+          <p class="only-ko" lang="ko">형성은 관계적 자리에서 시작됩니다.</p>
+        </article>
+        <article class="sem-card">
+          <h3>WHO</h3>
+          <p class="only-en">Identity emerges through relational participation.</p>
+          <p class="only-ko" lang="ko">정체성은 관계적 참여를 통해 출현합니다.</p>
+        </article>
+        <article class="sem-card">
+          <h3>WHAT</h3>
+          <p class="only-en">Action reveals becoming and vocation.</p>
+          <p class="only-ko" lang="ko">행동은 됨(becoming)과 소명을 드러냅니다.</p>
+        </article>
+        <article class="sem-card">
+          <h3>EMBODIED</h3>
+          <p class="only-en">Formation becomes real through lived practice.</p>
+          <p class="only-ko" lang="ko">형성은 살아진 실천을 통해 실재가 됩니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ FIVE MOTIONS ============ -->
+    <section class="sem" id="motions" aria-labelledby="motions-h">
+      <div class="only-en">
+        <p class="kicker">Five Motions</p>
+        <h2 id="motions-h">Five formation currents move through the ecosystem.</h2>
+        <p class="lead">Open their nodes in the rhizome above to explore each relational world. Guided, read-only formation pathways arrive with the future RFLS application.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">다섯 가지 운동</p>
+        <h2>다섯 가지 형성의 운동이 생태계를 관통합니다.</h2>
+        <p class="lead">위 리좀에서 각 노드를 열어 그 관계적 세계를 탐색하세요. 안내형 읽기 전용 형성 경로는 향후 RFLS 애플리케이션과 함께 제공됩니다.</p>
+      </div>
+      <div class="card-grid" style="--cols:3">
+        <article class="sem-card" id="motion-cognition" style="--cardcolor:#5DCAA5">
+          <h3><span class="only-en">Cognition in Motion</span><span class="only-ko" lang="ko">Cognition — 운동 중에</span></h3>
+          <p class="only-en">Wisdom, discernment, and transformative understanding.</p>
+          <p class="only-ko" lang="ko">지혜, 분별, 변혁적 이해.</p>
+        </article>
+        <article class="sem-card" id="motion-communication" style="--cardcolor:#AFA9EC">
+          <h3><span class="only-en">Communication in Motion</span><span class="only-ko" lang="ko">Communication — 운동 중에</span></h3>
+          <p class="only-en">Interpretive crossing and relational listening across worlds — including language, translation, and cross-cultural understanding.</p>
+          <p class="only-ko" lang="ko">세계를 가로지르는 해석적 건넘과 관계적 경청 — 언어, 번역, 문화 간 이해를 포함합니다.</p>
+        </article>
+        <article class="sem-card" id="motion-culture" style="--cardcolor:#FAC775">
+          <h3><span class="only-en">Culture in Motion</span><span class="only-ko" lang="ko">Culture — 운동 중에</span></h3>
+          <p class="only-en">Cultural difference held without domination; justice-oriented learning and narrative exchange.</p>
+          <p class="only-ko" lang="ko">지배 없이 붙들리는 문화적 차이; 정의 지향적 배움과 서사의 교환.</p>
+        </article>
+        <article class="sem-card" id="motion-care" style="--cardcolor:#F0997B">
+          <h3><span class="only-en">Care in Motion</span><span class="only-ko" lang="ko">Care — 운동 중에</span></h3>
+          <p class="only-en">Accompaniment, dignity recovery, and restoration. Sacred and crisis moments belong to embodied human presence, never to AI mediation.</p>
+          <p class="only-ko" lang="ko">동행, 존엄 회복, 회복. 신성한 순간과 위기의 순간은 AI 매개가 아니라 구현된 인간 현존에 속합니다.</p>
+        </article>
+        <article class="sem-card" id="motion-communion" style="--cardcolor:#85B7EB">
+          <h3><span class="only-en">Communion in Motion</span><span class="only-ko" lang="ko">Communion — 운동 중에</span></h3>
+          <p class="only-en">Shared communal life — where becoming is received, named, and sent together.</p>
+          <p class="only-ko" lang="ko">공유된 공동체적 삶 — 됨(becoming)이 함께 받아들여지고, 명명되고, 파송되는 곳.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ LEARNING ARCHITECTURE ============ -->
+    <section class="sem" id="learning" aria-labelledby="learning-h">
+      <div class="only-en">
+        <p class="kicker">Learning Architecture</p>
+        <h2 id="learning-h">High-Tech serving High-Touch.</h2>
+        <p class="lead">Technological intelligence in service of embodied human formation — never the other way around.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">학습 아키텍처</p>
+        <h2>High-Touch를 섬기는 High-Tech.</h2>
+        <p class="lead">구현된 인간 형성을 섬기는 기술적 지성 — 그 반대가 아닙니다.</p>
+      </div>
+      <div class="card-grid" style="--cols:4">
+        <article class="sem-card" style="--cardcolor:#378ADD">
+          <h3>High-Tech</h3>
+          <p class="only-en">AI, adaptive systems, and digital intelligence.</p>
+          <p class="only-ko" lang="ko">AI, 적응형 시스템, 디지털 지성.</p>
+        </article>
+        <article class="sem-card" style="--cardcolor:#378ADD">
+          <h3>High-Touch</h3>
+          <p class="only-en">Embodied care, relational presence, human formation.</p>
+          <p class="only-ko" lang="ko">구현된 돌봄, 관계적 현존, 인간 형성.</p>
+        </article>
+        <article class="sem-card">
+          <h3><span class="only-en">Adaptive Learning</span><span class="only-ko" lang="ko">적응적 학습</span></h3>
+          <p class="only-en">Individual formation pathways.</p>
+          <p class="only-ko" lang="ko">개인 형성 경로.</p>
+          <span class="status-chip"><span class="only-en">In design</span><span class="only-ko" lang="ko">설계 중</span></span>
+        </article>
+        <article class="sem-card">
+          <h3><span class="only-en">Active Learning</span><span class="only-ko" lang="ko">능동적 학습</span></h3>
+          <p class="only-en">Communal participation environments.</p>
+          <p class="only-ko" lang="ko">공동체적 참여 환경.</p>
+          <span class="status-chip"><span class="only-en">In design</span><span class="only-ko" lang="ko">설계 중</span></span>
+        </article>
+      </div>
+      <p class="lead only-en" style="font-size:14.5px; margin-top:20px;">MediaVerse (public expression) and AppVerse (participatory applications) are described in the rhizome above; each layer is announced only as it actually becomes available.</p>
+      <p class="lead only-ko" lang="ko" style="font-size:13.5px; margin-top:20px;">MediaVerse(공적 표현)와 AppVerse(참여적 앱)는 위 리좀에 소개되어 있으며, 각 층위는 실제로 제공되는 시점에 공지됩니다.</p>
+    </section>
+
+    <!-- ============ ROADMAP ============ -->
+    <section class="sem" id="roadmap" aria-labelledby="roadmap-h">
+      <div class="only-en">
+        <p class="kicker">Roadmap</p>
+        <h2 id="roadmap-h">Developing progressively, honestly labeled.</h2>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">로드맵</p>
+        <h2>단계적으로, 정직하게 표기하며 발전합니다.</h2>
+      </div>
+      <div class="roadmap-list">
+        <div class="roadmap-item">
+          <span class="status-chip"><span class="only-en">Current</span><span class="only-ko" lang="ko">현재</span></span>
+          <p><span class="only-en">Public landing and the accessible bilingual rhizome — Map and List are complete experiences; 3D is optional.</span><span class="only-ko" lang="ko">공개 랜딩과 접근 가능한 이중 언어 리좀 — 지도와 목록은 완전한 경험이며 3D는 선택입니다.</span></p>
+        </div>
+        <div class="roadmap-item">
+          <span class="status-chip"><span class="only-en">Approved next</span><span class="only-ko" lang="ko">승인된 다음</span></span>
+          <p><span class="only-en">Rhizome-first integrated landing for mria.education, in private preview before any public release.</span><span class="only-ko" lang="ko">mria.education을 위한 리좀 우선 통합 랜딩 — 공개 이전에 비공개 프리뷰로 진행됩니다.</span></p>
+        </div>
+        <div class="roadmap-item">
+          <span class="status-chip"><span class="only-en">Proposed</span><span class="only-ko" lang="ko">제안됨</span></span>
+          <p><span class="only-en">A small usability pilot — adults only, read-only, nothing stored.</span><span class="only-ko" lang="ko">소규모 사용성 파일럿 — 성인 대상, 읽기 전용, 어떤 것도 저장하지 않습니다.</span></p>
+        </div>
+        <div class="roadmap-item">
+          <span class="status-chip"><span class="only-en">Future</span><span class="only-ko" lang="ko">미래</span></span>
+          <p><span class="only-en">The RFLS application at app.mria.education with separately governed privacy, consent, and authentication — and expanding media and app layers.</span><span class="only-ko" lang="ko">별도로 관리되는 프라이버시·동의·인증을 갖춘 app.mria.education의 RFLS 애플리케이션, 그리고 확장되는 미디어·앱 층위.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PARTICIPATION / CONTACT ============ -->
+    <section class="sem" id="participation" aria-labelledby="participation-h" style="padding-bottom:56px;">
+      <div class="only-en">
+        <p class="kicker">Participation</p>
+        <h2 id="participation-h">Build the future of relational becoming.</h2>
+        <p class="lead">MRIA Education is building this ecosystem slowly and carefully. Questions, interest, and conversation are welcome.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">참여</p>
+        <h2>관계적 됨의 미래를 함께 세워갑니다.</h2>
+        <p class="lead">MRIA Education은 이 생태계를 천천히, 신중하게 세워가고 있습니다. 질문과 관심, 대화를 환영합니다.</p>
+      </div>
+      <div class="btn-row" style="justify-content:flex-start;">
+        <a class="btn-gold" href="mailto:hello@mria.education"><span class="only-en">Contact MRIA</span><span class="only-ko" lang="ko">MRIA에 연락하기</span></a>
+      </div>
+      <div class="note-grid">
+        <div class="note-cell">
+          <strong><span class="only-en">Privacy</span><span class="only-ko" lang="ko">프라이버시</span></strong>
+          <span class="only-en">This site is anonymous and read-only. It collects no personal data, uses no analytics, and makes no AI requests. Language and motion preferences are stored only on your device.</span>
+          <span class="only-ko" lang="ko">이 사이트는 익명이며 읽기 전용입니다. 개인정보를 수집하지 않고, 분석 도구를 사용하지 않으며, AI 요청을 보내지 않습니다. 언어와 모션 설정은 사용자의 기기에만 저장됩니다.</span>
+        </div>
+        <div class="note-cell">
+          <strong><span class="only-en">Accessibility</span><span class="only-ko" lang="ko">접근성</span></strong>
+          <span class="only-en">Map and List are complete experiences; 3D is optional enhancement. Keyboard navigation, visible focus, reduced motion, and parallel English/Korean content are supported.</span>
+          <span class="only-ko" lang="ko">지도와 목록은 완전한 경험이며 3D는 선택적 향상입니다. 키보드 탐색, 시각적 포커스, 모션 줄이기, 영어/한국어 병행 콘텐츠를 지원합니다.</span>
+        </div>
+        <div class="note-cell">
+          <strong><span class="only-en">Provenance</span><span class="only-ko" lang="ko">출처</span></strong>
+          <span class="only-en">The rhizome shown here is an accessible derived implementation; the original rhizome artifact is preserved unchanged.</span>
+          <span class="only-ko" lang="ko">여기 표시된 리좀은 접근성을 갖춘 파생 구현이며, 원본 리좀 아티팩트는 변경 없이 보존됩니다.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span id="footer-text"></span>
+  </footer>
+
+  <!-- PANEL -->
+  <div id="overlay" tabindex="-1"></div>
+  <div id="panel" role="dialog" aria-modal="true" aria-labelledby="p-title" hidden>
+    <div class="panel-head">
+      <span class="ph-type" id="p-type"></span>
+      <button class="icon-btn" id="p-close" aria-label="Close" title="Close (Esc)">✕</button>
+    </div>
+    <div class="panel-body-wrap">
+      <h2 id="p-title"></h2>
+      <div id="p-sub"></div>
+      <div class="p-divider" id="p-divider"></div>
+      <div class="p-tags" id="p-tags"></div>
+      <div id="p-body"></div>
+      <div class="www" id="p-www"></div>
+      <div class="arc" id="p-arc"></div>
+      <div class="classes" id="p-classes" hidden></div>
+      <div class="classes" id="p-pathway" hidden></div>
+    </div>
   </div>
-  <div class="contact-divider"></div>
 
-  <div class="contact-field">
-    <label>Full Name</label>
-    <input type="text" id="cf-name" placeholder="이름 / Your name" />
-  </div>
-  <div class="contact-field">
-    <label>Email Address</label>
-    <input type="email" id="cf-email" placeholder="email@example.com" />
-  </div>
-  <div class="contact-field">
-    <label>Institution / Program</label>
-    <input type="text" id="cf-institution" placeholder="Handong Global University · …" />
-  </div>
-  <div class="contact-field">
-    <label>Role</label>
-    <select id="cf-role">
-      <option value="">— Select —</option>
-      <option value="undergraduate">Undergraduate Student</option>
-      <option value="graduate">Graduate Student</option>
-      <option value="faculty">Faculty</option>
-      <option value="researcher">Researcher</option>
-      <option value="practitioner">Formation Practitioner</option>
-      <option value="other">Other</option>
-    </select>
-  </div>
-  <div class="contact-field">
-    <label>Cohort / Course</label>
-    <input type="text" id="cf-cohort" placeholder="e.g. GEK20071-01 · Spring 2026" />
-  </div>
-  <div class="contact-field">
-    <label>Reflection Note (optional)</label>
-    <textarea id="cf-reflection" placeholder="What resonated with you from this session?"></textarea>
-  </div>
-
-  <div class="contact-actions">
-    <button class="btn-save-contact" id="btn-save-contact">Save Information</button>
-    <button class="btn-clear-contact" id="btn-clear-contact">Clear</button>
-  </div>
-  <div class="contact-status" id="contact-status"></div>
-</div>
-
-<div id="header">
-  <h1>MRIA: MetaReality Relational Intelligence Architecture</h1>
-  <p>MetaGenesis · MetaWay · MetaCommon · 5C Ecosystem</p>
-</div>
-
-<div id="hint">drag to orbit &nbsp;·&nbsp; scroll to zoom &nbsp;·&nbsp; click node to explore</div>
-
-<!-- Bottom bar: contact info only -->
-<div id="bottom-bar">
-  <div id="bottom-contact">Contact Info</div>
-</div>
-
-<div id="canvas-wrap"><canvas id="c"></canvas></div>
-
-<div id="tooltip"></div>
-
-<div id="panel">
-  <button id="panel-close">✕</button>
-  <button id="panel-lang-toggle" title="Toggle Korean / English">한국어</button>
-  <div id="panel-type"></div>
-  <div id="panel-title"></div>
-  <div id="panel-subtitle"></div>
-  <div id="panel-divider"></div>
-  <div id="panel-body"></div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-// ─── DATA ──────────────────────────────────────────────────────────────────
-const NODES = [
-  // MetaReality — centre
-  {
-    id: 'MR', label: 'MetaReality', type: 'architecture',
-    subtitle: 'Relational Intelligence Architecture',
-    color: 0xc9a84c, size: 1.1, pos: [0, 0, 0],
-    tags: ['WHERE · WHO · WHAT', 'Matrix Space', 'Human + AI era'],
-    body: `<p>MRIA is a MetaReality Relational Intelligence Architecture grounded in relational formation, relational ontology, and embodied becoming. Built upon the WHERE–WHO–WHAT framework, MRIA cultivates Human + AI participatory ecosystems where relational spaces shape identity and embodied action discloses future becoming.</p><p>MetaReality is the overarching relational intelligence architecture — the charged field that holds MetaGenesis, MetaWay, and MetaCommon together as a relational formation ecosystem.</p><p>It names the governing topology: <em>the Matrix Space of Becoming</em> — a constitutive in-between through which persons and communities cross thresholds, name Future Selves, and arrive irreversibly at new relational becoming.</p><p>MetaReality does not impose formation from above. It cultivates the structural conditions in which Inherent Formation Capacity — carried by every person as image-bearer — can be freely exercised.</p>`,
-    wwww: ['Where the ecosystem is rooted', 'WHO the architecture serves — all persons as image-bearers', 'WHAT it enacts — truth · love · justice · grace · peace'],
-    arc: 'truth · love · justice · grace · peace — for the flourishing of others in the Human + AI era'
+  <!-- Content data is embedded inline so this file opens standalone
+     with no external requests. The canonical, editable source is
+     rhizome/working/content/rhizome-content.js in the private
+     mria-education/mria-rfls repository — edit there, re-inline here,
+     and validate for drift. Do not hand-edit this block. -->
+  <script>
+/*
+ * MRIA Rhizome — Content & Translation Data (derived)
+ * -----------------------------------------------------------------------------
+ * Source of truth for node concepts, bilingual (EN/KO) text, relational edges,
+ * colors, and layout hints. Deliberately separated from presentation and
+ * interaction logic (index.html) so translatable content can be authored and
+ * reviewed independently of code.
+ *
+ * Provenance: transcribed faithfully from the immutable original
+ *   rhizome/original/metareality_rhizome.html
+ * (NODES, KO_DATA, EDGES, LABEL_NAMES). No concept text was altered; only the
+ * data was lifted out of the monolithic file and structured per language.
+ *
+ * NOTE: Personal-data collection (contact drawer, local reflection notes) from
+ * the original is intentionally NOT represented here. Per RHIZOME_ASSESSMENT.md
+ * and the RFLS privacy model, no personal data is collected in this prototype.
+ */
+window.RHIZOME_CONTENT = {
+  meta: {
+    title: {
+      en: "MRIA: MetaReality Relational Intelligence Architecture",
+      ko: "MRIA: 메타리얼리티 관계적 지성 아키텍처"
+    },
+    subtitle: {
+      en: "Interdisciplinary relational formation · grounded in biblical studies",
+      ko: "학제간 관계적 형성 · 성서학에 기반"
+    }
   },
 
-  // Three nodes
-  {
-    id: 'MG', label: 'MetaGenesis', type: 'node',
-    subtitle: 'Formation Operating System',
-    color: 0x1D9E75, size: 0.78, pos: [-3.2, 1.2, 1.0],
-    tags: ['Formation OS', 'Cognition', 'Care'],
-    body: `<p>MetaGenesis is the formation operating system — the infrastructural layer that cultivates interpretive capacity and holds rupture with covenantal care.</p><p>It is the space where persons become <em>aware of where they are</em> before any formation movement can begin. It refuses to rush the Three-Stage triage: Cyclical Imprisonment must be named before formation modes are applied.</p><p>MetaGenesis primarily carries <strong>Cognition in Motion</strong> (wisdom, discernment, transformative understanding) and <strong>Care in Motion</strong> (accompaniment, dignity recovery, restoration).</p>`,
-    wwww: ['WHERE — situatedness of knowing; rupture not yet received', 'WHO — interpreter becoming; dignity received again', 'WHAT — participatory interpretation; covenantal presence'],
-    arc: 'Information → Disruptive encounter → Embodied wisdom'
-  },
-  {
-    id: 'MW', label: 'MetaWay', type: 'node',
-    subtitle: 'Movement Engine',
-    color: 0x7F77DD, size: 0.78, pos: [3.2, 1.2, 1.0],
-    tags: ['Movement engine', 'Communication', 'Communion'],
-    body: `<p>MetaWay is the movement engine — the how of crossing. It powers the navigational protocols through which persons move between Emic and Etic worlds, carrying the WHO they are becoming across thresholds of difference.</p><p>MetaWay is not a destination. It is the pathway itself — the KAIROS-recognition mechanics, the Emic↔Etic navigation, the relational momentum that makes crossing possible.</p><p>It primarily carries <strong>Communication in Motion</strong> (interpretive crossing, relational listening) and <strong>Communion in Motion</strong> (completing the arc into shared communal life). MetaWay feeds MetaCommon.</p>`,
-    wwww: ['WHERE — boundary between worlds; post-crossing isolation', 'WHO — boundary-crosser emerging; communal Future Self', 'WHAT — mutual repositioning; embodied covenantal life'],
-    arc: 'Separation → Relational encounter → Interpretive crossing → Communal arrival'
-  },
-  {
-    id: 'MC', label: 'MetaCommon', type: 'node',
-    subtitle: 'Embodied Relational Network',
-    color: 0xEF9F27, size: 0.78, pos: [0, -2.8, 1.4],
-    tags: ['Embodied network', 'Culture', 'Care', 'Communion'],
-    body: `<p>MetaCommon is the embodied relational network — the <em>where</em> of shared life. It is not a pathway but a commons: the space where cultural difference is held without domination, where Care is practiced communally, and where the communal Future Self is received, named, and sent.</p><p>MetaCommon does not generate movement — it receives, holds, and sends. It is the institutional expression of the eschatological vision: a city with gates that never shut (Rev 21:25), where the healing of the nations is the organizing principle.</p><p>It carries <strong>Culture in Motion</strong>, <strong>Care in Motion</strong> (jointly with MetaGenesis), and <strong>Communion in Motion</strong> (jointly with MetaWay).</p>`,
-    wwww: ['WHERE — cultural inheritance; center/margin dynamics named', 'WHO — repositioned cultural self; communal Future Self received', 'WHAT — restorative coexistence; vocational sending'],
-    arc: 'Enclosure → Encounter → Shared humanity → Sending toward the Outside'
+  typeLabels: {
+    architecture: { en: "MetaReality Architecture", ko: "메타리얼리티 아키텍처" },
+    node:         { en: "Ecosystem Node",           ko: "생태계 노드" },
+    layer:        { en: "MRIA Layer",               ko: "MRIA 층위" },
+    "5c":         { en: "5C Ecosystem",             ko: "5C 생태계" }
   },
 
-  // ── Layer Nodes ────────────────────────────────────────────────────────────
-  {
-    id: 'FFL', label: 'Formation Framework', type: 'layer',
-    subtitle: 'Interpretive Grammar of MRIA',
-    color: 0xc9a84c, size: 0.62, pos: [0, 4.8, -2.2],
-    tags: ['WHERE', 'WHO', 'WHAT', 'EMBODIED'],
-    body: `<p>The interpretive grammar that runs through all ecosystems.</p>
-      <p><strong>WHERE</strong> — formation begins with relational location.</p>
-      <p><strong>WHO</strong> — identity emerges through relational participation.</p>
-      <p><strong>WHAT</strong> — action reveals becoming and vocation.</p>
-      <p><strong>EMBODIED</strong> — formation becomes real through lived practice.</p>`,
-    wwww: ['WHERE — relational location as prior condition of all formation', 'WHO — identity emerging through participation, not possession', 'WHAT — vocation disclosed through embodied action'],
-    arc: 'Location → Participation → Vocation → Embodiment'
-  },
-  {
-    id: 'LA', label: 'Learning Architecture', type: 'layer',
-    subtitle: 'High-Tech · High-Touch',
-    color: 0x378ADD, size: 0.60, pos: [-6.8, 1.0, -2.5],
-    tags: ['High-Tech', 'High-Touch', 'Adaptive', 'Active'],
-    body: `<p>The dual-axis learning architecture of MRIA — holding the tension between technological intelligence and embodied human formation.</p>
-      <p><strong>High-Tech</strong> — AI, adaptive systems, automation, digital intelligence.</p>
-      <p><strong>High-Touch</strong> — Embodied care, relational presence, human formation.</p>
-      <p><strong>Adaptive Learning</strong> — Individual MetaReality formation.</p>
-      <p><strong>Active Learning</strong> — Communal MetaReality participation.</p>`,
-    wwww: ['WHERE — the learning space between digital and embodied worlds', 'WHO — the formation learner navigating both intelligences', 'WHAT — adaptive and active practices that embody formation'],
-    arc: 'Digital intelligence ↔ Embodied presence → Integrated formation'
-  },
-  {
-    id: 'MVS', label: 'MediaVerse', type: 'layer',
-    subtitle: 'Public Expression Layer',
-    color: 0xD85A30, size: 0.60, pos: [6.8, 1.0, -2.5],
-    tags: ['YouTube', 'Podcast', 'LectureVerse', 'SermonVerse', 'Media Companion'],
-    body: `<p>The public expression layer of MRIA — translating formation into visual, auditory, narrative, educational, and public-facing experiences.</p>
-      <p><strong>YouTube Channels</strong> — Visual formation content.</p>
-      <p><strong>Podcast Ecosystem</strong> — Audio-native formation narratives.</p>
-      <p><strong>LectureVerse</strong> — Educational formation content.</p>
-      <p><strong>SermonVerse</strong> — Proclamation and homiletical formation.</p>
-      <p><strong>Media Companion</strong> — Integrated media accompaniment layer.</p>`,
-    wwww: ['WHERE — the public relational field; formation made visible', 'WHO — the public participant encountering MRIA formation', 'WHAT — translation of formation into accessible expression'],
-    arc: 'Internal formation → Public expression → Participatory encounter'
-  },
-  {
-    id: 'AVS', label: 'AppVerse', type: 'layer',
-    subtitle: 'Participatory Application Layer',
-    color: 0xAFA9EC, size: 0.60, pos: [5.2, -6.2, -1.8],
-    tags: ['Adaptive App', 'Active App', 'Facilitator App', 'MetaBus Navigator'],
-    body: `<p>The participatory application layer of MRIA — where students and participants enter, practice, track, and embody formation.</p>
-      <p><strong>Adaptive Learning App</strong> — Individual formation pathway.</p>
-      <p><strong>Active Learning App</strong> — Communal participation platform.</p>
-      <p><strong>Facilitator App</strong> — Formation guide and instructor interface.</p>
-      <p><strong>MetaBus Navigator App</strong> — Spatial formation route navigation.</p>
-      <p><strong>Media Companion App</strong> — Integrated media engagement layer.</p>`,
-    wwww: ['WHERE — the digital formation environment entered by the learner', 'WHO — the learner actively practicing and tracking becoming', 'WHAT — embodied formation enacted through participatory apps'],
-    arc: 'Encounter → Entry → Practice → Embodiment → Sending'
-  },
-  {
-    id: 'CPL', label: 'Commons Participation', type: 'layer',
-    subtitle: 'Entry into the Living Relational Field',
-    color: 0x5DCAA5, size: 0.60, pos: [-5.2, -6.2, -1.8],
-    tags: ['Collaborate', 'Learn', 'Participate', 'Build Together'],
-    body: `<p>Not simply "Contact," but entry into the living relational field of MetaGenesis Commons.</p>
-      <p><strong>Collaborate</strong> — Co-creative relational engagement.</p>
-      <p><strong>Learn</strong> — Formation participation and interpretive growth.</p>
-      <p><strong>Participate</strong> — Active entry into the Commons ecosystem.</p>
-      <p><strong>Build Together</strong> — Generative co-construction of the relational field.</p>`,
-    wwww: ['WHERE — the Commons as living relational field, not institutional portal', 'WHO — the collaborator entering as co-builder, not consumer', 'WHAT — co-creative participation that builds the field itself'],
-    arc: 'Contact → Entry → Participation → Co-creation → Belonging'
+  // The three-cell relational grammar row shown per node.
+  wwwHeadings: {
+    where: { en: "WHERE", ko: "WHERE" },
+    who:   { en: "WHO",   ko: "WHO" },
+    what:  { en: "WHAT",  ko: "WHAT" }
   },
 
-  // Five Cs
-  {
-    id: 'C1', label: 'Cognition', type: '5c',
-    subtitle: 'in Motion',
-    color: 0x5DCAA5, size: 0.55, pos: [-5.2, 2.8, -0.8],
-    tags: ['Wisdom', 'Discernment', 'MG · MW'],
-    classes: ['Wisdom', 'Learning', 'Biblical Studies', 'Hermeneutics', 'AI + Education', 'Transformative Understanding'],
-    body: `<p>Cognition in Motion holds open the matrix space where perception is disrupted, assumptions exposed, and understanding becomes embodied wisdom.</p><p>It refuses extractive education — the commodification of knowledge, the gatekeeping of interpretation. Learning here is participatory relocation: the knower is moved, not merely informed.</p>`,
-    wwww: ['WHERE — situatedness of knowing; named position before interpretation', 'WHO — interpreter becoming; knower relocated not merely informed', 'WHAT — participatory interpretation; understanding embodied into action'],
-    arc: 'Information → Disruptive encounter → Embodied wisdom · Shield: against Extractive Education'
-  },
-  {
-    id: 'C2', label: 'Communication', type: '5c',
-    subtitle: 'in Motion',
-    color: 0xAFA9EC, size: 0.55, pos: [5.2, 2.8, -0.8],
-    tags: ['Dialogue', 'Crossing', 'MW'],
-    classes: ['Language', 'Dialogue', 'Cultural Translation', 'Interpretation Across Cultures', 'Global Relational Literacy'],
-    body: `<p>Communication in Motion holds open the matrix space between worlds — where language fails, difference becomes gift, and genuine dialogue crosses the boundary neither party could cross alone.</p><p>It insists that the margin's voice reconfigures the center — not the reverse. The interpretive crossing produces mutual repositioning: neither party unchanged.</p>`,
-    wwww: ['WHERE — boundary between worlds; disorientation as threshold', 'WHO — boundary-crosser emerging; carrier of meaning across difference', 'WHAT — mutual repositioning; neither party unchanged'],
-    arc: 'Separation → Relational encounter → Interpretive crossing · Shield: against Domestication of narrative'
-  },
-  {
-    id: 'C3', label: 'Culture', type: '5c',
-    subtitle: 'in Motion',
-    color: 0xFAC775, size: 0.55, pos: [0, -5.0, -0.4],
-    tags: ['Shared story', 'Dignity', 'MC'],
-    classes: ['Human Stories', 'Food', 'Music', 'Memory', 'Dignity', 'Justice', 'Cross-Cultural Formation'],
-    body: `<p>Culture in Motion holds open the matrix space of shared human worlds — where memory, creativity, dignity, and difference meet, and where the center/margin topology of every cultural arrangement is exposed and reordered.</p><p>Culture is the visible geometry of relational life. Power is the configuration of space. MRIA asks of every cultural topology: Where is God in this arrangement?</p>`,
-    wwww: ['WHERE — cultural inheritance; center/margin dynamics named', 'WHO — repositioned cultural self; neither enclosed nor rootless', 'WHAT — restorative coexistence; healing the center/margin fracture'],
-    arc: 'Enclosure → Encounter with the other → Shared humanity · Shield: against Institutional Capture'
-  },
-  {
-    id: 'C4', label: 'Care', type: '5c',
-    subtitle: 'in Motion',
-    color: 0xF0997B, size: 0.55, pos: [-3.8, -3.6, 2.0],
-    tags: ['Healing', 'Accompaniment', 'MG · MC', '⫞ Sabbath'],
-    classes: ['Counseling', 'Healing Journeys', 'Relational Care', 'Family & Community Support', 'High-Touch Restoration'],
-    body: `<p>Care in Motion holds open the matrix space of rupture — where fragmentation, wound, and loss have disrupted the relational field, and where covenantal accompaniment makes re-entry into life-giving relationship possible again.</p><p><em>Not rescue — accompaniment.</em> The Three-Stage triage is mandatory: never apply formation modes to a person in Cyclical Imprisonment. That misdiagnosis is pastoral malpractice.</p><p><strong>Sabbath Brake ⫞</strong> operative here: no AI mediation for dying, acute grief, trauma, crisis. Embodied human presence only.</p>`,
-    wwww: ['WHERE — cyclical imprisonment; rupture not yet received', 'WHO — dignity received again; person ready to cross threshold', 'WHAT — covenantal presence; not rescue but accompaniment'],
-    arc: 'Rupture → Covenantal accompaniment → Crossing made possible · Shield: against Authoritarian Leadership'
-  },
-  {
-    id: 'C5', label: 'Communion', type: '5c',
-    subtitle: 'in Motion',
-    color: 0x85B7EB, size: 0.55, pos: [3.8, -3.6, 2.0],
-    tags: ['Shared life', 'Future Self', 'MW · MC'],
-    classes: ['Shared Life', 'Table Fellowship', 'Worship', 'Community Formation', 'Spiritual Participation', 'Embodied Coexistence'],
-    body: `<p>Communion in Motion holds open the matrix space of shared life — where isolated becoming gives way to communal becoming, and where the Future Self is not only individual but communal.</p><p>This is the ecosystem's eschatological pressure point. It asks: <em>are we trusting in deceptive words — "relational commons, relational commons" — while failing to practice justice at our own margins?</em></p><p>The communal Future Self is named with Formation Permanence: once arrived, it does not revert.</p>`,
-    wwww: ['WHERE — post-crossing isolation; Future Self arrived, not yet held', 'WHO — communal Future Self; named with Formation Permanence', 'WHAT — embodied covenantal life; sent toward the Outside together'],
-    arc: 'Isolation → Communal reception of Future Self → Vocational sending · Shield: all five prophetic targets'
-  }
-];
+  nodes: [
+    {
+      id: "MR", type: "architecture", color: "#c9a84c", pos: [0, 0, 0],
+      label: { en: "MetaReality", ko: "MetaReality" },
+      subtitle: { en: "Relational Intelligence Architecture", ko: "관계적 지성 아키텍처" },
+      tags: {
+        en: ["WHERE · WHO · WHAT", "Matrix Space", "Human + AI era"],
+        ko: ["WHERE · WHO · WHAT", "Matrix Space", "인간 + AI 시대"]
+      },
+      body: {
+        en: "<p>MRIA is a MetaReality Relational Intelligence Architecture for interdisciplinary relational formation across embodied, digital, communal, interpretive, cultural, ecological, and transformative realities. It is grounded in biblical studies and enters dialogue with philosophy, education, justice, technology, and lived communal practice without collapsing their distinct voices.</p><p>Its biblical-studies method is emic: texts and narrative worlds are first engaged on their own historical, literary, linguistic, cultural, spatial, and relational terms rather than treated as demands for prior doctrinal assent.</p><p>Built upon the WHERE–WHO–WHAT framework, MRIA cultivates Human + AI participatory ecosystems where relational spaces shape identity and embodied action discloses future becoming. MetaReality is the charged field that holds MetaGenesis, MetaWay, and MetaCommon together.</p><p>It names the governing topology: <em>the Matrix Space of Becoming</em> — a constitutive in-between through which persons and communities cross thresholds, name Future Selves, and arrive irreversibly at new relational becoming.</p><p>MetaReality does not impose formation from above. It cultivates structural conditions in which the Inherent Formation Capacity already present in every person can be freely exercised.</p>",
+        ko: "<p>MRIA는 구현적, 디지털적, 공동체적, 해석적, 문화적, 생태적, 변혁적 현실을 가로지르는 학제간 관계적 형성을 위한 MetaReality 관계적 지성 아키텍처입니다. 성서학에 기반하며, 철학, 교육, 정의, 기술, 살아 있는 공동체적 실천과 대화하되 각 목소리의 고유성을 붕괴시키지 않습니다.</p><p>MRIA의 성서학 방법은 내재적입니다. 본문과 서사 세계를 교리적 동의의 선행 조건으로 다루지 않고, 먼저 그 자체의 역사적, 문학적, 언어적, 문화적, 공간적, 관계적 맥락에서 만납니다.</p><p>WHERE–WHO–WHAT 프레임워크를 토대로, MRIA는 관계적 공간이 정체성을 형성하고 구현된 행동이 미래의 됨을 드러내는 인간 + AI 참여 생태계를 가꿉니다. MetaReality는 MetaGenesis, MetaWay, MetaCommon을 함께 붙드는 역동적 장입니다.</p><p>그것은 지배적 위상학인 <em>됨의 Matrix Space</em>를 명명합니다 — 인격과 공동체가 문턱을 넘고, 미래 자아를 명명하며, 돌이킬 수 없는 새로운 관계적 됨에 이르는 구성적 사이 공간입니다.</p><p>MetaReality는 위에서 형성을 강요하지 않습니다. 모든 사람 안에 이미 존재하는 내재적 형성 역량이 자유롭게 발휘될 수 있는 구조적 조건을 가꿉니다.</p>"
+      },
+      www: {
+        en: ["Where the ecosystem is rooted", "WHO the architecture serves — all persons as image-bearers", "WHAT it enacts — truth · love · justice · grace · peace"],
+        ko: ["생태계가 뿌리내린 자리", "WHO — 이 아키텍처가 섬기는 대상 — 형상을 지닌 모든 사람", "WHAT — 그것이 실현하는 것 — 진리 · 사랑 · 정의 · 은혜 · 평화"]
+      },
+      arc: {
+        en: "truth · love · justice · grace · peace — for the flourishing of others in the Human + AI era",
+        ko: "진리 · 사랑 · 정의 · 은혜 · 평화 — 인간 + AI 시대, 타인의 번영을 위하여"
+      },
+      classes: { en: [], ko: [] }
+    },
 
-// ─── NODE LABEL FULL NAMES ────────────────────────────────────────────────
-const LABEL_NAMES = {
-  'MR': 'MetaReality',
-  'MG': 'MetaGenesis',
-  'MW': 'MetaWay',
-  'MC': 'MetaCommon',
-  'FFL': 'Formation Framework',
-  'LA': 'Learning Architecture',
-  'MVS': 'MediaVerse',
-  'AVS': 'AppVerse',
-  'CPL': 'Commons Participation',
-  'C1': 'Cognition',
-  'C2': 'Communication',
-  'C3': 'Culture',
-  'C4': 'Care',
-  'C5': 'Communion'
+    {
+      id: "MG", type: "node", color: "#1D9E75", pos: [-3.2, 1.2, 1.0],
+      label: { en: "MetaGenesis", ko: "MetaGenesis" },
+      subtitle: { en: "Formation Operating System", ko: "형성 운영 체계" },
+      tags: {
+        en: ["Formation OS", "Cognition", "Care"],
+        ko: ["형성 OS", "Cognition", "Care"]
+      },
+      body: {
+        en: "<p>MetaGenesis is the formation operating system — the infrastructural layer that cultivates interpretive capacity and holds rupture with covenantal care.</p><p>It is the space where persons become <em>aware of where they are</em> before any formation movement can begin. It refuses to rush the Three-Stage triage: Cyclical Imprisonment must be named before formation modes are applied.</p><p>MetaGenesis primarily carries <strong>Cognition in Motion</strong> (wisdom, discernment, transformative understanding) and <strong>Care in Motion</strong> (accompaniment, dignity recovery, restoration).</p>",
+        ko: "<p>MetaGenesis는 형성 운영 체계 — 해석적 역량을 기르고 언약적 돌봄으로 파열을 붙드는 기반 층위입니다.</p><p>이것은 어떠한 형성 운동도 시작되기 전, 사람들이 <em>자신이 어디에 있는지를 인식</em>하는 공간입니다. Three-Stage 분류를 서두르지 않습니다.</p><p>주로 <strong>Cognition in Motion</strong>(지혜, 분별, 변혁적 이해)과 <strong>Care in Motion</strong>(동행, 존엄 회복, 회복)을 담당합니다.</p>"
+      },
+      www: {
+        en: ["WHERE — situatedness of knowing; rupture not yet received", "WHO — interpreter becoming; dignity received again", "WHAT — participatory interpretation; covenantal presence"],
+        ko: ["WHERE — 앎의 자리; 파열은 아직 받아들여지지 않음", "WHO — 해석자가 됨; 존엄이 다시 받아들여짐", "WHAT — 참여적 해석; 언약적 현존"]
+      },
+      arc: {
+        en: "Information → Disruptive encounter → Embodied wisdom",
+        ko: "정보 → 파열적 만남 → 구현된 지혜"
+      },
+      classes: { en: [], ko: [] }
+    },
+
+    {
+      id: "MW", type: "node", color: "#7F77DD", pos: [3.2, 1.2, 1.0],
+      label: { en: "MetaWay", ko: "MetaWay" },
+      subtitle: { en: "Movement Engine", ko: "운동 엔진" },
+      tags: {
+        en: ["Movement engine", "Communication", "Communion"],
+        ko: ["운동 엔진", "Communication", "Communion"]
+      },
+      body: {
+        en: "<p>MetaWay is the movement engine — the how of crossing. It powers the navigational protocols through which persons move between Emic and Etic worlds, carrying the WHO they are becoming across thresholds of difference.</p><p>MetaWay is not a destination. It is the pathway itself — the KAIROS-recognition mechanics, the Emic↔Etic navigation, the relational momentum that makes crossing possible.</p><p>It primarily carries <strong>Communication in Motion</strong> (interpretive crossing, relational listening) and <strong>Communion in Motion</strong> (completing the arc into shared communal life). MetaWay feeds MetaCommon.</p>",
+        ko: "<p>MetaWay는 운동 엔진 — 건넘의 방법입니다. 차이의 문턱을 넘어 사람들이 Emic 세계와 Etic 세계 사이를 이동하도록 이끄는 항행 프로토콜을 작동시킵니다.</p><p>MetaWay는 목적지가 아닙니다. 경로 그 자체 — KAIROS 인식 메커니즘, Emic↔Etic 항행, 건넘을 가능하게 하는 관계적 동력입니다.</p><p>주로 <strong>Communication in Motion</strong>(해석적 건넘, 관계적 경청)과 <strong>Communion in Motion</strong>(공동체적 삶으로의 완성)을 담당합니다.</p>"
+      },
+      www: {
+        en: ["WHERE — boundary between worlds; post-crossing isolation", "WHO — boundary-crosser emerging; communal Future Self", "WHAT — mutual repositioning; embodied covenantal life"],
+        ko: ["WHERE — 세계들 사이의 경계; 건넘 이후의 고립", "WHO — 경계를 건너는 자가 됨; 공동체적 미래 자아", "WHAT — 상호 재위치; 구현된 언약적 삶"]
+      },
+      arc: {
+        en: "Separation → Relational encounter → Interpretive crossing → Communal arrival",
+        ko: "분리 → 관계적 만남 → 해석적 건넘 → 공동체적 도착"
+      },
+      classes: { en: [], ko: [] }
+    },
+
+    {
+      id: "MC", type: "node", color: "#EF9F27", pos: [0, -2.8, 1.4],
+      label: { en: "MetaCommon", ko: "MetaCommon" },
+      subtitle: { en: "Embodied Relational Network", ko: "구현된 관계 네트워크" },
+      tags: {
+        en: ["Embodied network", "Culture", "Care", "Communion"],
+        ko: ["구현된 네트워크", "Culture", "Care", "Communion"]
+      },
+      body: {
+        en: "<p>MetaCommon is the embodied relational network — the <em>where</em> of shared life. It is not a pathway but a commons: the space where cultural difference is held without domination, where Care is practiced communally, and where the communal Future Self is received, named, and sent.</p><p>MetaCommon does not generate movement — it receives, holds, and sends. It is the institutional expression of the eschatological vision: a city with gates that never shut (Rev 21:25), where the healing of the nations is the organizing principle.</p><p>It carries <strong>Culture in Motion</strong>, <strong>Care in Motion</strong> (jointly with MetaGenesis), and <strong>Communion in Motion</strong> (jointly with MetaWay).</p>",
+        ko: "<p>MetaCommon은 구현된 관계 네트워크 — 공유된 삶의 <em>자리</em>입니다. 경로가 아니라 공유지: 문화적 차이가 지배 없이 붙들리고, Care가 공동체적으로 실천되며, 공동체적 미래 자아가 받아들여지고 명명되고 파송되는 공간입니다.</p><p>MetaCommon은 운동을 생성하지 않습니다 — 받아들이고, 붙들고, 파송합니다. 문이 결코 닫히지 않는 성(계 21:25), 민족들의 치유가 조직 원리가 되는 종말론적 비전의 제도적 표현입니다.</p>"
+      },
+      www: {
+        en: ["WHERE — cultural inheritance; center/margin dynamics named", "WHO — repositioned cultural self; communal Future Self received", "WHAT — restorative coexistence; vocational sending"],
+        ko: ["WHERE — 문화적 유산; 중심/주변부 역학이 명명됨", "WHO — 재위치된 문화적 자아; 공동체적 미래 자아가 받아들여짐", "WHAT — 회복적 공존; 직업적 파송"]
+      },
+      arc: {
+        en: "Enclosure → Encounter → Shared humanity → Sending toward the Outside",
+        ko: "폐쇄 → 만남 → 공유된 인류 → 외부를 향한 파송"
+      },
+      classes: { en: [], ko: [] }
+    },
+
+    {
+      id: "FFL", type: "layer", color: "#c9a84c", pos: [0, 4.8, -2.2],
+      label: { en: "Formation Framework", ko: "Formation Framework" },
+      subtitle: { en: "Interpretive Grammar of MRIA", ko: "MRIA의 해석적 위상학" },
+      tags: {
+        en: ["WHERE", "WHO", "WHAT", "EMBODIED"],
+        ko: ["WHERE", "WHO", "WHAT", "EMBODIED"]
+      },
+      body: {
+        en: "<p>The interpretive grammar that runs through all ecosystems.</p><p><strong>WHERE</strong> — formation begins with relational location.</p><p><strong>WHO</strong> — identity emerges through relational participation.</p><p><strong>WHAT</strong> — action reveals becoming and vocation.</p><p><strong>EMBODIED</strong> — formation becomes real through lived practice.</p>",
+        ko: "<p>모든 생태계를 관통하는 해석적 위상학.</p><p><strong>WHERE</strong> — 형성은 관계적 자리에서 시작됩니다.</p><p><strong>WHO</strong> — 정체성은 관계적 참여를 통해 출현합니다.</p><p><strong>WHAT</strong> — 행동은 됨(becoming)과 소명을 드러냅니다.</p><p><strong>EMBODIED</strong> — 형성은 살아진 실천을 통해 실재가 됩니다.</p>"
+      },
+      www: {
+        en: ["WHERE — relational location as prior condition of all formation", "WHO — identity emerging through participation, not possession", "WHAT — vocation disclosed through embodied action"],
+        ko: ["WHERE — 관계적 자리: 모든 형성의 선행 조건", "WHO — 소유가 아닌 참여를 통해 출현하는 정체성", "WHAT — 구현된 행동을 통해 드러나는 소명"]
+      },
+      arc: {
+        en: "Location → Participation → Vocation → EMBODIED",
+        ko: "자리 → 참여 → 소명 → 구현"
+      },
+      classes: { en: [], ko: [] }
+    },
+
+    {
+      id: "LA", type: "layer", color: "#378ADD", pos: [-6.8, 1.0, -2.5],
+      label: { en: "Learning Architecture", ko: "Learning Architecture" },
+      subtitle: { en: "High-Tech · High-Touch", ko: "High-Tech · High-Touch" },
+      tags: {
+        en: ["High-Tech", "High-Touch", "Adaptive", "Active"],
+        ko: ["High-Tech", "High-Touch", "적응적 학습", "능동적 학습"]
+      },
+      body: {
+        en: "<p>The dual-axis learning architecture of MRIA — holding the tension between technological intelligence and embodied human formation.</p><p><strong>High-Tech</strong> — AI, adaptive systems, automation, digital intelligence.</p><p><strong>High-Touch</strong> — Embodied care, relational presence, human formation.</p><p><strong>Adaptive Learning</strong> — Individual MetaReality formation.</p><p><strong>Active Learning</strong> — Communal MetaReality participation.</p>",
+        ko: "<p>MRIA의 이중 축 학습 아키텍처 — 기술적 지성과 구현된 인간 형성 사이의 긴장을 붙듭니다.</p><p><strong>High-Tech</strong> — AI, 적응형 시스템, 자동화, 디지털 지성.</p><p><strong>High-Touch</strong> — 구현된 돌봄, 관계적 현존, 인간 형성.</p><p><strong>적응적 학습</strong> — 개인 MetaReality 형성.</p><p><strong>능동적 학습</strong> — 공동체적 MetaReality 참여.</p>"
+      },
+      www: {
+        en: ["WHERE — the learning space between digital and embodied worlds", "WHO — the formation learner navigating both intelligences", "WHAT — adaptive and active practices that embody formation"],
+        ko: ["WHERE — 디지털 세계와 구현된 세계 사이의 학습 공간", "WHO — 두 지성을 항행하는 형성 학습자", "WHAT — 형성을 구현하는 적응적·능동적 실천들"]
+      },
+      arc: {
+        en: "Digital intelligence ↔ Embodied presence → Integrated formation",
+        ko: "디지털 지성 ↔ 구현된 현존 → 통합된 형성"
+      },
+      classes: { en: [], ko: [] }
+    },
+
+    {
+      id: "MVS", type: "layer", color: "#D85A30", pos: [6.8, 1.0, -2.5],
+      label: { en: "MediaVerse", ko: "MediaVerse" },
+      subtitle: { en: "Public Expression Layer", ko: "공적 표현 층위" },
+      tags: {
+        en: ["YouTube", "Podcast", "LectureVerse", "SermonVerse", "Media Companion"],
+        ko: ["YouTube", "팟캐스트", "LectureVerse", "SermonVerse", "Media Companion"]
+      },
+      body: {
+        en: "<p>The public expression layer of MRIA — translating formation into visual, auditory, narrative, educational, and public-facing experiences.</p><p><strong>YouTube Channels</strong> — Visual formation content.</p><p><strong>Podcast Ecosystem</strong> — Audio-native formation narratives.</p><p><strong>LectureVerse</strong> — Educational formation content.</p><p><strong>SermonVerse</strong> — Proclamation and homiletical formation.</p><p><strong>Media Companion</strong> — Integrated media accompaniment layer.</p>",
+        ko: "<p>MRIA의 공적 표현 층위 — 형성을 시각적, 청각적, 서사적, 교육적, 공개적 경험으로 번역합니다.</p><p><strong>YouTube 채널</strong> — 시각적 형성 콘텐츠.</p><p><strong>팟캐스트 생태계</strong> — 오디오 형성 서사.</p><p><strong>LectureVerse</strong> — 교육적 형성 콘텐츠.</p><p><strong>SermonVerse</strong> — 선포와 설교적 형성.</p><p><strong>Media Companion</strong> — 통합 미디어 동행 층위.</p>"
+      },
+      www: {
+        en: ["WHERE — the public relational field; formation made visible", "WHO — the public participant encountering MRIA formation", "WHAT — translation of formation into accessible expression"],
+        ko: ["WHERE — 공적 관계 장; 형성이 가시화됨", "WHO — MRIA 형성을 만나는 공적 참여자", "WHAT — 형성을 접근 가능한 표현으로 번역"]
+      },
+      arc: {
+        en: "Internal formation → Public expression → Participatory encounter",
+        ko: "내적 형성 → 공적 표현 → 참여적 만남"
+      },
+      classes: { en: [], ko: [] }
+    },
+
+    {
+      id: "AVS", type: "layer", color: "#AFA9EC", pos: [5.2, -6.2, -1.8],
+      label: { en: "AppVerse", ko: "AppVerse" },
+      subtitle: { en: "Participatory Application Layer", ko: "참여적 앱 층위" },
+      tags: {
+        en: ["Adaptive App", "Active App", "Facilitator App", "MetaBus Navigator"],
+        ko: ["적응적 앱", "능동적 앱", "진행자 앱", "MetaBus Navigator"]
+      },
+      body: {
+        en: "<p>The participatory application layer of MRIA — where students and participants enter, practice, track, and embody formation.</p><p><strong>Adaptive Learning App</strong> — Individual formation pathway.</p><p><strong>Active Learning App</strong> — Communal participation platform.</p><p><strong>Facilitator App</strong> — Formation guide and instructor interface.</p><p><strong>MetaBus Navigator App</strong> — Spatial formation route navigation.</p><p><strong>Media Companion App</strong> — Integrated media engagement layer.</p>",
+        ko: "<p>MRIA의 참여적 앱 층위 — 학생과 참여자들이 형성에 진입하고, 실천하고, 추적하고, 구현하는 곳.</p><p><strong>적응적 학습 앱</strong> — 개인 형성 경로.</p><p><strong>능동적 학습 앱</strong> — 공동체적 참여 플랫폼.</p><p><strong>진행자 앱</strong> — 형성 안내자 및 교수자 인터페이스.</p><p><strong>MetaBus Navigator 앱</strong> — 공간적 형성 경로 항행.</p><p><strong>Media Companion 앱</strong> — 통합 미디어 참여 층위.</p>"
+      },
+      www: {
+        en: ["WHERE — the digital formation environment entered by the learner", "WHO — the learner actively practicing and tracking becoming", "WHAT — embodied formation enacted through participatory apps"],
+        ko: ["WHERE — 학습자가 진입하는 디지털 형성 환경", "WHO — 능동적으로 실천하고 됨(becoming)을 추적하는 학습자", "WHAT — 참여적 앱을 통해 실현되는 구현된 형성"]
+      },
+      arc: {
+        en: "Encounter → Entry → Practice → EMBODIED → Sending",
+        ko: "만남 → 진입 → 실천 → 구현 → 파송"
+      },
+      classes: { en: [], ko: [] }
+    },
+
+    {
+      id: "CPL", type: "layer", color: "#5DCAA5", pos: [-5.2, -6.2, -1.8],
+      label: { en: "Commons Participation", ko: "Commons Participation" },
+      subtitle: { en: "Entry into the Living Relational Field", ko: "살아있는 관계 장에의 진입" },
+      tags: {
+        en: ["Collaborate", "Learn", "Participate", "Build Together"],
+        ko: ["협력", "학습", "참여", "함께 짓기"]
+      },
+      body: {
+        en: "<p>Not simply \"Contact,\" but entry into the living relational field of MetaGenesis Commons.</p><p><strong>Collaborate</strong> — Co-creative relational engagement.</p><p><strong>Learn</strong> — Formation participation and interpretive growth.</p><p><strong>Participate</strong> — Active entry into the Commons ecosystem.</p><p><strong>Build Together</strong> — Generative co-construction of the relational field.</p>",
+        ko: "<p>단순한 '연락'이 아니라, MetaGenesis Commons의 살아있는 관계 장으로의 진입.</p><p><strong>협력</strong> — 공동 창조적 관계 참여.</p><p><strong>학습</strong> — 형성 참여와 해석적 성장.</p><p><strong>참여</strong> — Commons 생태계로의 능동적 진입.</p><p><strong>함께 짓기</strong> — 관계 장의 생성적 공동 건축.</p>"
+      },
+      www: {
+        en: ["WHERE — the Commons as living relational field, not institutional portal", "WHO — the collaborator entering as co-builder, not consumer", "WHAT — co-creative participation that builds the field itself"],
+        ko: ["WHERE — 제도적 포털이 아닌 살아있는 관계 장으로서의 Commons", "WHO — 소비자가 아닌 공동 건축자로 진입하는 협력자", "WHAT — 장 자체를 짓는 공동 창조적 참여"]
+      },
+      arc: {
+        en: "Contact → Entry → Participation → Co-creation → Belonging",
+        ko: "연락 → 진입 → 참여 → 공동 창조 → 소속"
+      },
+      classes: { en: [], ko: [] }
+    },
+
+    {
+      id: "C1", type: "5c", color: "#5DCAA5", pos: [-5.2, 2.8, -0.8],
+      label: { en: "Cognition", ko: "Cognition" },
+      subtitle: { en: "in Motion", ko: "운동 중에" },
+      tags: {
+        en: ["Wisdom", "Discernment", "MG · MW"],
+        ko: ["지혜", "분별", "MG · MW"]
+      },
+      body: {
+        en: "<p>Cognition in Motion holds open the matrix space where perception is disrupted, assumptions exposed, and understanding becomes embodied wisdom.</p><p>It refuses extractive education — the commodification of knowledge, the gatekeeping of interpretation. Learning here is participatory relocation: the knower is moved, not merely informed.</p>",
+        ko: "<p>Cognition in Motion은 인식이 파열되고, 가정이 드러나며, 이해가 구현된 지혜가 되는 matrix space를 열어 붙듭니다.</p><p>추출적 교육 — 지식의 상품화, 해석의 독점 — 을 거부합니다. 이곳의 학습은 참여적 재위치: 아는 자가 단순히 정보를 받는 것이 아니라 이동됩니다.</p>"
+      },
+      www: {
+        en: ["WHERE — situatedness of knowing; named position before interpretation", "WHO — interpreter becoming; knower relocated not merely informed", "WHAT — participatory interpretation; understanding embodied into action"],
+        ko: ["WHERE — 앎의 자리; 해석 전 명명된 위치", "WHO — 해석자가 됨; 단순 정보 수용이 아닌 재위치된 아는 자", "WHAT — 참여적 해석; 행동으로 구현된 이해"]
+      },
+      arc: {
+        en: "Information → Disruptive encounter → Embodied wisdom · Shield: against Extractive Education",
+        ko: "정보 → 파열적 만남 → 구현된 지혜 · 방패: 추출적 교육에 맞서"
+      },
+      classes: {
+        en: ["Wisdom", "Learning", "Biblical Studies", "Hermeneutics", "AI + Education", "Transformative Understanding"],
+        ko: ["지혜", "학습", "성경학", "해석학", "AI + 교육", "변혁적 이해"]
+      }
+    },
+
+    {
+      id: "C2", type: "5c", color: "#AFA9EC", pos: [5.2, 2.8, -0.8],
+      label: { en: "Communication", ko: "Communication" },
+      subtitle: { en: "in Motion", ko: "운동 중에" },
+      tags: {
+        en: ["Dialogue", "Crossing", "MW"],
+        ko: ["대화", "건넘", "MW"]
+      },
+      body: {
+        en: "<p>Communication in Motion holds open the matrix space between worlds — where language fails, difference becomes gift, and genuine dialogue crosses the boundary neither party could cross alone.</p><p>It insists that the margin's voice reconfigures the center — not the reverse. The interpretive crossing produces mutual repositioning: neither party unchanged.</p>",
+        ko: "<p>Communication in Motion은 세계들 사이의 matrix space를 열어 붙듭니다 — 언어가 실패하고, 차이가 선물이 되며, 진정한 대화가 어느 쪽도 혼자서는 건널 수 없는 경계를 넘는 곳.</p><p>주변부의 목소리가 중심을 재편성한다고 주장합니다 — 그 역이 아니라. 해석적 건넘은 상호 재위치를 낳습니다: 어느 쪽도 변하지 않고 돌아가지 않습니다.</p>"
+      },
+      www: {
+        en: ["WHERE — boundary between worlds; disorientation as threshold", "WHO — boundary-crosser emerging; carrier of meaning across difference", "WHAT — mutual repositioning; neither party unchanged"],
+        ko: ["WHERE — 세계들 사이의 경계; 방향상실을 문턱으로", "WHO — 경계를 건너는 자가 됨; 차이를 넘어 의미를 전달하는 자", "WHAT — 상호 재위치; 어느 쪽도 변하지 않고 돌아가지 않음"]
+      },
+      arc: {
+        en: "Separation → Relational encounter → Interpretive crossing · Shield: against Domestication of narrative",
+        ko: "분리 → 관계적 만남 → 해석적 건넘 · 방패: 서사의 길들이기에 맞서"
+      },
+      classes: {
+        en: ["Language", "Dialogue", "Cultural Translation", "Interpretation Across Cultures", "Global Relational Literacy"],
+        ko: ["언어", "대화", "문화적 번역", "문화 간 해석", "글로벌 관계적 문해력"]
+      }
+    },
+
+    {
+      id: "C3", type: "5c", color: "#FAC775", pos: [0, -5.0, -0.4],
+      label: { en: "Culture", ko: "Culture" },
+      subtitle: { en: "in Motion", ko: "운동 중에" },
+      tags: {
+        en: ["Shared story", "Dignity", "MC"],
+        ko: ["공유된 이야기", "존엄", "MC"]
+      },
+      body: {
+        en: "<p>Culture in Motion holds open the matrix space of shared human worlds — where memory, creativity, dignity, and difference meet, and where the center/margin topology of every cultural arrangement is exposed and reordered.</p><p>Culture is the visible geometry of relational life. Power is the configuration of space. MRIA asks of every cultural topology: Where does this arrangement locate power, vulnerability, and shared dignity?</p>",
+        ko: "<p>Culture in Motion은 공유된 인간 세계들의 matrix space를 열어 붙듭니다 — 기억, 창조성, 존엄, 차이가 만나고, 모든 문화적 배치의 중심/주변부 위상학이 드러나고 재편되는 곳입니다.</p><p>문화는 관계적 삶의 가시적 기하학입니다. 권력은 공간의 배치입니다. MRIA는 모든 문화적 위상학에 묻습니다: 이 배치는 권력, 취약성, 공유된 존엄을 어디에 위치시킵니까?</p>"
+      },
+      www: {
+        en: ["WHERE — cultural inheritance; center/margin dynamics named", "WHO — repositioned cultural self; neither enclosed nor rootless", "WHAT — restorative coexistence; healing the center/margin fracture"],
+        ko: ["WHERE — 문화적 유산; 중심/주변부 역학이 명명됨", "WHO — 재위치된 문화적 자아; 폐쇄되지도 뿌리 뽑히지도 않음", "WHAT — 회복적 공존; 중심/주변부 균열의 치유"]
+      },
+      arc: {
+        en: "Enclosure → Encounter with the other → Shared humanity · Shield: against Institutional Capture",
+        ko: "폐쇄 → 타자와의 만남 → 공유된 인류 · 방패: 제도적 포획에 맞서"
+      },
+      classes: {
+        en: ["Human Stories", "Food", "Music", "Memory", "Dignity", "Justice", "Cross-Cultural Formation"],
+        ko: ["인간 이야기", "음식", "음악", "기억", "존엄", "정의", "문화 간 형성"]
+      }
+    },
+
+    {
+      id: "C4", type: "5c", color: "#F0997B", pos: [-3.8, -3.6, 2.0],
+      label: { en: "Care", ko: "Care" },
+      subtitle: { en: "in Motion", ko: "운동 중에" },
+      tags: {
+        en: ["Healing", "Accompaniment", "MG · MC", "⫞ Sabbath"],
+        ko: ["치유", "동행", "MG · MC", "⫞ 안식일"]
+      },
+      body: {
+        en: "<p>Care in Motion holds open the matrix space of rupture — where fragmentation, wound, and loss have disrupted the relational field, and where covenantal accompaniment makes re-entry into life-giving relationship possible again.</p><p><em>Not rescue — accompaniment.</em> The Three-Stage triage is mandatory: never apply formation modes to a person in Cyclical Imprisonment. That misdiagnosis is pastoral malpractice.</p><p><strong>Sabbath Brake ⫞</strong> operative here: no AI mediation for dying, acute grief, trauma, crisis. Embodied human presence only.</p>",
+        ko: "<p>Care in Motion은 파열의 matrix space를 열어 붙듭니다 — 분열, 상처, 상실이 관계 장을 깨뜨린 곳, 언약적 동행이 생명을 주는 관계로의 재진입을 다시 가능하게 하는 곳.</p><p><em>구조가 아닌 동행.</em> Three-Stage 분류는 필수입니다: 순환적 갇힘에 있는 사람에게 형성 방식을 절대 적용하지 마십시오. 그 오진은 목회적 과실입니다.</p><p><strong>안식일 브레이크 ⫞</strong> 작동: 임종, 급성 슬픔, 트라우마, 위기에는 AI 매개 없음. 구현된 인간 현존만.</p>"
+      },
+      www: {
+        en: ["WHERE — cyclical imprisonment; rupture not yet received", "WHO — dignity received again; person ready to cross threshold", "WHAT — covenantal presence; not rescue but accompaniment"],
+        ko: ["WHERE — 순환적 갇힘; 파열은 아직 받아들여지지 않음", "WHO — 다시 받아들여진 존엄; 문턱을 건널 준비가 됨", "WHAT — 언약적 현존; 구조가 아닌 동행"]
+      },
+      arc: {
+        en: "Rupture → Covenantal accompaniment → Crossing made possible · Shield: against Authoritarian Leadership",
+        ko: "파열 → 언약적 동행 → 건넘이 가능해짐 · 방패: 권위주의적 리더십에 맞서"
+      },
+      classes: {
+        en: ["Counseling", "Healing Journeys", "Relational Care", "Family & Community Support", "High-Touch Restoration"],
+        ko: ["상담", "치유 여정", "관계적 돌봄", "가족 및 공동체 지원", "High-Touch 회복"]
+      }
+    },
+
+    {
+      id: "C5", type: "5c", color: "#85B7EB", pos: [3.8, -3.6, 2.0],
+      label: { en: "Communion", ko: "Communion" },
+      subtitle: { en: "in Motion", ko: "운동 중에" },
+      tags: {
+        en: ["Shared life", "Future Self", "MW · MC"],
+        ko: ["공유된 삶", "미래 자아", "MW · MC"]
+      },
+      body: {
+        en: "<p>Communion in Motion holds open the matrix space of shared life — where isolated becoming gives way to communal becoming, and where the Future Self is not only individual but communal.</p><p>This is the ecosystem's eschatological pressure point. It asks: <em>are we trusting in deceptive words — \"relational commons, relational commons\" — while failing to practice justice at our own margins?</em></p><p>The communal Future Self is named with Formation Permanence: once arrived, it does not revert.</p>",
+        ko: "<p>Communion in Motion은 공유된 삶의 matrix space를 열어 붙듭니다 — 고립된 됨(becoming)이 공동체적 됨으로 내어지고, 미래 자아가 개인적일 뿐 아니라 공동체적임이 드러나는 곳.</p><p>이것은 생태계의 종말론적 압력점입니다. 묻습니다: <em>우리는 거짓된 말에 의지하고 있습니까 — \"관계 공유지, 관계 공유지\" — 하면서도 우리 자신의 주변부에서 정의를 실천하지 않습니까?</em></p><p>공동체적 미래 자아는 형성 영속성으로 명명됩니다: 한번 도착하면, 돌아가지 않습니다.</p>"
+      },
+      www: {
+        en: ["WHERE — post-crossing isolation; Future Self arrived, not yet held", "WHO — communal Future Self; named with Formation Permanence", "WHAT — embodied covenantal life; sent toward the Outside together"],
+        ko: ["WHERE — 건넘 이후의 고립; 미래 자아는 도착했으나 아직 붙들리지 않음", "WHO — 공동체적 미래 자아; 형성 영속성으로 명명됨", "WHAT — 구현된 언약적 삶; 함께 외부를 향해 파송됨"]
+      },
+      arc: {
+        en: "Isolation → Communal reception of Future Self → Vocational sending · Shield: all five prophetic targets",
+        ko: "고립 → 미래 자아의 공동체적 영접 → 직업적 파송 · 방패: 다섯 가지 예언적 대상 모두"
+      },
+      classes: {
+        en: ["Shared Life", "Table Fellowship", "Worship", "Community Formation", "Spiritual Participation", "Embodied Coexistence"],
+        ko: ["공유된 삶", "테이블 친교", "예배", "공동체 형성", "영적 참여", "구현된 공존"]
+      }
+    }
+  ],
+
+  edges: [
+    ["MR","MG"], ["MR","MW"], ["MR","MC"],
+    ["MG","MW"], ["MW","MC"], ["MG","MC"],
+    ["MG","C1"], ["MG","C4"],
+    ["MW","C2"], ["MW","C5"],
+    ["MC","C3"], ["MC","C4"], ["MC","C5"],
+    ["C1","C2"], ["C2","C5"], ["C5","C3"],
+    ["C3","C4"], ["C4","C1"], ["C1","C3"],
+    ["C4","C5"],
+    ["MR","FFL"], ["MG","FFL"], ["MW","FFL"], ["MC","FFL"],
+    ["MG","LA"],
+    ["MW","MVS"],
+    ["MG","AVS"], ["MC","AVS"],
+    ["MC","CPL"],
+    ["LA","AVS"], ["MVS","AVS"]
+  ]
 };
 
-// Create label DOM elements
-const labelsContainer = document.getElementById('labels-container');
-const labelEls = {};
-NODES.forEach(n => {
-  const div = document.createElement('div');
-  div.className = 'node-label';
-  div.innerHTML = `<span class="node-label-abbr">${n.id}</span><span class="node-label-name">${LABEL_NAMES[n.id] || n.label}</span>`;
-  labelsContainer.appendChild(div);
-  labelEls[n.id] = div;
-});
-
-const EDGES = [
-  // MetaReality to nodes
-  ['MR','MG'], ['MR','MW'], ['MR','MC'],
-  // Node interconnections
-  ['MG','MW'], ['MW','MC'], ['MG','MC'],
-  // Nodes to their 5Cs
-  ['MG','C1'], ['MG','C4'],
-  ['MW','C2'], ['MW','C5'],
-  ['MC','C3'], ['MC','C4'], ['MC','C5'],
-  // 5C lateral rhizome connections
-  ['C1','C2'], ['C2','C5'], ['C5','C3'],
-  ['C3','C4'], ['C4','C1'], ['C1','C3'],
-  ['C4','C5'],
-  // Layer node connections
-  ['MR','FFL'], ['MG','FFL'], ['MW','FFL'], ['MC','FFL'],
-  ['MG','LA'],
-  ['MW','MVS'],
-  ['MG','AVS'], ['MC','AVS'],
-  ['MC','CPL'],
-  ['LA','AVS'], ['MVS','AVS']
-];
-
-// ─── THREE.JS SETUP ────────────────────────────────────────────────────────
-const canvas = document.getElementById('c');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setClearColor(0x0e0e10, 1);
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
-camera.position.set(0, 1, 14);
-
-function resize() {
-  const w = canvas.parentElement.clientWidth;
-  const h = canvas.parentElement.clientHeight;
-  renderer.setSize(w, h, false);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-}
-resize();
-window.addEventListener('resize', resize);
-
-// Ambient + point lights
-scene.add(new THREE.AmbientLight(0xffffff, 0.25));
-const ptLight = new THREE.PointLight(0xc9a84c, 1.2, 30);
-ptLight.position.set(0, 4, 6);
-scene.add(ptLight);
-const ptLight2 = new THREE.PointLight(0x1D9E75, 0.6, 20);
-ptLight2.position.set(-5, -3, 2);
-scene.add(ptLight2);
-const ptLight3 = new THREE.PointLight(0x7F77DD, 0.5, 20);
-ptLight3.position.set(5, -3, 2);
-scene.add(ptLight3);
-
-// ─── BUILD NODES ──────────────────────────────────────────────────────────
-const nodeMeshes = {};
-const nodeGroup = new THREE.Group();
-scene.add(nodeGroup);
-
-NODES.forEach(n => {
-  const geo = new THREE.IcosahedronGeometry(n.size, n.type === 'architecture' ? 3 : 2);
-  const mat = new THREE.MeshPhongMaterial({
-    color: n.color,
-    emissive: n.color,
-    emissiveIntensity: n.type === 'architecture' ? 0.35 : 0.18,
-    shininess: 60,
-    transparent: true,
-    opacity: 0.92
-  });
-  const mesh = new THREE.Mesh(geo, mat);
-  mesh.position.set(...n.pos);
-  mesh.userData = n;
-  nodeGroup.add(mesh);
-  nodeMeshes[n.id] = mesh;
-
-  // Glow ring for main node
-  if (n.type === 'architecture') {
-    const ringGeo = new THREE.TorusGeometry(1.6, 0.015, 8, 80);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.3 });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = Math.PI / 2;
-    mesh.add(ring);
-
-    const ring2 = new THREE.Mesh(
-      new THREE.TorusGeometry(2.0, 0.008, 8, 80),
-      new THREE.MeshBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.12 })
-    );
-    ring2.rotation.x = Math.PI / 3;
-    mesh.add(ring2);
-  }
-
-  // Orbital dot for 5C nodes
-  if (n.type === '5c') {
-    const dotGeo = new THREE.SphereGeometry(0.06, 8, 8);
-    const dotMat = new THREE.MeshBasicMaterial({ color: n.color });
-    const dot = new THREE.Mesh(dotGeo, dotMat);
-    dot.position.set(n.size + 0.12, 0, 0);
-    mesh.add(dot);
-  }
-});
-
-// ─── BUILD EDGES ──────────────────────────────────────────────────────────
-const edgeGroup = new THREE.Group();
-scene.add(edgeGroup);
-
-EDGES.forEach(([aId, bId]) => {
-  const a = nodeMeshes[aId];
-  const b = nodeMeshes[bId];
-  if (!a || !b) return;
-
-  const aData = NODES.find(n => n.id === aId);
-  const bData = NODES.find(n => n.id === bId);
-
-  // Determine edge style
-  const isCoreLink = (aId === 'MR' || bId === 'MR');
-  const isNodeLink = ['MG','MW','MC'].includes(aId) && ['MG','MW','MC'].includes(bId);
-
-  const points = [];
-  const pa = a.position.clone();
-  const pb = b.position.clone();
-  const mid = pa.clone().lerp(pb, 0.5);
-  mid.y += (isCoreLink ? 0.5 : 0.2);
-  mid.z += (isCoreLink ? 0.3 : 0.15);
-
-  // Cubic bezier via CatmullRom
-  const curve = new THREE.CatmullRomCurve3([pa, mid, pb]);
-  const pts = curve.getPoints(40);
-
-  const geo = new THREE.BufferGeometry().setFromPoints(pts);
-  const col = isCoreLink ? 0xc9a84c : (isNodeLink ? 0x888780 : 0x444441);
-  const opacity = isCoreLink ? 0.35 : (isNodeLink ? 0.22 : 0.14);
-
-  const mat = new THREE.LineBasicMaterial({ color: col, transparent: true, opacity });
-  const line = new THREE.Line(geo, mat);
-  line.userData = { aId, bId, baseOpacity: opacity };
-  edgeGroup.add(line);
-});
-
-// ─── PARTICLES (rhizome field) ─────────────────────────────────────────────
-const particleCount = 320;
-const pPositions = new Float32Array(particleCount * 3);
-for (let i = 0; i < particleCount; i++) {
-  pPositions[i * 3]     = (Math.random() - 0.5) * 22;
-  pPositions[i * 3 + 1] = (Math.random() - 0.5) * 16;
-  pPositions[i * 3 + 2] = (Math.random() - 0.5) * 14;
-}
-const pGeo = new THREE.BufferGeometry();
-pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
-const pMat = new THREE.PointsMaterial({ color: 0xc9a84c, size: 0.04, transparent: true, opacity: 0.25 });
-scene.add(new THREE.Points(pGeo, pMat));
-
-// ─── ORBIT CONTROLS (manual) ──────────────────────────────────────────────
-let isDragging = false;
-let prevMouse = { x: 0, y: 0 };
-let spherical = { theta: 0, phi: Math.PI / 2.2, r: 14 };
-let targetSpherical = { ...spherical };
-let autoRotate = true;
-let autoRotateTimer = null;
-
-function sphericalToCart(s) {
-  return {
-    x: s.r * Math.sin(s.phi) * Math.sin(s.theta),
-    y: s.r * Math.cos(s.phi),
-    z: s.r * Math.sin(s.phi) * Math.cos(s.theta)
-  };
-}
-
-canvas.addEventListener('mousedown', e => {
-  isDragging = true;
-  autoRotate = false;
-  prevMouse = { x: e.clientX, y: e.clientY };
-  clearTimeout(autoRotateTimer);
-});
-window.addEventListener('mouseup', () => {
-  isDragging = false;
-  autoRotateTimer = setTimeout(() => { autoRotate = true; }, 4000);
-});
-window.addEventListener('mousemove', e => {
-  if (isDragging) {
-    const dx = e.clientX - prevMouse.x;
-    const dy = e.clientY - prevMouse.y;
-    targetSpherical.theta -= dx * 0.008;
-    targetSpherical.phi = Math.max(0.3, Math.min(Math.PI - 0.3, targetSpherical.phi + dy * 0.008));
-    prevMouse = { x: e.clientX, y: e.clientY };
-  }
-});
-canvas.addEventListener('wheel', e => {
-  targetSpherical.r = Math.max(6, Math.min(22, targetSpherical.r + e.deltaY * 0.02));
-});
-
-// ─── RAYCASTING / HOVER / CLICK ───────────────────────────────────────────
-const raycaster = new THREE.Raycaster();
-const mouse2D = new THREE.Vector2();
-let hoveredNode = null;
-const cursor = document.getElementById('cursor');
-const tooltip = document.getElementById('tooltip');
-const panel = document.getElementById('panel');
-
-window.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
-  tooltip.style.left = e.clientX + 'px';
-  tooltip.style.top = e.clientY + 'px';
-
-  const rect = canvas.getBoundingClientRect();
-  mouse2D.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-  mouse2D.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-
-  raycaster.setFromCamera(mouse2D, camera);
-  const meshArr = Object.values(nodeMeshes);
-  const hits = raycaster.intersectObjects(meshArr);
-
-  if (hits.length > 0) {
-    const hit = hits[0].object;
-    hoveredNode = hit;
-    cursor.classList.add('hover');
-    tooltip.style.opacity = '1';
-    tooltip.textContent = hit.userData.label + (hit.userData.subtitle ? ' — ' + hit.userData.subtitle : '');
-    // highlight
-    meshArr.forEach(m => { m.material.emissiveIntensity = 0.08; });
-    hit.material.emissiveIntensity = 0.7;
-    // highlight connected edges
-    edgeGroup.children.forEach(l => {
-      const { aId, bId, baseOpacity } = l.userData;
-      const id = hit.userData.id;
-      l.material.opacity = (aId === id || bId === id) ? Math.min(baseOpacity * 3.5, 0.9) : baseOpacity * 0.4;
-    });
-  } else {
-    hoveredNode = null;
-    cursor.classList.remove('hover');
-    tooltip.style.opacity = '0';
-    Object.values(nodeMeshes).forEach(m => {
-      m.material.emissiveIntensity = m.userData.type === 'architecture' ? 0.35 : 0.18;
-    });
-    edgeGroup.children.forEach(l => {
-      l.material.opacity = l.userData.baseOpacity;
-    });
-  }
-});
-
-canvas.addEventListener('click', () => {
-  if (!hoveredNode) return;
-  openPanel(hoveredNode.userData);
-});
-
-document.getElementById('panel-close').addEventListener('click', () => {
-  panel.classList.remove('open');
-});
-
-// ─── LANGUAGE SYSTEM ──────────────────────────────────────────────────────
-const koCache = {};           // session cache: nodeId → translated data object
-let currentPanelData = null;
-let currentLang = 'en';
-
-const langToggle = document.getElementById('panel-lang-toggle');
-
-langToggle.addEventListener('click', async () => {
-  if (!currentPanelData) return;
-  if (currentLang === 'en') {
-    // Switch to KO
-    const id = currentPanelData.id;
-    if (!koCache[id]) {
-      langToggle.textContent = '번역 중…';
-      langToggle.classList.add('translating');
-      try {
-        koCache[id] = await translateNode(currentPanelData);
-      } catch(e) {
-        langToggle.textContent = '한국어';
-        langToggle.classList.remove('translating');
-        console.error('Translation error:', e);
-        return;
-      }
-      langToggle.classList.remove('translating');
-    }
-    currentLang = 'ko';
-    langToggle.textContent = 'English';
-    langToggle.classList.add('ko-active');
-    applyPanelContent(currentPanelData, koCache[id]);
-  } else {
-    // Switch back to EN
-    currentLang = 'en';
-    langToggle.textContent = '한국어';
-    langToggle.classList.remove('ko-active');
-    applyPanelContent(currentPanelData, null);
-  }
-});
-
-async function translateNode(data) {
-  const payload = {
-    subtitle:  data.subtitle  || '',
-    body:      data.body      || '',
-    wwww:      data.wwww      || [],
-    arc:       data.arc       || '',
-    tags:      data.tags      || [],
-    classes:   data.classes   || []
-  };
-
-  const prompt = `You are a bilingual Korean-English translator specialising in theological formation and relational pedagogy.
-
-Translate the following JSON object into Korean. Rules:
-- Translate all string values to natural, scholarly Korean.
-- Preserve all HTML tags (<p>, <strong>, <em>, etc.) exactly as-is inside the "body" field.
-- Preserve MRIA technical terms in English within the Korean text: WHERE, WHO, WHAT, MetaReality, MRIA, KAIROS, MetaGenesis, MetaWay, MetaCommon, WHERE-WHO-WHAT, Matrix Space, 5C, High-Tech, High-Touch.
-- Respond ONLY with the translated JSON object. No preamble, no markdown fences, no extra keys.
-
-JSON to translate:
-${JSON.stringify(payload)}`;
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-
-  const result = await res.json();
-  const raw = result.content.find(b => b.type === 'text')?.text || '{}';
-  const clean = raw.replace(/```json|```/g, '').trim();
-  return JSON.parse(clean);
-}
-
-function buildPanelHtml(data, ko, col) {
-  const d = {
-    subtitle: ko?.subtitle  || data.subtitle  || '',
-    body:     ko?.body      || data.body      || '',
-    wwww:     ko?.wwww      || data.wwww      || [],
-    arc:      ko?.arc       || data.arc       || '',
-    tags:     ko?.tags      || data.tags      || [],
-    classes:  ko?.classes   || data.classes   || []
-  };
-
-  const tagsHtml = d.tags.map(t =>
-    `<span class="panel-tag" style="color:${col};border-color:${col}33;background:${col}11">${t}</span>`
-  ).join('');
-
-  const wwwHtml = d.wwww.length ? `<div class="wwwrow">
-    <div class="wwwcell"><strong>WHERE</strong>${d.wwww[0].replace(/^WHERE\s*[—-]\s*/,'').replace(/^WHERE\s*/,'')}</div>
-    <div class="wwwcell"><strong>WHO</strong>${d.wwww[1].replace(/^WHO\s*[—-]\s*/,'').replace(/^WHO\s*/,'')}</div>
-    <div class="wwwcell"><strong>WHAT</strong>${d.wwww[2].replace(/^WHAT\s*[—-]\s*/,'').replace(/^WHAT\s*/,'')}</div>
-  </div>` : '';
-
-  const arcHtml = d.arc ? `<div class="arc-row">↳ ${d.arc}</div>` : '';
-
-  const classLabel = ko ? '수업 트랙' : 'Course Tracks';
-  const classesHtml = d.classes.length ? `
-    <div class="classes-section">
-      <div class="classes-label">${classLabel}</div>
-      <div class="classes-grid">
-        ${d.classes.map(c => `<button class="class-btn" style="--btn-col:${col}" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'${col}':'';this.style.color=this.classList.contains('active')?'var(--ink)':'';">${c}</button>`).join('')}
-      </div>
-    </div>` : '';
-
-  const notePlaceholder = ko
-    ? `${data.label}에 대한 성찰을 기록하세요…`
-    : `Write your reflections on ${data.label}…`;
-  const noteLabel = ko ? '나의 노트' : 'My Notes';
-  const noteSaved = ko ? '저장됨 ✓' : 'saved ✓';
-
-  const savedNote = localStorage.getItem('mria_note_' + data.id) || '';
-
-  return {
-    subtitle: d.subtitle,
-    bodyHtml:
-      `<div style="margin-bottom:14px">${tagsHtml}</div>` +
-      d.body + wwwHtml + arcHtml + classesHtml +
-      `<div class="notes-section">
-        <div class="notes-label">
-          <span>${noteLabel}</span>
-          <span class="notes-saved" id="notes-saved">${noteSaved}</span>
-        </div>
-        <textarea id="panel-notes" placeholder="${notePlaceholder}">${savedNote}</textarea>
-      </div>`
-  };
-}
-
-function applyPanelContent(data, ko) {
-  const tagColors = {
-    'architecture': '#c9a84c',
-    'node':  { 'MG': '#1D9E75', 'MW': '#7F77DD', 'MC': '#EF9F27' }[data.id] || '#888',
-    'layer': { 'FFL': '#c9a84c', 'LA': '#378ADD', 'MVS': '#D85A30', 'AVS': '#AFA9EC', 'CPL': '#5DCAA5' }[data.id] || '#aaa',
-    '5c':    { 'C1': '#1D9E75', 'C2': '#7F77DD', 'C3': '#EF9F27', 'C4': '#D85A30', 'C5': '#378ADD' }[data.id] || '#888'
-  };
-  const col = tagColors[data.type] || '#888';
-  const typeLabel = data.type === 'architecture' ? 'MetaReality Architecture'
-    : data.type === 'node' ? 'Ecosystem Node'
-    : data.type === 'layer' ? 'MRIA Layer'
-    : '5C Ecosystem';
-
-  document.getElementById('panel-type').textContent = typeLabel;
-  document.getElementById('panel-title').textContent = data.label;
-  document.getElementById('panel-title').style.color = col;
-  document.getElementById('panel-divider').style.background = col;
-
-  const built = buildPanelHtml(data, ko, col);
-  document.getElementById('panel-subtitle').textContent = built.subtitle;
-  document.getElementById('panel-body').innerHTML = built.bodyHtml;
-
-  // Re-attach notes autosave
-  const notesEl = document.getElementById('panel-notes');
-  if (notesEl) {
-    let saveTimer;
-    notesEl.addEventListener('input', () => {
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(() => {
-        localStorage.setItem('mria_note_' + data.id, notesEl.value);
-        const savedEl = document.getElementById('notes-saved');
-        if (savedEl) {
-          savedEl.classList.add('show');
-          setTimeout(() => savedEl.classList.remove('show'), 2000);
-        }
-      }, 600);
-    });
-  }
-}
-
-function openPanel(data) {
-  currentPanelData = data;
-  currentLang = 'en';
-  langToggle.textContent = '한국어';
-  langToggle.classList.remove('ko-active', 'translating');
-
-  applyPanelContent(data, null);
-  panel.classList.add('open');
-}
-
-// ─── CONTACT DRAWER ───────────────────────────────────────────────────────
-const contactDrawer = document.getElementById('contact-drawer');
-const contactBtn    = document.getElementById('bottom-contact');
-const contactClose  = document.getElementById('contact-close');
-const contactFields = ['cf-name','cf-email','cf-institution','cf-role','cf-cohort','cf-reflection'];
-
-// Load saved contact info on init
-function loadContactInfo() {
-  contactFields.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const saved = localStorage.getItem('mria_contact_' + id);
-    if (saved) el.value = saved;
-  });
-}
-loadContactInfo();
-
-contactBtn.addEventListener('click', () => {
-  contactDrawer.classList.toggle('open');
-});
-contactClose.addEventListener('click', () => {
-  contactDrawer.classList.remove('open');
-});
-
-document.getElementById('btn-save-contact').addEventListener('click', () => {
-  contactFields.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) localStorage.setItem('mria_contact_' + id, el.value);
-  });
-  const status = document.getElementById('contact-status');
-  status.textContent = 'Information saved to this device ✓';
-  status.classList.add('show');
-  setTimeout(() => status.classList.remove('show'), 3000);
-});
-
-document.getElementById('btn-clear-contact').addEventListener('click', () => {
-  if (!confirm('Clear all saved contact information?')) return;
-  contactFields.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-    localStorage.removeItem('mria_contact_' + id);
-  });
-  const status = document.getElementById('contact-status');
-  status.textContent = 'Information cleared.';
-  status.classList.add('show');
-  setTimeout(() => status.classList.remove('show'), 2000);
-});
-
-// ─── HINT FADE ────────────────────────────────────────────────────────────
-setTimeout(() => { document.getElementById('hint').style.opacity = '0'; }, 5000);
-
-// ─── ANIMATION LOOP ───────────────────────────────────────────────────────
-let t = 0;
-function animate() {
-  requestAnimationFrame(animate);
-  t += 0.008;
-
-  // Auto-rotate
-  if (autoRotate) {
-    targetSpherical.theta += 0.002;
-  }
-
-  // Smooth camera
-  spherical.theta += (targetSpherical.theta - spherical.theta) * 0.06;
-  spherical.phi   += (targetSpherical.phi   - spherical.phi)   * 0.06;
-  spherical.r     += (targetSpherical.r     - spherical.r)     * 0.06;
-
-  const cp = sphericalToCart(spherical);
-  camera.position.set(cp.x, cp.y, cp.z);
-  camera.lookAt(0, 0, 0);
-
-  // Gentle node pulsing
-  Object.values(nodeMeshes).forEach((m, i) => {
-    const d = m.userData;
-    const pulse = 1 + 0.04 * Math.sin(t * 0.9 + i * 1.3);
-    m.scale.setScalar(pulse);
-    m.rotation.y = t * (d.type === 'architecture' ? 0.12 : 0.08) + i * 0.5;
-    m.rotation.x = t * 0.05 * (i % 2 === 0 ? 1 : -1);
-  });
-
-  // Pulse point light
-  ptLight.intensity = 1.0 + 0.3 * Math.sin(t * 0.7);
-
-  // Update 2D label positions (project 3D → screen)
-  const cw = renderer.domElement.clientWidth;
-  const ch = renderer.domElement.clientHeight;
-  NODES.forEach(n => {
-    const mesh = nodeMeshes[n.id];
-    const labelEl = labelEls[n.id];
-    if (!mesh || !labelEl) return;
-
-    // Project a point above the ball in world space
-    const worldPos = mesh.position.clone();
-    worldPos.y += n.size * mesh.scale.y * 2.1;
-    worldPos.project(camera);
-
-    // Hide if behind camera
-    if (worldPos.z > 1) {
-      labelEl.style.opacity = '0';
-      return;
-    }
-    labelEl.style.opacity = '1';
-
-    const sx = (worldPos.x * 0.5 + 0.5) * cw;
-    const sy = (-worldPos.y * 0.5 + 0.5) * ch;
-    labelEl.style.left = sx + 'px';
-    labelEl.style.top  = sy + 'px';
-  });
-
-  renderer.render(scene, camera);
-}
-animate();
 </script>
+  <script>
+  (function () {
+    "use strict";
+    var C = window.RHIZOME_CONTENT;
+    if (!C) { document.body.innerHTML = "<p style='padding:2rem'>Content data failed to load.</p>"; return; }
+
+    /* Nodes with an associated RFLS formation pathway.
+       On the public landing these bridge to the Five Motions section;
+       the guided read-only pathway experience arrives with the future,
+       separately governed RFLS application (app.mria.education). */
+    var PATHWAYS = {
+      C1: { url: "#motion-cognition",     labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" },
+      C2: { url: "#motion-communication", labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" },
+      C3: { url: "#motion-culture",       labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" },
+      C4: { url: "#motion-care",          labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" },
+      C5: { url: "#motion-communion",     labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" }
+    };
+
+    /* ---------------- i18n strings for UI chrome ---------------- */
+    var UI = {
+      en: {
+        skip: "Skip to the rhizome",
+        view_map: "Map", view_list: "List", view_3d: "3D",
+        reduce_motion: "Reduce motion",
+        hint_map: "Select any node to explore its relational world. Use Tab and Enter, or tap.",
+        hint_list: "Select any node to explore its relational world.",
+        hint_3d: "Drag to rotate · scroll or pinch to zoom · click a node to explore. The Map and List views are fully accessible alternatives.",
+        arc_label: "Formation arc",
+        classes_label: "Formation tracks",
+        close: "Close",
+        nav_rhizome: "Rhizome", nav_about: "About", nav_core: "Meta Core",
+        nav_formation: "Formation", nav_motions: "Five Motions", nav_learning: "Learning",
+        nav_roadmap: "Roadmap", nav_contact: "Contact",
+        footer: "© 2026 MRIA Education · MetaReality Relational Intelligence Architecture · anonymous & read-only · no personal data collected",
+        groups: { architecture: "MetaReality", node: "Ecosystem Nodes", layer: "MRIA Layers", "5c": "5C Ecosystem — in Motion" },
+        threed_loading: "Loading the 3D rhizome…",
+        threed_fail: "The 3D view needs WebGL and an internet connection for its 3D library. It is unavailable right now — the Map and List views show the full rhizome.",
+        threed_reduced: "3D auto-motion is paused because reduced motion is on. Drag to explore manually."
+      },
+      ko: {
+        skip: "리좀으로 건너뛰기",
+        view_map: "지도", view_list: "목록", view_3d: "3D",
+        reduce_motion: "모션 줄이기",
+        hint_map: "노드를 선택하여 그 관계적 세계를 탐색하세요. Tab과 Enter를 쓰거나 터치하세요.",
+        hint_list: "노드를 선택하여 그 관계적 세계를 탐색하세요.",
+        hint_3d: "드래그하여 회전 · 스크롤 또는 핀치로 확대 · 노드를 클릭하여 탐색. 지도와 목록 보기는 완전히 접근 가능한 대안입니다.",
+        arc_label: "형성 아크",
+        classes_label: "형성 트랙",
+        close: "닫기",
+        nav_rhizome: "리좀", nav_about: "소개", nav_core: "메타 코어",
+        nav_formation: "형성", nav_motions: "다섯 운동", nav_learning: "학습",
+        nav_roadmap: "로드맵", nav_contact: "연락",
+        footer: "© 2026 MRIA Education · 메타리얼리티 관계적 지성 아키텍처 · 익명 · 읽기 전용 · 개인정보 수집 없음",
+        groups: { architecture: "MetaReality", node: "생태계 노드", layer: "MRIA 층위", "5c": "5C 생태계 — 운동 중에" },
+        threed_loading: "3D 리좀을 불러오는 중…",
+        threed_fail: "3D 보기는 WebGL과 3D 라이브러리를 위한 인터넷 연결이 필요합니다. 현재 사용할 수 없습니다 — 지도와 목록 보기가 전체 리좀을 보여줍니다.",
+        threed_reduced: "모션 줄이기가 켜져 있어 3D 자동 움직임이 멈춰 있습니다. 드래그하여 직접 탐색하세요."
+      }
+    };
+
+    var state = {
+      lang: "en",
+      view: "map",
+      reduceMotion: false,
+      lastFocused: null,
+      nodeById: {}
+    };
+    C.nodes.forEach(function (n) { state.nodeById[n.id] = n; });
+
+    /* persisted preferences (UI prefs only — never personal data) */
+    try {
+      var savedLang = localStorage.getItem("mria_rhizome_lang");
+      var savedMotion = localStorage.getItem("mria_rhizome_motion");
+      if (savedLang === "ko" || savedLang === "en") state.lang = savedLang;
+      if (savedMotion === "1") state.reduceMotion = true;
+    } catch (e) {}
+    /* respect OS-level reduced motion as default */
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      state.reduceMotion = true;
+    }
+
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+    function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function t(key) { return UI[state.lang][key]; }
+
+    /* ---------------- type -> display + color helpers ---------------- */
+    var TYPE_ORDER = ["architecture", "node", "layer", "5c"];
+
+    /* ============================================================
+       BUILD MAP (2D SVG)
+       ============================================================ */
+    function buildMap() {
+      /* Project the abstract node coordinates into a fixed PIXEL-scale viewBox.
+         This is the key fix for the "giant letters" bug: font sizes are in px and
+         the viewBox is ~1160 units wide, so 1 unit ≈ 1 px and text renders at a
+         sane size instead of being magnified ~50x by a tiny viewBox. */
+      var VBW = 1160, M = 150;               // canvas width + margin (room for labels)
+      var xs = C.nodes.map(function (n) { return n.pos[0]; });
+      var ys = C.nodes.map(function (n) { return -n.pos[1]; }); // invert y for screen
+      var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+      var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+      var dataW = (maxX - minX) || 1, dataH = (maxY - minY) || 1;
+      var scale = (VBW - M * 2) / dataW;
+      var VBH = M * 2 + dataH * scale;
+
+      function X(n) { return M + (n.pos[0] - minX) * scale; }
+      function Y(n) { return M + ((-n.pos[1]) - minY) * scale; }
+      function radius(n) {
+        return n.type === "architecture" ? 30 : n.type === "node" ? 23 : 16;
+      }
+
+      var svg = ['<svg class="rhizome" viewBox="0 0 ' + VBW + ' ' + Math.round(VBH) +
+                 '" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Relational rhizome. ' +
+                 C.nodes.length + ' nodes.">'];
+
+      /* edges */
+      svg.push('<g aria-hidden="true">');
+      C.edges.forEach(function (e) {
+        var a = state.nodeById[e[0]], b = state.nodeById[e[1]];
+        if (!a || !b) return;
+        svg.push('<line class="edge" x1="' + X(a) + '" y1="' + Y(a) + '" x2="' + X(b) + '" y2="' + Y(b) + '" />');
+      });
+      svg.push('</g>');
+
+      /* nodes */
+      C.nodes.forEach(function (n) {
+        var cx = X(n), cy = Y(n), r = radius(n);
+        var label = n.label[state.lang];
+        var sub = n.subtitle[state.lang];
+        var aria = label + (sub ? " — " + sub : "");
+        svg.push(
+          '<g class="node-hit" role="button" tabindex="0" data-id="' + n.id +
+          '" aria-label="' + esc(aria) + '">' +
+            '<circle class="focus-ring" cx="' + cx + '" cy="' + cy + '" r="' + (r + 8) + '" />' +
+            '<circle class="node-dot" cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + n.color + '" ' +
+              'style="filter:drop-shadow(0 0 ' + Math.round(r * 0.7) + 'px ' + n.color + '99)" />' +
+            '<text class="node-label abbr" x="' + cx + '" y="' + (cy + r + 20) + '" text-anchor="middle">' + esc(n.id) + '</text>' +
+            '<text class="node-label name" x="' + cx + '" y="' + (cy + r + 37) + '" text-anchor="middle">' + esc(label) + '</text>' +
+          '</g>'
+        );
+      });
+
+      svg.push('</svg>');
+      $("#map-wrap").innerHTML = svg.join("");
+
+      $$("#map-wrap .node-hit").forEach(function (g) {
+        g.addEventListener("click", function () { openPanel(g.getAttribute("data-id"), g); });
+        g.addEventListener("keydown", function (ev) {
+          if (ev.key === "Enter" || ev.key === " " || ev.key === "Spacebar") {
+            ev.preventDefault(); openPanel(g.getAttribute("data-id"), g);
+          }
+        });
+      });
+    }
+
+    /* ============================================================
+       BUILD LIST
+       ============================================================ */
+    function buildList() {
+      var inner = $("#list-inner");
+      inner.innerHTML = "";
+      TYPE_ORDER.forEach(function (type) {
+        var group = C.nodes.filter(function (n) { return n.type === type; });
+        if (!group.length) return;
+        var sec = document.createElement("section");
+        sec.className = "group";
+        var h = document.createElement("h2");
+        h.textContent = t("groups")[type];
+        sec.appendChild(h);
+        var ul = document.createElement("ul");
+        ul.className = "node-list";
+        group.forEach(function (n) {
+          var li = document.createElement("li");
+          var btn = document.createElement("button");
+          btn.className = "node-card";
+          btn.style.setProperty("--nodecolor", n.color);
+          btn.setAttribute("data-id", n.id);
+          btn.innerHTML =
+            '<span class="dot" aria-hidden="true"></span>' +
+            '<span class="nc-body">' +
+              '<span class="nc-title">' + esc(n.label[state.lang]) + '</span>' +
+              '<span class="nc-sub">' + esc(n.subtitle[state.lang]) + '</span>' +
+            '</span>';
+          btn.addEventListener("click", function () { openPanel(n.id, btn); });
+          li.appendChild(btn);
+          ul.appendChild(li);
+        });
+        sec.appendChild(ul);
+        inner.appendChild(sec);
+      });
+    }
+
+    /* ============================================================
+       PANEL
+       ============================================================ */
+    var panel = $("#panel"), overlay = $("#overlay");
+    var closeTimer = null;
+
+    function tagColorList(n) {
+      // subtle per-node tinted tag
+      return n.color;
+    }
+
+    function openPanel(id, trigger) {
+      var n = state.nodeById[id];
+      if (!n) return;
+      if (closeTimer !== null) { clearTimeout(closeTimer); closeTimer = null; }
+      panel.setAttribute("data-open-id", id);
+      state.lastFocused = trigger || document.activeElement;
+      var lang = state.lang, col = n.color;
+
+      $("#p-type").textContent = C.typeLabels[n.type][lang];
+      var title = $("#p-title");
+      title.textContent = n.label[lang];
+      title.style.color = col;
+      $("#p-sub").textContent = n.subtitle[lang];
+      $("#p-divider").style.background = col;
+
+      /* tags */
+      var tagsWrap = $("#p-tags");
+      tagsWrap.innerHTML = "";
+      (n.tags[lang] || []).forEach(function (tg) {
+        var span = document.createElement("span");
+        span.className = "p-tag";
+        span.style.color = col;
+        span.style.borderColor = col + "66";
+        span.style.background = col + "14";
+        span.textContent = tg;
+        tagsWrap.appendChild(span);
+      });
+
+      /* body (trusted authored HTML from our own content file) */
+      $("#p-body").innerHTML = n.body[lang];
+
+      /* WHERE/WHO/WHAT */
+      var wwwWrap = $("#p-www");
+      wwwWrap.innerHTML = "";
+      var heads = [C.wwwHeadings.where[lang], C.wwwHeadings.who[lang], C.wwwHeadings.what[lang]];
+      (n.www[lang] || []).forEach(function (cellText, i) {
+        var cell = document.createElement("div");
+        cell.className = "www-cell";
+        var body = cellText.replace(/^WHERE\s*[—-]\s*/, "").replace(/^WHO\s*[—-]\s*/, "").replace(/^WHAT\s*[—-]\s*/, "");
+        cell.innerHTML = "<strong>" + esc(heads[i] || "") + "</strong>" + esc(body);
+        wwwWrap.appendChild(cell);
+      });
+
+      /* arc */
+      var arc = $("#p-arc");
+      arc.innerHTML = '<span class="arc-label">' + esc(t("arc_label")) + '</span>' + esc(n.arc[lang]);
+
+      /* classes */
+      var classesWrap = $("#p-classes");
+      var cls = (n.classes && n.classes[lang]) || [];
+      if (cls.length) {
+        var grid = cls.map(function (c) { return '<span class="cl-chip">' + esc(c) + '</span>'; }).join("");
+        classesWrap.innerHTML = '<div class="cl-label">' + esc(t("classes_label")) + '</div><div class="cl-grid">' + grid + '</div>';
+        classesWrap.hidden = false;
+      } else {
+        classesWrap.hidden = true;
+        classesWrap.innerHTML = "";
+      }
+
+      /* pathway launch — only for nodes with an associated RFLS pathway */
+      var pathWrap = $("#p-pathway");
+      var path = PATHWAYS[n.id];
+      if (path) {
+        var label = state.lang === "ko" ? path.labelKo : path.labelEn;
+        var note = state.lang === "ko"
+          ? "안내형 읽기 전용 경로는 향후 RFLS 애플리케이션과 함께 제공됩니다 · 개인정보 없음"
+          : "Guided read-only pathways arrive with the future RFLS application · no personal data";
+        pathWrap.innerHTML =
+          '<a class="pathway-launch" style="--pl-color:' + col + '" href="' + path.url + '">' +
+            '<span aria-hidden="true">↳</span>' + esc(label) +
+          '</a><span class="pathway-note">' + esc(note) + '</span>';
+        var launchLink = pathWrap.querySelector(".pathway-launch");
+        if (launchLink) launchLink.addEventListener("click", function () { closePanel(); });
+        pathWrap.hidden = false;
+      } else {
+        pathWrap.hidden = true;
+        pathWrap.innerHTML = "";
+      }
+
+      panel.hidden = false;
+      // force reflow so transition runs
+      void panel.offsetWidth;
+      overlay.classList.add("open");
+      panel.classList.add("open");
+      document.body.style.overflow = "hidden";
+      $("#p-close").focus();
+      document.addEventListener("keydown", onPanelKeydown, true);
+    }
+
+    function closePanel() {
+      overlay.classList.remove("open");
+      panel.classList.remove("open");
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onPanelKeydown, true);
+      var restore = state.lastFocused;
+      panel.removeAttribute("data-open-id");
+      var finish = function () {
+        closeTimer = null;
+        if (panel.classList.contains("open")) return;
+        panel.hidden = true;
+        if (restore && restore.focus) restore.focus();
+      };
+      if (state.reduceMotion) { finish(); }
+      else { closeTimer = setTimeout(finish, 300); }
+    }
+
+    function onPanelKeydown(ev) {
+      if (ev.key === "Escape") { ev.preventDefault(); closePanel(); return; }
+      if (ev.key === "Tab") {
+        var f = $$("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])", panel)
+          .filter(function (el) { return !el.disabled && el.offsetParent !== null; });
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+        else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+      }
+    }
+
+    $("#p-close").addEventListener("click", closePanel);
+    overlay.addEventListener("click", closePanel);
+
+    /* ============================================================
+       VIEW + LANGUAGE + MOTION SWITCHING
+       ============================================================ */
+    function setView(view) {
+      state.view = view;
+      $$("#view-switch .seg-btn").forEach(function (b) {
+        var on = b.getAttribute("data-view") === view;
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+        b.classList.toggle("active", on);
+      });
+      $$(".view").forEach(function (v) { v.classList.remove("active"); v.hidden = true; });
+      var el = $("#view-" + view);
+      el.classList.add("active"); el.hidden = false;
+
+      var hintEl = $("#hint");
+      if (view === "map") { hintEl.hidden = false; hintEl.textContent = t("hint_map"); }
+      else if (view === "list") { hintEl.hidden = false; hintEl.textContent = t("hint_list"); }
+      else { hintEl.hidden = true; }
+
+      if (view === "3d") init3D();
+    }
+
+    function setLang(lang) {
+      state.lang = lang;
+      document.documentElement.lang = lang;
+      document.body.classList.toggle("lang-ko", lang === "ko");
+      document.body.classList.toggle("lang-en", lang === "en");
+      try { localStorage.setItem("mria_rhizome_lang", lang); } catch (e) {}
+      $$("[data-lang]").forEach(function (b) {
+        var on = b.getAttribute("data-lang") === lang;
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+        b.classList.toggle("active", on);
+      });
+      applyI18n();
+      buildMap();
+      buildList();
+      if (threeReady) rebuild3DLabels();
+      if (!panel.hidden) { /* refresh open panel in new language */
+        var openId = panel.getAttribute("data-open-id");
+        if (openId) openPanel(openId, state.lastFocused);
+      }
+    }
+
+    function applyI18n() {
+      $$("[data-i18n]").forEach(function (el) {
+        var k = el.getAttribute("data-i18n");
+        if (UI[state.lang][k]) el.textContent = UI[state.lang][k];
+      });
+      $("#site-title").textContent = C.meta.title[state.lang];
+      $("#site-tagline").textContent = C.meta.subtitle[state.lang];
+      $("#footer-text").textContent = t("footer");
+      $("#p-close").setAttribute("aria-label", t("close"));
+    }
+
+    function setMotion(reduce) {
+      state.reduceMotion = reduce;
+      document.body.classList.toggle("reduce-motion", reduce);
+      $("#motion-toggle").setAttribute("aria-pressed", reduce ? "true" : "false");
+      try { localStorage.setItem("mria_rhizome_motion", reduce ? "1" : "0"); } catch (e) {}
+      if (threeReady) autoRotate = !reduce;
+      if (reduce) { $("#threed-status").textContent = threeReady ? "" : $("#threed-status").textContent; }
+    }
+
+    $$("#view-switch .seg-btn").forEach(function (b) {
+      b.addEventListener("click", function () { setView(b.getAttribute("data-view")); });
+    });
+    $$("[data-lang]").forEach(function (b) {
+      b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); });
+    });
+    $("#motion-toggle").addEventListener("click", function () { setMotion(!state.reduceMotion); });
+
+    /* ============================================================
+       OPTIONAL 3D (Three.js, lazy + graceful fallback)
+       ============================================================ */
+    var threeReady = false, threeTried = false, autoRotate = true;
+    var scene, camera, renderer, raf, meshes = {}, labelSprites = {};
+    var rotX = 0.15, rotY = 0, targetRotX = 0.15, targetRotY = 0, dist = 16;
+    var THREE_URL = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+
+    function init3D() {
+      if (threeReady || threeTried) return;
+      threeTried = true;
+      autoRotate = !state.reduceMotion;
+      $("#threed-status").textContent = t("threed_loading");
+      var s = document.createElement("script");
+      s.src = THREE_URL;
+      s.onload = function () { try { start3D(); } catch (e) { fail3D(); } };
+      s.onerror = fail3D;
+      document.head.appendChild(s);
+    }
+    function fail3D() { $("#threed-status").textContent = t("threed_fail"); }
+
+    function start3D() {
+      if (typeof THREE === "undefined") { fail3D(); return; }
+      var canvas = $("#c");
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x0e0e10, 1);
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+      var pl = new THREE.PointLight(0xc9a84c, 1.1, 40); pl.position.set(0, 4, 10); scene.add(pl);
+
+      var group = new THREE.Group(); scene.add(group);
+      window._rhizomeGroup = group;
+
+      C.nodes.forEach(function (n) {
+        var r = n.type === "architecture" ? 1.05 : n.type === "node" ? 0.75 : 0.55;
+        var col = parseInt(n.color.replace("#", "0x"), 16);
+        var geo = new THREE.IcosahedronGeometry(r, n.type === "architecture" ? 3 : 2);
+        var mat = new THREE.MeshPhongMaterial({ color: col, emissive: col, emissiveIntensity: 0.22, shininess: 60, transparent: true, opacity: 0.92 });
+        var mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(n.pos[0], n.pos[1], n.pos[2]);
+        mesh.userData = { id: n.id };
+        group.add(mesh);
+        meshes[n.id] = mesh;
+      });
+
+      var lineMat = new THREE.LineBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.18 });
+      C.edges.forEach(function (e) {
+        var a = state.nodeById[e[0]], b = state.nodeById[e[1]];
+        if (!a || !b) return;
+        var g = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(a.pos[0], a.pos[1], a.pos[2]),
+          new THREE.Vector3(b.pos[0], b.pos[1], b.pos[2])
+        ]);
+        group.add(new THREE.Line(g, lineMat));
+      });
+
+      $("#threed-status").textContent = state.reduceMotion ? t("threed_reduced") : "";
+      threeReady = true;
+      resize3D();
+      window.addEventListener("resize", resize3D);
+      bind3DInput(canvas);
+      animate3D();
+    }
+
+    function rebuild3DLabels() { /* labels are DOM-free in 3D; panel carries text */ }
+
+    function resize3D() {
+      if (!renderer) return;
+      var wrap = $("#canvas-wrap");
+      var w = wrap.clientWidth, h = wrap.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+    }
+
+    function bind3DInput(canvas) {
+      var dragging = false, px = 0, py = 0;
+      function down(x, y) { dragging = true; px = x; py = y; autoRotate = false; }
+      function move(x, y) {
+        if (!dragging) return;
+        targetRotY += (x - px) * 0.006;
+        targetRotX += (y - py) * 0.006;
+        targetRotX = Math.max(-1.2, Math.min(1.2, targetRotX));
+        px = x; py = y;
+      }
+      function up() { dragging = false; }
+      canvas.addEventListener("mousedown", function (e) { down(e.clientX, e.clientY); });
+      window.addEventListener("mousemove", function (e) { move(e.clientX, e.clientY); });
+      window.addEventListener("mouseup", up);
+      canvas.addEventListener("touchstart", function (e) { if (e.touches[0]) down(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+      canvas.addEventListener("touchmove", function (e) { if (e.touches[0]) { move(e.touches[0].clientX, e.touches[0].clientY); } }, { passive: true });
+      canvas.addEventListener("touchend", up);
+      canvas.addEventListener("wheel", function (e) { e.preventDefault(); dist = Math.max(7, Math.min(30, dist + e.deltaY * 0.01)); }, { passive: false });
+
+      /* click to open panel via raycasting */
+      var ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
+      var downX = 0, downY = 0;
+      canvas.addEventListener("mousedown", function (e) { downX = e.clientX; downY = e.clientY; });
+      canvas.addEventListener("click", function (e) {
+        if (Math.abs(e.clientX - downX) > 4 || Math.abs(e.clientY - downY) > 4) return; // was a drag
+        var rect = canvas.getBoundingClientRect();
+        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        ray.setFromCamera(mouse, camera);
+        var hits = ray.intersectObjects(Object.keys(meshes).map(function (k) { return meshes[k]; }));
+        if (hits.length) openPanel(hits[0].object.userData.id, canvas);
+      });
+    }
+
+    function animate3D() {
+      raf = requestAnimationFrame(animate3D);
+      if (autoRotate && !state.reduceMotion) targetRotY += 0.0016;
+      rotY += (targetRotY - rotY) * 0.08;
+      rotX += (targetRotX - rotX) * 0.08;
+      var g = window._rhizomeGroup;
+      if (g) { g.rotation.y = rotY; g.rotation.x = rotX; }
+      camera.position.set(0, 1, dist);
+      camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+    }
+
+    /* ============================================================
+       INIT
+       ============================================================ */
+    applyI18n();
+    setLang(state.lang);
+    setMotion(state.reduceMotion);
+    setView("map");
+  })();
+  </script>
 </body>
 </html>
