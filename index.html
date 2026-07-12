@@ -1593,7 +1593,21 @@ window.RHIZOME_CONTENT = {
             '<span aria-hidden="true">↳</span>' + esc(label) +
           '</a><span class="pathway-note">' + esc(note) + '</span>';
         var launchLink = pathWrap.querySelector(".pathway-launch");
-        if (launchLink) launchLink.addEventListener("click", function () { closePanel(); });
+        if (launchLink) launchLink.addEventListener("click", function (ev) {
+          /* The panel locks body scrolling while open, which swallows a plain
+             anchor jump. Close first, then scroll and move focus to the card. */
+          ev.preventDefault();
+          var targetId = path.url.slice(1);
+          closePanel();
+          setTimeout(function () {
+            var target = document.getElementById(targetId);
+            if (!target) return;
+            if (history.replaceState) history.replaceState(null, "", path.url);
+            target.scrollIntoView();
+            target.setAttribute("tabindex", "-1");
+            target.focus({ preventScroll: true });
+          }, state.reduceMotion ? 0 : 360);
+        });
         pathWrap.hidden = false;
       } else {
         pathWrap.hidden = true;
