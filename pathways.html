@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>MRIA Formation Pathways | MRIA Education</title>
+<meta name="description" content="Read-only prototype of one MRIA RFLS formation pathway. No data is collected; no score or completion mechanic." />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&family=Noto+Serif+KR:wght@300;400&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold:#c9a84c; --gold-l:#e8d5a3; --ink:#0e0e10; --ink2:#17171c; --ink3:#20202a;
+    --paper:#e8e4d8; --paper-dim:rgba(232,228,216,0.62); --line:rgba(201,168,76,0.20);
+    --line-soft:rgba(255,255,255,0.08); --focus:#86c5ff; --accent:#5DCAA5;
+    --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    --display:'Cinzel',Georgia,serif; --ko:'Noto Serif KR','Apple SD Gothic Neo','Malgun Gothic',serif;
+  }
+  html,body{ background:var(--ink); color:var(--paper); font-family:var(--serif); min-height:100%; -webkit-font-smoothing:antialiased; }
+  body.lang-ko{ font-family:var(--ko); }
+  body{ display:flex; flex-direction:column; min-height:100vh; }
+  a{ color:var(--gold-l); }
+  :focus-visible{ outline:2px solid var(--focus); outline-offset:2px; border-radius:4px; }
+  .skip-link{ position:absolute; left:8px; top:-60px; background:var(--ink3); color:var(--paper); padding:10px 16px; border-radius:8px; z-index:1000; border:1px solid var(--line); transition:top .15s; }
+  .skip-link:focus{ top:8px; }
+
+  header{ padding:16px 20px 12px; border-bottom:1px solid var(--line-soft); background:linear-gradient(to bottom,var(--ink2),var(--ink)); }
+  .topline{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; }
+  .back-link{ font-family:var(--display); font-size:11px; letter-spacing:.16em; text-transform:uppercase; text-decoration:none; padding:9px 14px; border:1px solid var(--line); border-radius:22px; color:var(--paper-dim); min-height:40px; display:inline-flex; align-items:center; }
+  body.lang-ko .back-link{ font-family:var(--ko); letter-spacing:.02em; }
+  .back-link:hover{ color:var(--paper); background:rgba(201,168,76,.08); }
+  .controls{ display:flex; gap:8px; align-items:center; }
+  .control-group{ display:inline-flex; border:1px solid var(--line); border-radius:22px; overflow:hidden; background:rgba(255,255,255,.03); }
+  .seg-btn,.toggle-btn{ font-family:var(--display); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--paper-dim); background:none; border:none; padding:9px 15px; cursor:pointer; min-height:40px; transition:background .18s,color .18s; }
+  body.lang-ko .seg-btn, body.lang-ko .toggle-btn{ font-family:var(--ko); letter-spacing:.02em; }
+  .seg-btn:hover,.toggle-btn:hover{ color:var(--paper); background:rgba(201,168,76,.08); }
+  .seg-btn.active{ color:var(--ink); background:var(--gold); }
+  .toggle-btn{ border:1px solid var(--line); border-radius:22px; }
+  .toggle-btn[aria-pressed="true"]{ color:var(--gold); border-color:var(--gold); background:rgba(201,168,76,.12); }
+
+  .titles{ text-align:center; margin-top:12px; }
+  .titles .anchor{ font-family:var(--display); font-size:10px; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); }
+  body.lang-ko .titles .anchor{ font-family:var(--ko); letter-spacing:.04em; }
+  .titles h1{ font-family:var(--display); font-size:clamp(20px,5vw,28px); font-weight:500; letter-spacing:.06em; margin-top:4px; color:var(--gold); }
+  body.lang-ko .titles h1{ font-family:var(--ko); }
+  .titles .sub{ font-size:clamp(14px,3.2vw,17px); font-style:italic; color:var(--paper-dim); margin-top:4px; }
+  .titles .movement{ font-family:var(--display); font-size:12px; letter-spacing:.14em; color:rgba(232,228,216,.4); margin-top:8px; }
+  body.lang-ko .titles .movement{ font-family:var(--ko); letter-spacing:.03em; }
+
+  /* movement rail */
+  .rail-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding:14px 12px 4px; border-bottom:1px solid var(--line-soft); }
+  ol.rail{ list-style:none; display:flex; gap:6px; min-width:max-content; margin:0 auto; justify-content:center; }
+  .rail li{ display:flex; align-items:center; gap:6px; }
+  .rail-step{ font-family:var(--display); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--paper-dim); background:rgba(255,255,255,.03); border:1px solid var(--line-soft); border-radius:16px; padding:7px 12px; cursor:pointer; white-space:nowrap; min-height:36px; transition:background .16s,color .16s,border-color .16s; }
+  body.lang-ko .rail-step{ font-family:var(--ko); letter-spacing:.01em; }
+  .rail-step:hover{ color:var(--paper); border-color:var(--line); }
+  .rail-step[aria-current="step"]{ color:var(--ink); background:var(--accent); border-color:transparent; }
+  .rail-step.done{ color:var(--gold-l); border-color:var(--line); }
+  .rail-sep{ color:rgba(232,228,216,.25); font-size:12px; }
+
+  main{ flex:1; }
+
+  /* landing / pathway picker (shown when no specific pathway is requested) */
+  #landing{ max-width:680px; margin:0 auto; padding:22px 20px 40px; }
+  .landing-lead{ text-align:center; font-style:italic; color:var(--paper-dim); font-size:16px; margin-bottom:20px; }
+  ul.landing-grid{ list-style:none; display:grid; gap:12px; }
+  .pathway-card{ width:100%; text-align:left; display:flex; align-items:flex-start; gap:14px; background:rgba(255,255,255,.03); border:1px solid var(--line-soft); border-left:4px solid var(--pc,#5DCAA5); border-radius:12px; padding:16px 18px; color:var(--paper); cursor:pointer; font-family:inherit; min-height:56px; transition:background .16s,border-color .16s; }
+  .pathway-card:hover{ background:rgba(201,168,76,.07); }
+  .pathway-card .pc-dot{ width:14px; height:14px; border-radius:50%; background:var(--pc); margin-top:5px; flex:none; }
+  .pathway-card .pc-title{ font-family:var(--display); font-size:18px; letter-spacing:.05em; }
+  body.lang-ko .pathway-card .pc-title{ font-family:var(--ko); letter-spacing:.01em; }
+  .pathway-card .pc-move{ display:block; font-size:14px; font-style:italic; color:var(--paper-dim); margin-top:3px; }
+
+  /* hide pathway chrome while the picker is showing */
+  body.picker .rail-wrap, body.picker #stage, body.picker .nav, body.picker #p-anchor, body.picker #p-movement, body.picker #all-btn{ display:none; }
+  body:not(.picker) #landing{ display:none; }
+
+  .stage{ max-width:640px; margin:0 auto; padding:26px 22px 40px; }
+  .stage-movement{ font-family:var(--display); font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); }
+  body.lang-ko .stage-movement{ font-family:var(--ko); letter-spacing:.05em; }
+  .stage h2{ font-family:var(--display); font-size:clamp(22px,5.5vw,30px); font-weight:500; line-height:1.25; margin-top:6px; }
+  body.lang-ko .stage h2{ font-family:var(--ko); }
+  .stage h2:focus{ outline:none; }
+  .divider{ width:46px; height:2px; background:var(--accent); opacity:.55; margin:16px 0; }
+  .stage-body{ font-size:17px; line-height:1.8; color:rgba(232,228,216,.86); }
+  body.lang-ko .stage-body{ font-size:15.5px; line-height:1.95; }
+  .stage-body p{ margin-bottom:14px; }
+  .stage-body em{ color:var(--gold-l); font-style:italic; }
+  .stage-body strong{ color:var(--gold-l); }
+
+  .prompt, .practice, .closure, .sabbath{ margin-top:20px; border-radius:12px; padding:16px 18px; }
+  .sabbath{ background:rgba(216,90,48,.08); border:1px solid rgba(216,90,48,.38); }
+  .sabbath .lbl{ font-family:var(--display); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#f0997b; display:block; margin-bottom:8px; }
+  body.lang-ko .sabbath .lbl{ font-family:var(--ko); letter-spacing:.03em; }
+  .sabbath .body{ font-size:15.5px; line-height:1.75; color:rgba(232,228,216,.9); }
+  body.lang-ko .sabbath .body{ font-size:14.5px; line-height:1.9; }
+  .prompt{ background:rgba(93,202,165,.06); border:1px solid rgba(93,202,165,.22); }
+  .prompt .lbl, .practice .lbl{ font-family:var(--display); font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:7px; }
+  body.lang-ko .prompt .lbl, body.lang-ko .practice .lbl{ font-family:var(--ko); letter-spacing:.03em; }
+  .prompt .q{ font-size:17px; font-style:italic; line-height:1.6; color:var(--paper); }
+  body.lang-ko .prompt .q{ font-size:15.5px; }
+  .prompt .note{ display:block; margin-top:8px; font-size:12.5px; color:rgba(232,228,216,.42); font-style:italic; }
+  .practice{ background:rgba(201,168,76,.07); border:1px solid var(--line); }
+  .practice .body{ font-size:16px; line-height:1.7; }
+  body.lang-ko .practice .body{ font-size:15px; }
+  .closure{ background:rgba(255,255,255,.03); border:1px solid var(--line-soft); font-style:italic; color:var(--paper-dim); font-size:15px; line-height:1.7; }
+  .stage.is-destination h2{ color:var(--gold); }
+  .stage.is-destination .divider{ background:var(--gold); }
+
+  /* nav */
+  .nav{ position:sticky; bottom:0; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 20px calc(14px + env(safe-area-inset-bottom)); background:linear-gradient(to top,var(--ink) 70%,transparent); border-top:1px solid var(--line-soft); }
+  .nav-btn{ font-family:var(--display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--paper); background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:24px; padding:12px 20px; cursor:pointer; min-height:46px; transition:background .16s,opacity .16s; }
+  body.lang-ko .nav-btn{ font-family:var(--ko); letter-spacing:.02em; }
+  .nav-btn:hover:not(:disabled){ background:rgba(201,168,76,.1); }
+  .nav-btn:disabled{ opacity:.3; cursor:default; }
+  .nav-btn.primary{ background:var(--accent); color:var(--ink); border-color:transparent; }
+  .progress{ font-family:var(--display); font-size:11px; letter-spacing:.14em; color:var(--paper-dim); text-align:center; flex:1; }
+  body.lang-ko .progress{ font-family:var(--ko); letter-spacing:.02em; }
+
+  footer{ padding:12px 20px calc(12px + env(safe-area-inset-bottom)); text-align:center; font-size:12px; color:rgba(232,228,216,.32); font-style:italic; }
+  .visually-hidden{ position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{ animation-duration:.001ms!important; transition-duration:.001ms!important; } }
+  body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after{ transition:none!important; animation:none!important; }
+</style>
+</head>
+<body class="lang-en">
+  <a href="#stage" class="skip-link" data-i18n="skip">Skip to the pathway</a>
+
+  <header>
+    <div class="topline">
+      <a class="back-link" id="back-link" href="index.html" data-i18n="back">← Rhizome</a>
+      <div class="controls">
+        <button class="back-link" id="all-btn" data-i18n="all_paths">All pathways</button>
+        <div class="control-group" role="group" aria-label="Language / 언어">
+          <button class="seg-btn active" data-lang="en" aria-pressed="true">EN</button>
+          <button class="seg-btn" data-lang="ko" aria-pressed="false">한국어</button>
+        </div>
+        <button class="toggle-btn" id="motion-toggle" aria-pressed="false" data-i18n="reduce_motion">Reduce motion</button>
+      </div>
+    </div>
+    <div class="titles">
+      <div class="anchor" id="p-anchor"></div>
+      <h1 id="p-title"></h1>
+      <div class="sub" id="p-sub"></div>
+      <div class="movement" id="p-movement"></div>
+    </div>
+  </header>
+
+  <nav class="rail-wrap" aria-label="Pathway movements">
+    <ol class="rail" id="rail"></ol>
+  </nav>
+
+  <main id="stage-region">
+    <section id="landing" aria-label="Choose a formation pathway">
+      <p class="landing-lead" id="landing-lead"></p>
+      <ul class="landing-grid" id="landing-grid"></ul>
+    </section>
+    <article class="stage" id="stage" aria-live="polite">
+      <div class="stage-movement" id="s-movement"></div>
+      <h2 id="s-title" tabindex="-1"></h2>
+      <div class="divider"></div>
+      <div class="stage-body" id="s-body"></div>
+      <div class="sabbath" id="s-sabbath" role="note" hidden>
+        <span class="lbl" id="s-sabbath-lbl"></span>
+        <div class="body" id="s-sabbath-body"></div>
+      </div>
+      <div class="practice" id="s-practice" hidden>
+        <span class="lbl" id="s-practice-lbl"></span>
+        <div class="body" id="s-practice-body"></div>
+      </div>
+      <div class="prompt" id="s-prompt">
+        <span class="lbl" id="s-prompt-lbl"></span>
+        <div class="q" id="s-prompt-q"></div>
+        <span class="note" id="s-prompt-note"></span>
+      </div>
+      <div class="closure" id="s-closure" hidden></div>
+    </article>
+  </main>
+
+  <nav class="nav" aria-label="Pathway navigation">
+    <button class="nav-btn" id="prev-btn" data-i18n="prev">Previous</button>
+    <span class="progress" id="progress" aria-live="polite"></span>
+    <button class="nav-btn primary" id="next-btn" data-i18n="next">Next</button>
+  </nav>
+
+  <footer id="footer-text"></footer>
+
+  <!-- All pathway course models are embedded inline so this page opens standalone
+     (file://) with no external requests. Canonical editable sources live in
+     ../course-models/pathway-*.js (each registers into window.MRIA_PATHWAYS).
+     Re-run the inline step after editing any model (see application/README.md). -->
+  <script>
+/*
+ * MRIA RFLS — Course Model: "Care in Motion" formation pathway
+ * -----------------------------------------------------------------------------
+ * UI-independent data. Anchored on rhizome node C4 "Care in Motion"
+ * (NODES[C4], KO_DATA.C4). Read-only; no score/completion mechanic.
+ * Shield governing the route: against Authoritarian Leadership.
+ *
+ * SABBATH BRAKE ⫞ — Care touches dying, acute grief, trauma, and crisis. This
+ * pathway must NOT position itself as a substitute for embodied human presence
+ * in those moments. Its embodied movement carries the Sabbath Brake notice
+ * instead of prescribing an AI-mediated practice. The Three-Stage triage is
+ * named: formation modes are never applied to a person in Cyclical Imprisonment.
+ */
+(window.MRIA_PATHWAYS = window.MRIA_PATHWAYS || {})["care-in-motion"] = {
+  id: "care-in-motion",
+  version: "0.1.0",
+  anchorNodeId: "C4",
+  color: "#F0997B",
+  status: "draft",
+  readOnly: true,
+  scoringMechanic: null,
+
+  title: { en: "Care in Motion", ko: "Care in Motion" },
+  subtitle: {
+    en: "A formation pathway — from rupture toward a crossing made possible",
+    ko: "형성 경로 — 파열에서 가능해진 건넘을 향하여"
+  },
+  movement: {
+    en: "Rupture → Covenantal accompaniment → Crossing made possible",
+    ko: "파열 → 언약적 동행 → 건넘이 가능해짐"
+  },
+  shield: {
+    en: "Shield: against Authoritarian Leadership — care accompanies; it does not command.",
+    ko: "방패: 권위주의적 리더십에 맞서 — 돌봄은 동행하지, 명령하지 않습니다."
+  },
+
+  stages: [
+    {
+      key: "where",
+      movementLabel: { en: "WHERE", ko: "WHERE" },
+      title: { en: "The place of rupture", ko: "파열의 자리" },
+      body: {
+        en: "<p>Care in Motion begins where the relational field has been broken — by fragmentation, wound, or loss. The first discipline is not intervention but discernment of place: is this person in a season where rupture can be received and moved through, or in Cyclical Imprisonment, where the walls are still closed?</p><p>The Three-Stage triage is mandatory. To apply formation methods to someone still imprisoned is a misdiagnosis — pastoral malpractice. Sometimes the faithful act is to prepare conditions for rupture, not to coach.</p>",
+        ko: "<p>Care in Motion은 관계 장이 — 분열, 상처, 상실로 — 깨어진 곳에서 시작됩니다. 첫 번째 규율은 개입이 아니라 자리에 대한 분별입니다: 이 사람은 파열이 받아들여지고 통과될 수 있는 계절에 있습니까, 아니면 벽이 아직 닫혀 있는 순환적 갇힘에 있습니까?</p><p>Three-Stage 분류는 필수입니다. 아직 갇혀 있는 사람에게 형성 방법을 적용하는 것은 오진이며 — 목회적 과실입니다. 때때로 신실한 행위는 코칭하는 것이 아니라 파열의 조건을 준비하는 것입니다.</p>"
+      },
+      prompt: {
+        en: "Before doing anything, where is this person actually — able to move, or still enclosed? What does honest discernment ask of you first?",
+        ko: "무엇을 하기 전에, 이 사람은 실제로 어디에 있습니까 — 움직일 수 있습니까, 아직 갇혀 있습니까? 정직한 분별은 당신에게 먼저 무엇을 청합니까?"
+      }
+    },
+    {
+      key: "encounter",
+      movementLabel: { en: "ENCOUNTER", ko: "ENCOUNTER" },
+      title: { en: "Accompaniment, not rescue", ko: "구조가 아닌 동행" },
+      body: {
+        en: "<p>The encounter of care is not the arrival of a rescuer with solutions. It is the choice to be present alongside — <em>covenantal accompaniment</em> that stays without seizing control. This is where authoritarian leadership is refused: the one who cares does not command the wounded toward a predetermined outcome.</p><p>Presence precedes counsel. To sit with, before fixing, is itself the work.</p>",
+        ko: "<p>돌봄의 만남은 해결책을 든 구조자의 도착이 아닙니다. 곁에 함께 있기를 택하는 것입니다 — 통제를 쥐지 않으면서 머무는 <em>언약적 동행</em>. 이곳에서 권위주의적 리더십이 거부됩니다: 돌보는 이는 상처 입은 이를 미리 정해진 결과를 향해 명령하지 않습니다.</p><p>현존이 조언에 앞섭니다. 고치기 전에 함께 앉아 있는 것, 그것이 곧 일입니다.</p>"
+      },
+      prompt: {
+        en: "Where are you tempted to fix rather than accompany — to command an outcome rather than stay present?",
+        ko: "당신은 어디에서 동행하기보다 고치고 싶어집니까 — 현존하며 머물기보다 결과를 명령하고 싶어집니까?"
+      }
+    },
+    {
+      key: "who",
+      movementLabel: { en: "WHO", ko: "WHO" },
+      title: { en: "Dignity received again", ko: "다시 받아들여진 존엄" },
+      body: {
+        en: "<p>In faithful accompaniment, the wounded person is not reduced to their wound. Dignity is received again — not conferred from above, but disclosed as what was always there beneath the rupture. The WHO who emerges is a person becoming ready to cross a threshold, in their own time.</p><p>The carer, too, is repositioned: not the hero of the story, but a companion whose steadiness makes room for the other's becoming.</p>",
+        ko: "<p>신실한 동행 안에서, 상처 입은 사람은 자신의 상처로 환원되지 않습니다. 존엄이 다시 받아들여집니다 — 위에서 수여되는 것이 아니라, 파열 아래 늘 있었던 것으로 드러나는 것. 출현하는 WHO는 자기 때에, 문턱을 건널 준비가 되어가는 사람입니다.</p><p>돌보는 이 또한 재위치됩니다: 이야기의 영웅이 아니라, 그 꾸준함이 타자의 됨을 위한 자리를 내어 주는 동반자로서.</p>"
+      },
+      prompt: {
+        en: "Whose dignity are you being invited to receive again — and how might staying steady make room for them?",
+        ko: "당신은 누구의 존엄을 다시 받아들이도록 초대받고 있습니까 — 그리고 꾸준히 머무는 것이 어떻게 그들을 위한 자리를 낼 수 있겠습니까?"
+      }
+    },
+    {
+      key: "interpretation",
+      movementLabel: { en: "INTERPRETATION", ko: "INTERPRETATION" },
+      title: { en: "Reading the wound without owning it", ko: "상처를 소유하지 않고 읽기" },
+      body: {
+        en: "<p>Interpretation in care is careful and non-possessive. In the Matrix Space of rupture, you seek to understand the shape of the wound without taking it over, without turning another's suffering into your project or your lesson.</p><p>The generative understanding emerges in the in-between — where you neither collapse into the other's pain nor stand coldly outside it, but accompany from close enough to matter.</p>",
+        ko: "<p>돌봄에서의 해석은 조심스럽고 비소유적입니다. 파열의 Matrix Space에서, 당신은 상처를 접수하지 않으면서, 타자의 고통을 당신의 프로젝트나 당신의 교훈으로 바꾸지 않으면서 그 형태를 이해하려 합니다.</p><p>생성적 이해는 사이 공간에서 나옵니다 — 당신이 타자의 고통 속으로 무너지지도, 차갑게 그 밖에 서 있지도 않고, 의미 있을 만큼 충분히 가까이에서 동행하는 곳.</p>"
+      },
+      prompt: {
+        en: "How can you understand another's pain closely without making it your own to manage?",
+        ko: "당신은 어떻게 타자의 고통을, 당신이 관리할 것으로 삼지 않으면서 가까이 이해할 수 있습니까?"
+      }
+    },
+    {
+      key: "what",
+      movementLabel: { en: "WHAT", ko: "WHAT" },
+      title: { en: "Making the crossing possible", ko: "건넘을 가능하게 하기" },
+      body: {
+        en: "<p>Care does not itself perform another's healing; it makes the crossing possible. The vocation disclosed here is the patient work of removing what blocks re-entry into life-giving relationship — and then waiting, without seizing the timeline.</p><p>Action reveals whether care has stayed care: does it open a door the other may walk through freely, or does it push them through on your schedule?</p>",
+        ko: "<p>돌봄은 그 자체로 타자의 치유를 수행하지 않습니다. 건넘을 가능하게 합니다. 이곳에서 드러나는 소명은, 생명을 주는 관계로의 재진입을 막는 것을 치우고 — 그런 다음 시간표를 쥐지 않은 채 기다리는 인내의 일입니다.</p><p>행동이 돌봄이 돌봄으로 머물렀는지를 드러냅니다: 그것은 타자가 자유로이 걸어 지나갈 수 있는 문을 여는 것입니까, 아니면 당신의 일정에 맞춰 그들을 밀어 넣는 것입니까?</p>"
+      },
+      prompt: {
+        en: "What obstacle to another's re-entry could you help remove — while leaving the crossing itself, and its timing, to them?",
+        ko: "타자의 재진입을 막는 어떤 장애물을 당신이 치우도록 도울 수 있습니까 — 건넘 자체와 그 시점은 그들에게 맡긴 채?"
+      }
+    },
+    {
+      key: "embodied",
+      movementLabel: { en: "EMBODIED PARTICIPATION", ko: "구현된 참여" },
+      title: { en: "Presence that only a person can give", ko: "사람만이 줄 수 있는 현존" },
+      isEmbodied: true,
+      body: {
+        en: "<p>Care completes only in embodied human presence. High-Tech has no role in the deepest moments of this movement; it hands off entirely to High-Touch.</p><p>The prototype stops here — and, for care, it stops more firmly than anywhere else.</p>",
+        ko: "<p>돌봄은 오직 구현된 사람 현존에서 완성됩니다. 이 움직임의 가장 깊은 순간에 High-Tech는 아무 역할이 없습니다. 그것은 전적으로 High-Touch에게 넘겨줍니다.</p><p>프로토타입은 여기서 멈춥니다 — 그리고 돌봄에 대해서는, 다른 어디보다 더 단호히 멈춥니다.</p>"
+      },
+      sabbathBrake: {
+        en: "Sabbath Brake ⫞ — Some moments are for embodied human presence, not digital mediation: dying, acute grief, trauma, and crisis. This pathway is preparation and reflection only; it is not counseling, not a substitute for a trusted human community, and not for use in an emergency. If you or someone you are accompanying is in crisis, turn first to present, trusted people and appropriate professional or emergency support.",
+        ko: "안식일 브레이크 ⫞ — 어떤 순간들은 디지털 매개가 아니라 구현된 사람 현존을 위한 것입니다: 임종, 급성 슬픔, 트라우마, 위기. 이 경로는 준비와 성찰일 뿐이며, 상담이 아니고, 신뢰하는 사람 공동체의 대체물이 아니며, 응급 상황에서 사용하기 위한 것이 아닙니다. 당신이나 당신이 동행하는 누군가가 위기에 있다면, 먼저 곁에 있는 신뢰하는 사람들과 적절한 전문적 또는 응급 지원을 향하십시오."
+      },
+      prompt: {
+        en: "Who around you is best placed to offer embodied presence right now — and how could you help that human presence happen rather than replace it?",
+        ko: "지금 당신 곁에서 구현된 현존을 줄 수 있는 가장 적합한 사람은 누구입니까 — 그리고 당신은 그 사람 현존을 대체하기보다 어떻게 일어나도록 도울 수 있습니까?"
+      }
+    },
+    {
+      key: "becoming",
+      movementLabel: { en: "RELATIONAL BECOMING", ko: "관계적 됨" },
+      title: { en: "A companion, not a commander", ko: "명령자가 아닌 동반자" },
+      isDestination: true,
+      body: {
+        en: "<p>The end of the route is not a caregiver who has mastered technique but a self formed into a companion — one who accompanies without commanding, holds without seizing, and waits without abandoning. Named with Formation Permanence, this WHO does not revert to the rescuer who needed to be needed.</p><p>And it is sent — into the ruptured places, guarding against the authoritarian leadership that would turn care into control.</p>",
+        ko: "<p>경로의 끝은 기법을 통달한 돌봄 제공자가 아니라, 동반자로 형성된 자아입니다 — 명령하지 않으면서 동행하고, 쥐지 않으면서 붙들고, 버리지 않으면서 기다리는 자. 형성 영속성으로 명명된 이 WHO는, 필요받기를 필요로 하던 구조자로 돌아가지 않습니다.</p><p>그리고 그것은 파송됩니다 — 파열된 자리들로, 돌봄을 통제로 바꾸려는 권위주의적 리더십을 경계하며.</p>"
+      },
+      prompt: {
+        en: "If nothing here were graded, what has changed in how you accompany others — and to whom are you sent?",
+        ko: "이것에 대해 아무것도 채점되지 않는다면, 당신이 타인을 동행하는 방식에서 무엇이 변했습니까 — 그리고 당신은 누구에게로 파송됩니까?"
+      }
+    }
+  ],
+
+  closure: {
+    en: "This is not a completion. Care is never finished, and never done alone. Return to the rhizome when the field calls you back — and to real people first, always.",
+    ko: "이것은 완료가 아닙니다. 돌봄은 결코 끝나지 않으며, 결코 홀로 행해지지 않습니다. 장이 당신을 다시 부를 때 리좀으로 — 그리고 언제나 먼저 실제 사람들에게로 돌아오십시오."
+  }
+};
+
+/*
+ * MRIA RFLS — Course Model: "Cognition in Motion" formation pathway
+ * -----------------------------------------------------------------------------
+ * A UI-INDEPENDENT data model for one read-only end-to-end formation route.
+ * It carries no rendering, no state, and no persistence — the interface layer
+ * (application/index.html) reads this model and presents it.
+ *
+ * Provenance: anchored on the rhizome node C1 "Cognition in Motion"
+ *   (rhizome/original/metareality_rhizome.html → NODES[C1], KO_DATA.C1).
+ * The node's own arc, WHERE/WHO/WHAT, and shield are expanded into the seven
+ * movements of the RFLS learning grammar:
+ *   WHERE → encounter → WHO → interpretation → WHAT → embodied participation
+ *   → relational becoming.
+ *
+ * Design commitments (Roadmap Phase 3):
+ *  - Read-only. No score, grade, percentage, or "completion" mechanic. The
+ *    destination is embodied participation and relational becoming, not a badge.
+ *  - Emic before etic; interpretation originates in the Constitutive In-Between,
+ *    not in stable prior knowledge (Row 6). Formation discloses; it never adds.
+ *  - Reflective prompts are invitations only. Nothing the learner thinks or
+ *    writes is collected, transmitted, or stored anywhere.
+ *  - The shield of this node — against Extractive Education — governs the whole
+ *    route: the learner is a participant relocated, never a container filled.
+ *
+ * This model is versioned content, independent of any framework or database.
+ * It registers itself into the shared pathway registry window.MRIA_PATHWAYS.
+ */
+(window.MRIA_PATHWAYS = window.MRIA_PATHWAYS || {})["cognition-in-motion"] = {
+  id: "cognition-in-motion",
+  version: "0.1.0",
+  anchorNodeId: "C1",
+  color: "#5DCAA5",
+  status: "draft",                 // draft until Joshua approves the slice (Phase 1 gate)
+  readOnly: true,
+  scoringMechanic: null,           // deliberately none
+
+  title: { en: "Cognition in Motion", ko: "Cognition in Motion" },
+  subtitle: {
+    en: "A formation pathway — from information toward embodied wisdom",
+    ko: "형성 경로 — 정보에서 구현된 지혜를 향하여"
+  },
+  movement: {
+    en: "Information → Disruptive encounter → Embodied wisdom",
+    ko: "정보 → 파열적 만남 → 구현된 지혜"
+  },
+  shield: {
+    en: "Shield: against Extractive Education — the learner is relocated, not filled.",
+    ko: "방패: 추출적 교육에 맞서 — 학습자는 채워지는 것이 아니라 재위치됩니다."
+  },
+
+  /* The seven movements of the RFLS learning grammar. `movementLabel` is the
+     abstract stage; `title` is this pathway's concrete naming of it. */
+  stages: [
+    {
+      key: "where",
+      movementLabel: { en: "WHERE", ko: "WHERE" },
+      title: { en: "Where you know from", ko: "당신이 아는 자리" },
+      body: {
+        en: "<p>Formation does not begin with information. It begins with location. Before a single idea is examined, you are already somewhere — inside a history, a language, a set of assumptions you did not choose and mostly cannot see.</p><p>Cognition in Motion opens here, in the situatedness of knowing. The rupture that will move you has not yet been received. This stage asks only that you become <em>aware of where you are</em> — not to fix it, not to defend it, but to notice the ground you are standing on.</p>",
+        ko: "<p>형성은 정보에서 시작되지 않습니다. 자리에서 시작됩니다. 하나의 생각을 살피기도 전에, 당신은 이미 어딘가에 — 역사 안에, 언어 안에, 당신이 선택하지 않았고 대부분 보지 못하는 가정들 안에 — 있습니다.</p><p>Cognition in Motion은 여기, 앎의 자리(situatedness)에서 열립니다. 당신을 움직일 파열은 아직 받아들여지지 않았습니다. 이 단계는 오직 당신이 <em>자신이 어디에 있는지를 인식</em>하기를 청합니다 — 고치려는 것도, 방어하려는 것도 아니라, 당신이 딛고 선 땅을 알아차리는 것입니다.</p>"
+      },
+      prompt: {
+        en: "Where do you already \"know\" this subject from? Whose interpretation formed you before you chose one?",
+        ko: "당신은 이 주제를 이미 어디에서 '알고' 있습니까? 당신이 하나를 선택하기 전에 누구의 해석이 당신을 형성했습니까?"
+      }
+    },
+    {
+      key: "encounter",
+      movementLabel: { en: "ENCOUNTER", ko: "ENCOUNTER" },
+      title: { en: "The disruptive encounter", ko: "파열적 만남" },
+      body: {
+        en: "<p>Learning here is not the smooth addition of facts. It is a disruptive encounter — a text, a person, a world that will not fold neatly into what you already hold. The encounter begins on <strong>its own terms</strong> (emic), not yours (etic).</p><p>This is where extractive education is refused. You are not mining the other for usable content. You are letting the other's world stand, in its difference, long enough to disturb the position you began from.</p>",
+        ko: "<p>이곳의 학습은 사실을 매끄럽게 더하는 일이 아닙니다. 파열적 만남입니다 — 당신이 이미 붙든 것 안으로 깔끔히 접히지 않는 텍스트, 사람, 세계. 만남은 <strong>그 자체의 조건</strong>(emic)에서 시작되지, 당신의 조건(etic)에서 시작되지 않습니다.</p><p>이곳에서 추출적 교육은 거부됩니다. 당신은 쓸모 있는 내용을 얻으려 타자를 채굴하는 것이 아닙니다. 당신은 타자의 세계가 그 차이 안에서 서 있도록 두어, 당신이 출발한 자리를 흔들 만큼 충분히 머무르게 합니다.</p>"
+      },
+      prompt: {
+        en: "What in this encounter does not fit — and what would it cost you to let it stay unresolved a little longer?",
+        ko: "이 만남에서 무엇이 들어맞지 않습니까 — 그리고 그것을 조금 더 미해결로 두는 데에 당신은 무엇을 치러야 합니까?"
+      }
+    },
+    {
+      key: "who",
+      movementLabel: { en: "WHO", ko: "WHO" },
+      title: { en: "The interpreter you are becoming", ko: "당신이 되어가는 해석자" },
+      body: {
+        en: "<p>The encounter does not leave you where it found you. A knower who was merely informed becomes an <em>interpreter</em> — relocated, not filled. Identity here emerges through participation, not possession.</p><p>Dignity is received again at this stage: you are not a deficient vessel being corrected from above, but an image-bearer whose Inherent Formation Capacity is being freely exercised. The WHO is disclosed, not assigned.</p>",
+        ko: "<p>만남은 당신을 만난 자리에 그대로 두지 않습니다. 단지 정보를 받았던 아는 자가 <em>해석자</em>가 됩니다 — 채워진 것이 아니라 재위치된 자. 이곳의 정체성은 소유가 아닌 참여를 통해 출현합니다.</p><p>이 단계에서 존엄이 다시 받아들여집니다: 당신은 위에서 교정되는 결함 있는 그릇이 아니라, 내재적 형성 역량(IFC)을 자유롭게 발휘하는 형상 담지자입니다. WHO는 부여되는 것이 아니라 드러납니다.</p>"
+      },
+      prompt: {
+        en: "Who are you becoming as you interpret — not what have you gained, but how are you being relocated?",
+        ko: "해석하면서 당신은 누가 되어가고 있습니까 — 무엇을 얻었는가가 아니라, 어떻게 재위치되고 있습니까?"
+      }
+    },
+    {
+      key: "interpretation",
+      movementLabel: { en: "INTERPRETATION", ko: "INTERPRETATION" },
+      title: { en: "Crossing in the in-between", ko: "사이 공간에서의 건넘" },
+      body: {
+        en: "<p>Interpretation happens in the Matrix Space — the Constitutive In-Between where your world and the other's world meet and neither is left untouched. A generative understanding does not emerge from the stable ground you began on; it emerges from the bridge.</p><p>This is participatory interpretation: meaning is crossed toward, not extracted. You move between emic and etic without collapsing one into the other, and what you understand you now carry differently than you could have before the crossing.</p>",
+        ko: "<p>해석은 Matrix Space — 당신의 세계와 타자의 세계가 만나 어느 쪽도 손대지 않은 채 남지 않는 구성적 사이 공간(Constitutive In-Between) — 에서 일어납니다. 생성적 이해는 당신이 출발한 안정된 땅에서 나오지 않습니다. 그것은 다리(bridge)에서 나옵니다.</p><p>이것이 참여적 해석입니다: 의미는 추출되는 것이 아니라 건너가는 것입니다. 당신은 어느 하나를 다른 하나로 무너뜨리지 않으면서 emic과 etic 사이를 움직이며, 당신이 이해한 것을 이제 건넘 이전과는 다르게 지니게 됩니다.</p>"
+      },
+      prompt: {
+        en: "What understanding could only have come from the crossing — something neither your starting world nor the other's world held alone?",
+        ko: "오직 건넘에서만 올 수 있었던 이해는 무엇입니까 — 당신의 출발 세계도 타자의 세계도 홀로 지니지 못했던 것?"
+      }
+    },
+    {
+      key: "what",
+      movementLabel: { en: "WHAT", ko: "WHAT" },
+      title: { en: "Understanding embodied into action", ko: "행동으로 구현되는 이해" },
+      body: {
+        en: "<p>Understanding that stays in the head is not yet embodied wisdom. The WHAT is the disclosure of vocation: what this interpretation asks of you in the world you actually live in.</p><p>This is not application as an afterthought. Action reveals becoming. What you now do — how you teach, listen, build, or refuse — is where the interpretation becomes real, or reveals that it never landed.</p>",
+        ko: "<p>머리에 머무는 이해는 아직 구현된 지혜가 아닙니다. WHAT은 소명의 드러남입니다: 이 해석이 당신이 실제로 살아가는 세계에서 당신에게 무엇을 요구하는가.</p><p>이것은 뒤늦은 적용이 아닙니다. 행동이 됨(becoming)을 드러냅니다. 당신이 이제 행하는 것 — 어떻게 가르치고, 듣고, 짓고, 거부하는가 — 그곳에서 해석은 실재가 되거나, 결코 착지하지 않았음을 드러냅니다.</p>"
+      },
+      prompt: {
+        en: "What would it look like to act from this understanding this week — in one concrete, nameable way?",
+        ko: "이번 주에 이 이해로부터 행동한다면 — 하나의 구체적이고 명명 가능한 방식으로 — 그것은 어떤 모습이겠습니까?"
+      }
+    },
+    {
+      key: "embodied",
+      movementLabel: { en: "EMBODIED PARTICIPATION", ko: "구현된 참여" },
+      title: { en: "Practiced in a body, with others", ko: "몸으로, 타인과 함께 실천됨" },
+      isEmbodied: true,
+      body: {
+        en: "<p>Cognition in Motion completes not on a screen but in embodied, shared practice. High-Tech does not replace High-Touch; it hands off to it. What you have interpreted must now be practiced in a body, in a place, with other people.</p><p>This is the point the pathway cannot perform for you. The prototype ends here on purpose — the next movement belongs to lived community, not to the interface.</p>",
+        ko: "<p>Cognition in Motion은 화면에서가 아니라 구현된 공유 실천에서 완성됩니다. High-Tech는 High-Touch를 대체하지 않습니다. 그것에게 넘겨줍니다. 당신이 해석한 것은 이제 몸으로, 한 장소에서, 다른 사람들과 함께 실천되어야 합니다.</p><p>이것은 경로가 당신을 대신해 수행할 수 없는 지점입니다. 프로토타입은 여기서 의도적으로 멈춥니다 — 다음 움직임은 인터페이스가 아니라 살아진 공동체에 속합니다.</p>"
+      },
+      practice: {
+        en: "Bring this interpretation to one real conversation with another person this week — not to report a conclusion, but to interpret together and let their world reposition yours again.",
+        ko: "이번 주에 이 해석을 다른 한 사람과의 실제 대화로 가져가십시오 — 결론을 보고하기 위해서가 아니라, 함께 해석하고 그들의 세계가 당신의 세계를 다시 재위치하도록 두기 위해서."
+      },
+      prompt: {
+        en: "Who is the one person, and where is the one place, this could be practiced — off the screen?",
+        ko: "이것이 실천될 수 있는 한 사람은 누구이며, 한 장소는 어디입니까 — 화면 밖에서?"
+      }
+    },
+    {
+      key: "becoming",
+      movementLabel: { en: "RELATIONAL BECOMING", ko: "관계적 됨" },
+      title: { en: "The interpreter, sent", ko: "파송된 해석자" },
+      isDestination: true,
+      body: {
+        en: "<p>The end of the route is not a finish line and not a score. It is a Future Self disclosed: the interpreter you have become, named with Formation Permanence. Once genuinely arrived, this WHO does not revert to the container that merely received information.</p><p>And it is not a private achievement. Relational becoming is sent — carried outward, into the communities and margins where extractive education would have kept knowledge enclosed. You leave the pathway not certified, but relocated, and pointed toward others.</p>",
+        ko: "<p>경로의 끝은 결승선도 점수도 아닙니다. 그것은 드러난 미래 자아(Future Self)입니다: 당신이 되어온 해석자, 형성 영속성(Formation Permanence)으로 명명된 자. 진정으로 도착하면, 이 WHO는 단지 정보를 받던 그릇으로 돌아가지 않습니다.</p><p>그리고 그것은 사적인 성취가 아닙니다. 관계적 됨은 파송됩니다 — 추출적 교육이라면 지식을 가두어 두었을 공동체와 주변부를 향해 밖으로 옮겨집니다. 당신은 인증받은 채가 아니라 재위치된 채, 타인을 향해 겨눠진 채 경로를 떠납니다.</p>"
+      },
+      prompt: {
+        en: "If nothing about this were graded, what has actually changed in who you are — and to whom are you now sent?",
+        ko: "이것에 대해 아무것도 채점되지 않는다면, 당신이 누구인가에서 실제로 무엇이 변했습니까 — 그리고 당신은 이제 누구에게로 파송됩니까?"
+      }
+    }
+  ],
+
+  /* Closing frame shown after the destination — points outward, not to a badge. */
+  closure: {
+    en: "This is not a completion. The pathway has done its part; the rest is lived. Return to the rhizome whenever a new encounter calls you back into motion.",
+    ko: "이것은 완료가 아닙니다. 경로는 제 몫을 다했습니다. 나머지는 살아집니다. 새로운 만남이 당신을 다시 운동으로 부를 때마다 리좀으로 돌아오십시오."
+  }
+};
+
+/*
+ * MRIA RFLS — Course Model: "Communication in Motion" formation pathway
+ * -----------------------------------------------------------------------------
+ * UI-independent data. Anchored on rhizome node C2 "Communication in Motion"
+ * (NODES[C2], KO_DATA.C2). Expands the node arc into the seven RFLS movements.
+ * Read-only; no score/completion mechanic; reflective prompts collect nothing.
+ * Shield governing the route: against Domestication of narrative.
+ */
+(window.MRIA_PATHWAYS = window.MRIA_PATHWAYS || {})["communication-in-motion"] = {
+  id: "communication-in-motion",
+  version: "0.1.0",
+  anchorNodeId: "C2",
+  color: "#AFA9EC",
+  status: "draft",
+  readOnly: true,
+  scoringMechanic: null,
+
+  title: { en: "Communication in Motion", ko: "Communication in Motion" },
+  subtitle: {
+    en: "A formation pathway — from separation toward interpretive crossing",
+    ko: "형성 경로 — 분리에서 해석적 건넘을 향하여"
+  },
+  movement: {
+    en: "Separation → Relational encounter → Interpretive crossing",
+    ko: "분리 → 관계적 만남 → 해석적 건넘"
+  },
+  shield: {
+    en: "Shield: against Domestication of narrative — the margin's voice reconfigures the center, not the reverse.",
+    ko: "방패: 서사의 길들이기에 맞서 — 주변부의 목소리가 중심을 재편성합니다. 그 역이 아닙니다."
+  },
+
+  stages: [
+    {
+      key: "where",
+      movementLabel: { en: "WHERE", ko: "WHERE" },
+      title: { en: "The boundary between worlds", ko: "세계들 사이의 경계" },
+      body: {
+        en: "<p>Communication does not begin with a shared language. It begins at a boundary — the place where your world ends and another's begins, where words that worked at home suddenly fail. Disorientation here is not a problem to eliminate; it is the threshold itself.</p><p>To stand at this boundary is to admit that meaning is not simply transmitted from sender to receiver. You are somewhere specific, speaking from a world you did not author, facing a world you cannot yet read.</p>",
+        ko: "<p>커뮤니케이션은 공유된 언어에서 시작되지 않습니다. 경계에서 시작됩니다 — 당신의 세계가 끝나고 타자의 세계가 시작되는 자리, 집에서 통하던 말이 갑자기 실패하는 곳. 이곳의 방향상실은 없애야 할 문제가 아닙니다. 그것이 곧 문턱입니다.</p><p>이 경계에 선다는 것은 의미가 단지 발신자에서 수신자로 전달되지 않음을 인정하는 것입니다. 당신은 특정한 자리에 있어, 당신이 저술하지 않은 세계에서 말하며, 아직 읽어낼 수 없는 세계를 마주합니다.</p>"
+      },
+      prompt: {
+        en: "Where does your usual way of speaking stop working — and whose world begins on the other side of that boundary?",
+        ko: "당신의 평소 말하기 방식이 통하지 않게 되는 곳은 어디입니까 — 그리고 그 경계 너머에서 누구의 세계가 시작됩니까?"
+      }
+    },
+    {
+      key: "encounter",
+      movementLabel: { en: "ENCOUNTER", ko: "ENCOUNTER" },
+      title: { en: "Difference as gift", ko: "선물로서의 차이" },
+      body: {
+        en: "<p>The encounter comes when difference stops being an obstacle and becomes a gift. The other does not exist to confirm what you already mean; their difference is precisely what could carry meaning across the gap neither of you could cross alone.</p><p>This is where the domestication of narrative is refused. You do not shrink the other's story to fit your categories. You let it remain strange long enough to change the categories themselves.</p>",
+        ko: "<p>만남은 차이가 장애물이기를 멈추고 선물이 될 때 옵니다. 타자는 당신이 이미 의미하는 바를 확인해 주려 존재하지 않습니다. 그들의 차이야말로, 둘 중 누구도 홀로 건널 수 없었던 간극을 넘어 의미를 실어 나를 수 있는 것입니다.</p><p>이곳에서 서사의 길들이기가 거부됩니다. 당신은 타자의 이야기를 당신의 범주에 맞추어 줄이지 않습니다. 그 이야기가 범주 자체를 바꿀 만큼 충분히 낯선 채로 머물게 둡니다.</p>"
+      },
+      prompt: {
+        en: "What in the other's account are you tempted to translate too quickly into your own terms?",
+        ko: "타자의 이야기에서 당신은 무엇을 너무 빨리 당신의 언어로 번역하고 싶어집니까?"
+      }
+    },
+    {
+      key: "who",
+      movementLabel: { en: "WHO", ko: "WHO" },
+      title: { en: "The boundary-crosser emerging", ko: "출현하는 경계-건너는 자" },
+      body: {
+        en: "<p>You do not remain the same speaker you were on your own side. A boundary-crosser emerges — someone who can carry meaning across difference without erasing it. This WHO is not a fluent translator who has mastered the other; it is a person willing to be repositioned by the crossing.</p><p>Identity here is dialogical: you become who you are in the exchange, not before it.</p>",
+        ko: "<p>당신은 당신 편에 있던 그 화자로 머물지 않습니다. 경계를 건너는 자가 출현합니다 — 차이를 지우지 않으면서 그 차이를 넘어 의미를 실어 나를 수 있는 사람. 이 WHO는 타자를 통달한 유창한 번역가가 아닙니다. 건넘에 의해 재위치되기를 기꺼이 감수하는 사람입니다.</p><p>이곳의 정체성은 대화적입니다: 당신은 교환 이전이 아니라 교환 안에서 당신이 되는 자가 됩니다.</p>"
+      },
+      prompt: {
+        en: "Who are you becoming as a listener — someone who masters the other, or someone willing to be moved by them?",
+        ko: "듣는 자로서 당신은 누가 되어가고 있습니까 — 타자를 통달하는 자입니까, 아니면 타자에 의해 움직여지기를 감수하는 자입니까?"
+      }
+    },
+    {
+      key: "interpretation",
+      movementLabel: { en: "INTERPRETATION", ko: "INTERPRETATION" },
+      title: { en: "Mutual repositioning", ko: "상호 재위치" },
+      body: {
+        en: "<p>Genuine dialogue produces mutual repositioning: neither party goes back unchanged. In the Matrix Space between worlds, meaning is not handed over intact — it is crossed toward, and both worlds are reordered by the crossing.</p><p>This is the emic↔etic navigation of MetaWay. You move between the other's world on its own terms and your own account of it, refusing to let either collapse into the other.</p>",
+        ko: "<p>진정한 대화는 상호 재위치를 낳습니다: 어느 쪽도 변하지 않고 돌아가지 않습니다. 세계들 사이의 Matrix Space에서 의미는 온전한 채 넘겨지지 않습니다 — 그것은 건너가는 것이며, 두 세계 모두 그 건넘에 의해 재편됩니다.</p><p>이것이 MetaWay의 emic↔etic 항행입니다. 당신은 그 자체의 조건으로 선 타자의 세계와 그에 대한 당신 자신의 서술 사이를 움직이며, 어느 하나가 다른 하나로 무너지도록 두지 않습니다.</p>"
+      },
+      prompt: {
+        en: "What has the crossing changed in your own position — not just in what you know, but in where you stand?",
+        ko: "건넘은 당신 자신의 위치에서 무엇을 바꾸었습니까 — 아는 것에서만이 아니라, 당신이 서 있는 자리에서?"
+      }
+    },
+    {
+      key: "what",
+      movementLabel: { en: "WHAT", ko: "WHAT" },
+      title: { en: "Speaking that lets the margin reconfigure", ko: "주변부가 재편성하게 하는 말하기" },
+      body: {
+        en: "<p>What you now do with your voice is where the crossing becomes real. Communication in Motion insists the margin's voice reconfigures the center — so the vocation disclosed here is a way of speaking, teaching, and listening that lets the previously unheard reorder the conversation.</p><p>Action reveals whether the crossing landed: do your words still center yourself, or have they been repositioned toward the one who was on the far side of the boundary?</p>",
+        ko: "<p>당신이 이제 당신의 목소리로 행하는 것, 그곳에서 건넘은 실재가 됩니다. Communication in Motion은 주변부의 목소리가 중심을 재편성한다고 주장합니다 — 그래서 이곳에서 드러나는 소명은, 그동안 들리지 않던 이가 대화를 재정렬하게 하는 말하기·가르치기·듣기의 방식입니다.</p><p>행동이 건넘의 착지 여부를 드러냅니다: 당신의 말은 여전히 당신 자신을 중심에 두고 있습니까, 아니면 경계 저편에 있던 이를 향해 재위치되었습니까?</p>"
+      },
+      prompt: {
+        en: "Where could you let a voice from the margin actually reorder something you say or decide this week?",
+        ko: "이번 주에 당신이 말하거나 결정하는 무언가를, 주변부의 목소리가 실제로 재정렬하게 둘 수 있는 곳은 어디입니까?"
+      }
+    },
+    {
+      key: "embodied",
+      movementLabel: { en: "EMBODIED PARTICIPATION", ko: "구현된 참여" },
+      title: { en: "Crossing practiced, face to face", ko: "얼굴을 마주하고 실천되는 건넘" },
+      isEmbodied: true,
+      body: {
+        en: "<p>Interpretive crossing is not completed by understanding it; it is completed by doing it, with a real person whose world is not yours. High-Tech hands off to High-Touch here — the screen cannot cross the boundary for you.</p><p>The prototype stops so lived encounter can begin.</p>",
+        ko: "<p>해석적 건넘은 그것을 이해함으로 완성되지 않습니다. 당신의 것이 아닌 세계를 지닌 실제 사람과 함께, 그것을 행함으로 완성됩니다. 이곳에서 High-Tech는 High-Touch에게 넘겨줍니다 — 화면은 당신을 대신해 경계를 건널 수 없습니다.</p><p>살아진 만남이 시작될 수 있도록 프로토타입은 멈춥니다.</p>"
+      },
+      practice: {
+        en: "This week, seek one conversation with someone whose world you find hard to read — and let their account reorder yours, rather than explaining yours to them first.",
+        ko: "이번 주에, 당신이 읽어내기 어려운 세계를 지닌 한 사람과의 대화를 구하십시오 — 그리고 당신의 것을 먼저 설명하기보다, 그들의 이야기가 당신의 것을 재정렬하게 두십시오."
+      },
+      prompt: {
+        en: "Who is on the far side of a boundary you could actually cross in person — and what would listening first require of you?",
+        ko: "당신이 실제로 대면하여 건널 수 있는 경계의 저편에는 누가 있습니까 — 그리고 먼저 듣는 것은 당신에게 무엇을 요구하겠습니까?"
+      }
+    },
+    {
+      key: "becoming",
+      movementLabel: { en: "RELATIONAL BECOMING", ko: "관계적 됨" },
+      title: { en: "A carrier of meaning across difference", ko: "차이를 넘어 의미를 실어 나르는 자" },
+      isDestination: true,
+      body: {
+        en: "<p>The end of the route is not fluency achieved but a self relocated: one who can carry meaning across difference without domesticating it. This WHO does not revert to the speaker who once needed the other to fit.</p><p>And it is sent. Relational becoming here means becoming a bridge for others — carrying the crossing outward into communities where difference had been silenced rather than received.</p>",
+        ko: "<p>경로의 끝은 획득된 유창함이 아니라 재위치된 자아입니다: 차이를 길들이지 않으면서 그 차이를 넘어 의미를 실어 나를 수 있는 자. 이 WHO는 한때 타자가 자기에게 맞추기를 요구하던 화자로 돌아가지 않습니다.</p><p>그리고 그것은 파송됩니다. 이곳의 관계적 됨은 타인을 위한 다리가 되는 것을 뜻합니다 — 차이가 받아들여지기보다 침묵당했던 공동체로 건넘을 밖으로 실어 나르는 것입니다.</p>"
+      },
+      prompt: {
+        en: "If nothing here were graded, whose voice can you now carry that you could not before — and to whom are you sent?",
+        ko: "이것에 대해 아무것도 채점되지 않는다면, 당신은 이전에 실어 나를 수 없던 누구의 목소리를 이제 실어 나를 수 있습니까 — 그리고 당신은 누구에게로 파송됩니까?"
+      }
+    }
+  ],
+
+  closure: {
+    en: "This is not a completion. The crossing continues wherever difference is met. Return to the rhizome when a new boundary calls you into motion.",
+    ko: "이것은 완료가 아닙니다. 차이가 마주쳐지는 곳마다 건넘은 계속됩니다. 새로운 경계가 당신을 운동으로 부를 때 리좀으로 돌아오십시오."
+  }
+};
+
+/*
+ * MRIA RFLS — Course Model: "Communion in Motion" formation pathway
+ * -----------------------------------------------------------------------------
+ * UI-independent data. Anchored on rhizome node C5 "Communion in Motion"
+ * (NODES[C5], KO_DATA.C5). Read-only; no score/completion mechanic.
+ * Shield governing the route: all five prophetic targets. This node is the
+ * ecosystem's eschatological pressure point.
+ */
+(window.MRIA_PATHWAYS = window.MRIA_PATHWAYS || {})["communion-in-motion"] = {
+  id: "communion-in-motion",
+  version: "0.1.0",
+  anchorNodeId: "C5",
+  color: "#85B7EB",
+  status: "draft",
+  readOnly: true,
+  scoringMechanic: null,
+
+  title: { en: "Communion in Motion", ko: "Communion in Motion" },
+  subtitle: {
+    en: "A formation pathway — from isolation toward vocational sending",
+    ko: "형성 경로 — 고립에서 직업적 파송을 향하여"
+  },
+  movement: {
+    en: "Isolation → Communal reception of Future Self → Vocational sending",
+    ko: "고립 → 미래 자아의 공동체적 영접 → 직업적 파송"
+  },
+  shield: {
+    en: "Shield: against all five prophetic targets — refusing to say 'relational commons' while neglecting justice at our own margins.",
+    ko: "방패: 다섯 가지 예언적 대상 모두에 맞서 — 우리 자신의 주변부에서 정의를 소홀히 하면서 '관계 공유지'라 말하기를 거부함."
+  },
+
+  stages: [
+    {
+      key: "where",
+      movementLabel: { en: "WHERE", ko: "WHERE" },
+      title: { en: "Post-crossing isolation", ko: "건넘 이후의 고립" },
+      body: {
+        en: "<p>There is a loneliness that comes after a genuine crossing. The Future Self has arrived — you have become someone new — but it is not yet held by anyone. Communion in Motion begins in this post-crossing isolation, where becoming is real but unaccompanied.</p><p>To name this place honestly resists the lie that transformation is a private possession. What has changed in you is waiting to be received.</p>",
+        ko: "<p>진정한 건넘 이후에 오는 외로움이 있습니다. 미래 자아는 도착했고 — 당신은 새로운 누군가가 되었으나 — 아직 아무에게도 붙들리지 않았습니다. Communion in Motion은 이 건넘 이후의 고립에서 시작됩니다. 됨은 실재하나 동반되지 않은 곳.</p><p>이 자리를 정직히 명명하는 것은 변혁이 사적 소유라는 거짓말에 저항합니다. 당신 안에서 변한 것은 받아들여지기를 기다리고 있습니다.</p>"
+      },
+      prompt: {
+        en: "What in you has genuinely changed but has not yet been received by any community?",
+        ko: "당신 안에서 진정으로 변했으나 아직 어떤 공동체에도 받아들여지지 않은 것은 무엇입니까?"
+      }
+    },
+    {
+      key: "encounter",
+      movementLabel: { en: "ENCOUNTER", ko: "ENCOUNTER" },
+      title: { en: "Received by a community", ko: "공동체에 의해 받아들여짐" },
+      body: {
+        en: "<p>The encounter is being received — named and welcomed by others as the person you have become. The Future Self is disclosed to be not only individual but communal: it is completed when a community recognizes it and makes a place for it.</p><p>This encounter tests the community as much as the person: can it receive someone genuinely changed, or does it demand they revert to who they were?</p>",
+        ko: "<p>만남은 받아들여지는 것입니다 — 당신이 되어온 사람으로서 타인에 의해 명명되고 환영받는 것. 미래 자아는 개인적일 뿐 아니라 공동체적임이 드러납니다: 그것은 공동체가 그것을 알아보고 자리를 내어 줄 때 완성됩니다.</p><p>이 만남은 사람만큼이나 공동체를 시험합니다: 그것은 진정으로 변한 누군가를 받아들일 수 있습니까, 아니면 그가 이전의 자기로 돌아가기를 요구합니까?</p>"
+      },
+      prompt: {
+        en: "Where have you been truly received as who you are becoming — and where were you asked to shrink back?",
+        ko: "당신은 어디에서 당신이 되어가는 자로 진정 받아들여졌습니까 — 그리고 어디에서 다시 움츠러들기를 요구받았습니까?"
+      }
+    },
+    {
+      key: "who",
+      movementLabel: { en: "WHO", ko: "WHO" },
+      title: { en: "The communal Future Self", ko: "공동체적 미래 자아" },
+      body: {
+        en: "<p>The WHO disclosed here is a communal Future Self, named with Formation Permanence: once genuinely arrived and received, it does not revert. You are no longer becoming alone; your becoming is now bound up with others' becoming.</p><p>This is not the dissolving of the person into the group. It is the person held, so that identity is carried together rather than defended in isolation.</p>",
+        ko: "<p>이곳에서 드러나는 WHO는 형성 영속성으로 명명된 공동체적 미래 자아입니다: 진정으로 도착하고 받아들여지면, 그것은 돌아가지 않습니다. 당신은 더 이상 홀로 되어가지 않습니다. 당신의 됨은 이제 타인의 됨과 얽혀 있습니다.</p><p>이것은 사람이 집단으로 용해되는 것이 아닙니다. 사람이 붙들리는 것이며, 그리하여 정체성이 고립 속에서 방어되기보다 함께 지녀지는 것입니다.</p>"
+      },
+      prompt: {
+        en: "Whose becoming is now bound up with yours — and are you holding theirs as they hold yours?",
+        ko: "누구의 됨이 이제 당신의 됨과 얽혀 있습니까 — 그리고 그들이 당신의 것을 붙들듯 당신도 그들의 것을 붙들고 있습니까?"
+      }
+    },
+    {
+      key: "interpretation",
+      movementLabel: { en: "INTERPRETATION", ko: "INTERPRETATION" },
+      title: { en: "The eschatological test", ko: "종말론적 시험" },
+      body: {
+        en: "<p>Here the pathway reaches the ecosystem's pressure point. It asks a hard, interpretive question of any community that calls itself relational: <em>are we trusting in deceptive words — \"relational commons, relational commons\" — while failing to practice justice at our own margins?</em></p><p>The generative understanding emerges only from honest self-examination in the in-between, not from the comfortable center that assumes its own righteousness.</p>",
+        ko: "<p>이곳에서 경로는 생태계의 압력점에 이릅니다. 스스로 관계적이라 부르는 모든 공동체에 어렵고 해석적인 질문을 던집니다: <em>우리는 거짓된 말에 의지하고 있습니까 — \"관계 공유지, 관계 공유지\" — 하면서도 우리 자신의 주변부에서 정의를 실천하지 않습니까?</em></p><p>생성적 이해는 자기 의로움을 가정하는 편안한 중심에서가 아니라, 사이 공간에서의 정직한 자기 성찰에서만 나옵니다.</p>"
+      },
+      prompt: {
+        en: "Where does a community you belong to speak of communion while neglecting justice at its own margins?",
+        ko: "당신이 속한 공동체는 어디에서, 자기 주변부의 정의를 소홀히 하면서 친교를 말합니까?"
+      }
+    },
+    {
+      key: "what",
+      movementLabel: { en: "WHAT", ko: "WHAT" },
+      title: { en: "Embodied covenantal life", ko: "구현된 언약적 삶" },
+      body: {
+        en: "<p>Communion that stops at feeling is not yet communion. The vocation disclosed here is embodied covenantal life — shared practice, table, and mutual obligation that make the fellowship real where it can be seen and tested.</p><p>Action reveals whether the communal Future Self has landed: is justice practiced at the margins, or only proclaimed at the center?</p>",
+        ko: "<p>느낌에서 멈추는 친교는 아직 친교가 아닙니다. 이곳에서 드러나는 소명은 구현된 언약적 삶입니다 — 보이고 시험받을 수 있는 곳에서 친교를 실재로 만드는 공유된 실천, 식탁, 상호 의무.</p><p>행동이 공동체적 미래 자아의 착지 여부를 드러냅니다: 정의는 주변부에서 실천됩니까, 아니면 중심에서 선포되기만 합니까?</p>"
+      },
+      prompt: {
+        en: "What concrete, shared obligation could make communion real at a margin this week — not just proclaimed at the center?",
+        ko: "이번 주에, 중심에서 선포되기만 하는 것이 아니라 주변부에서 친교를 실재로 만들 수 있는 구체적이고 공유된 의무는 무엇입니까?"
+      }
+    },
+    {
+      key: "embodied",
+      movementLabel: { en: "EMBODIED PARTICIPATION", ko: "구현된 참여" },
+      title: { en: "Sent together, toward the Outside", ko: "함께, 외부를 향해 파송됨" },
+      isEmbodied: true,
+      body: {
+        en: "<p>Communion completes not in gathering but in being sent together toward the Outside — the city whose gates never shut. It is embodied, communal, and outward-facing; it cannot be performed by an interface or held by an individual alone.</p><p>The prototype stops here so shared, sent life can begin.</p>",
+        ko: "<p>친교는 모임에서가 아니라 외부를 향해 함께 파송되는 데서 완성됩니다 — 그 문이 결코 닫히지 않는 성. 그것은 구현적이고, 공동체적이며, 밖을 향합니다. 인터페이스가 수행하거나 개인이 홀로 붙들 수 없습니다.</p><p>공유되고 파송된 삶이 시작될 수 있도록 프로토타입은 여기서 멈춥니다.</p>"
+      },
+      practice: {
+        en: "With at least one other person, name one margin your community overlooks — and take one shared, embodied step toward it this week, together rather than alone.",
+        ko: "적어도 한 사람과 함께, 당신의 공동체가 간과하는 하나의 주변부를 명명하십시오 — 그리고 이번 주에 홀로가 아니라 함께, 그것을 향한 하나의 공유되고 구현된 걸음을 내딛으십시오."
+      },
+      prompt: {
+        en: "Who will you go with, and toward which margin — so that this is sent life, not private feeling?",
+        ko: "당신은 누구와 함께, 어떤 주변부를 향해 가겠습니까 — 그리하여 이것이 사적인 느낌이 아니라 파송된 삶이 되도록?"
+      }
+    },
+    {
+      key: "becoming",
+      movementLabel: { en: "RELATIONAL BECOMING", ko: "관계적 됨" },
+      title: { en: "Held, and sent", ko: "붙들리고, 파송됨" },
+      isDestination: true,
+      body: {
+        en: "<p>The end of the route is not belonging as comfort but belonging as commission: a communal self, held with Formation Permanence and sent outward together. It does not revert to the isolation that mistook transformation for a private trophy.</p><p>And it is guarded by every prophetic shield at once — refusing communion that flatters the center while the margins go without justice. You leave not certified, but joined, and sent.</p>",
+        ko: "<p>경로의 끝은 위안으로서의 소속이 아니라 위임으로서의 소속입니다: 형성 영속성으로 붙들리고 함께 밖으로 파송되는 공동체적 자아. 그것은 변혁을 사적 전리품으로 오인하던 고립으로 돌아가지 않습니다.</p><p>그리고 그것은 모든 예언적 방패에 의해 동시에 지켜집니다 — 주변부가 정의 없이 남겨진 채 중심을 아첨하는 친교를 거부하며. 당신은 인증받은 채가 아니라, 연합된 채, 파송된 채 떠납니다.</p>"
+      },
+      prompt: {
+        en: "If nothing here were graded, who holds you now, and with whom are you sent — and toward which margin?",
+        ko: "이것에 대해 아무것도 채점되지 않는다면, 이제 누가 당신을 붙들며, 당신은 누구와 함께 파송됩니까 — 그리고 어떤 주변부를 향하여?"
+      }
+    }
+  ],
+
+  closure: {
+    en: "This is not a completion. Communion is tested at the margins, again and again. Return to the rhizome when you are called back into motion — together.",
+    ko: "이것은 완료가 아닙니다. 친교는 주변부에서 거듭 시험받습니다. 당신이 다시 운동으로 부름받을 때 — 함께 — 리좀으로 돌아오십시오."
+  }
+};
+
+/*
+ * MRIA RFLS — Course Model: "Culture in Motion" formation pathway
+ * -----------------------------------------------------------------------------
+ * UI-independent data. Anchored on rhizome node C3 "Culture in Motion"
+ * (NODES[C3], KO_DATA.C3). Read-only; no score/completion mechanic; prompts
+ * collect nothing. Shield governing the route: against Institutional Capture.
+ */
+(window.MRIA_PATHWAYS = window.MRIA_PATHWAYS || {})["culture-in-motion"] = {
+  id: "culture-in-motion",
+  version: "0.1.0",
+  anchorNodeId: "C3",
+  color: "#FAC775",
+  status: "draft",
+  readOnly: true,
+  scoringMechanic: null,
+
+  title: { en: "Culture in Motion", ko: "Culture in Motion" },
+  subtitle: {
+    en: "A formation pathway — from enclosure toward shared humanity",
+    ko: "형성 경로 — 폐쇄에서 공유된 인류를 향하여"
+  },
+  movement: {
+    en: "Enclosure → Encounter with the other → Shared humanity",
+    ko: "폐쇄 → 타자와의 만남 → 공유된 인류"
+  },
+  shield: {
+    en: "Shield: against Institutional Capture — culture serves relational life, not the reverse.",
+    ko: "방패: 제도적 포획에 맞서 — 문화는 관계적 삶을 섬기지, 그 역이 아닙니다."
+  },
+
+  stages: [
+    {
+      key: "where",
+      movementLabel: { en: "WHERE", ko: "WHERE" },
+      title: { en: "Cultural inheritance", ko: "문화적 유산" },
+      body: {
+        en: "<p>You did not choose your first culture; you were formed inside it. Culture is the visible geometry of relational life — its foods, songs, memories, and manners are also an arrangement of space, and every arrangement has a center and a margin.</p><p>Formation begins by naming that arrangement rather than mistaking it for the natural order of things. Where are you seated in the cultural room you inherited — and who is nearer the door?</p>",
+        ko: "<p>당신은 당신의 첫 문화를 선택하지 않았습니다. 당신은 그 안에서 형성되었습니다. 문화는 관계적 삶의 가시적 기하학입니다 — 그 음식, 노래, 기억, 예법은 또한 공간의 배치이며, 모든 배치에는 중심과 주변부가 있습니다.</p><p>형성은 그 배치를 사물의 자연스러운 질서로 오인하는 대신 그것을 명명하는 데서 시작됩니다. 당신이 물려받은 문화의 방에서 당신은 어디에 앉아 있습니까 — 그리고 누가 문에 더 가까이 있습니까?</p>"
+      },
+      prompt: {
+        en: "What in your culture feels simply 'normal' — and who is positioned at the margin by that same normal?",
+        ko: "당신의 문화에서 무엇이 그저 '정상'으로 느껴집니까 — 그리고 바로 그 정상에 의해 누가 주변부에 놓입니까?"
+      }
+    },
+    {
+      key: "encounter",
+      movementLabel: { en: "ENCOUNTER", ko: "ENCOUNTER" },
+      title: { en: "Encounter with the other", ko: "타자와의 만남" },
+      body: {
+        en: "<p>The encounter comes when another cultural world meets yours and neither can pretend to be the whole of humanity. What looked like the center is revealed as one arrangement among others; what looked like the margin turns out to hold gifts the center had forgotten.</p><p>Here institutional capture is refused: no institution — however venerable — gets to freeze one arrangement as universally normative. MRIA asks of every cultural topology: where does this arrangement locate power, vulnerability, and shared dignity?</p>",
+        ko: "<p>만남은 또 다른 문화적 세계가 당신의 세계를 마주하고, 어느 쪽도 인류 전체인 척할 수 없을 때 옵니다. 중심처럼 보이던 것이 여럿 가운데 하나의 배치로 드러나고, 주변부처럼 보이던 것이 중심이 잊었던 선물을 지니고 있음이 밝혀집니다.</p><p>이곳에서 제도적 포획이 거부됩니다: 아무리 유서 깊은 제도라도, 하나의 배치를 보편적 규범으로 얼려 둘 수 없습니다. MRIA는 모든 문화적 위상학에 묻습니다: 이 배치는 권력, 취약성, 공유된 존엄을 어디에 위치시킵니까?</p>"
+      },
+      prompt: {
+        en: "What gift does another cultural world hold that your own center had forgotten or dismissed?",
+        ko: "다른 문화적 세계는, 당신 자신의 중심이 잊었거나 물리쳤던 어떤 선물을 지니고 있습니까?"
+      }
+    },
+    {
+      key: "who",
+      movementLabel: { en: "WHO", ko: "WHO" },
+      title: { en: "The repositioned cultural self", ko: "재위치된 문화적 자아" },
+      body: {
+        en: "<p>The encounter relocates you: neither enclosed in your inheritance as if it were the only world, nor rootless as if you could float above all cultures. The repositioned cultural self holds its own story and lets it be reordered by another's.</p><p>Dignity is disclosed on both sides at once — yours is not diminished by honoring theirs.</p>",
+        ko: "<p>만남은 당신을 재위치합니다: 당신의 유산이 유일한 세계인 양 그 안에 폐쇄되지도, 모든 문화 위를 떠다닐 수 있는 양 뿌리 뽑히지도 않은 채. 재위치된 문화적 자아는 자기 이야기를 붙들면서 그것이 타자의 이야기에 의해 재정렬되도록 둡니다.</p><p>존엄은 양편에서 동시에 드러납니다 — 그들의 존엄을 존중한다고 해서 당신의 존엄이 줄어들지 않습니다.</p>"
+      },
+      prompt: {
+        en: "Who are you becoming — neither enclosed in your culture nor rootless above all cultures?",
+        ko: "당신은 누가 되어가고 있습니까 — 당신의 문화에 폐쇄되지도, 모든 문화 위에서 뿌리 뽑히지도 않은 채?"
+      }
+    },
+    {
+      key: "interpretation",
+      movementLabel: { en: "INTERPRETATION", ko: "INTERPRETATION" },
+      title: { en: "Reading the arrangement of power", ko: "권력의 배치를 읽기" },
+      body: {
+        en: "<p>Interpretation here learns to read power as the configuration of space. In the Matrix Space between cultures, you see that where people are placed — who sits at the center, who is kept near the exit — is itself a claim about worth.</p><p>The generative reading emerges not from defending your arrangement but from the in-between, where the center/margin topology becomes visible and therefore changeable.</p>",
+        ko: "<p>이곳의 해석은 권력을 공간의 배치로 읽는 법을 배웁니다. 문화들 사이의 Matrix Space에서, 당신은 사람들이 어디에 놓이는지 — 누가 중심에 앉고, 누가 출구 가까이 붙들리는지 — 가 그 자체로 가치에 대한 주장임을 봅니다.</p><p>생성적 읽기는 당신의 배치를 방어하는 데서가 아니라, 중심/주변부 위상학이 가시화되어 그리하여 변경 가능해지는 사이 공간에서 나옵니다.</p>"
+      },
+      prompt: {
+        en: "In an arrangement you belong to, who is placed at the center and who at the margin — and what does that placement say about worth?",
+        ko: "당신이 속한 한 배치에서, 누가 중심에 놓이고 누가 주변부에 놓입니까 — 그리고 그 배치는 가치에 관해 무엇을 말합니까?"
+      }
+    },
+    {
+      key: "what",
+      movementLabel: { en: "WHAT", ko: "WHAT" },
+      title: { en: "Restorative coexistence", ko: "회복적 공존" },
+      body: {
+        en: "<p>Understanding culture without reordering it changes nothing. The vocation disclosed here is restorative coexistence — action that heals the center/margin fracture rather than managing it.</p><p>This is not tolerance from a safe center. It is the concrete work of rearranging the room so that dignity is disclosed for those the old arrangement kept near the door.</p>",
+        ko: "<p>문화를 재정렬하지 않고 이해하기만 하는 것은 아무것도 바꾸지 않습니다. 이곳에서 드러나는 소명은 회복적 공존입니다 — 중심/주변부 균열을 관리하는 것이 아니라 치유하는 행동.</p><p>이것은 안전한 중심에서 베푸는 관용이 아닙니다. 옛 배치가 문 가까이 붙들어 두었던 이들에게 존엄이 드러나도록 방을 다시 배치하는 구체적인 일입니다.</p>"
+      },
+      prompt: {
+        en: "What one arrangement could you help rearrange so someone at the margin is received rather than tolerated?",
+        ko: "주변부에 있는 누군가가 관용되는 것이 아니라 받아들여지도록, 당신이 다시 배치하도록 도울 수 있는 하나의 배치는 무엇입니까?"
+      }
+    },
+    {
+      key: "embodied",
+      movementLabel: { en: "EMBODIED PARTICIPATION", ko: "구현된 참여" },
+      title: { en: "Shared humanity at a shared table", ko: "공유된 식탁에서의 공유된 인류" },
+      isEmbodied: true,
+      body: {
+        en: "<p>Shared humanity is not a concept to affirm but a table to sit at. Culture in Motion completes in embodied coexistence — food, memory, and presence exchanged with people whose arrangement is not yours.</p><p>The prototype stops here; the shared table is not something a screen can set.</p>",
+        ko: "<p>공유된 인류는 긍정할 개념이 아니라 함께 앉을 식탁입니다. Culture in Motion은 구현된 공존에서 완성됩니다 — 그 배치가 당신의 것이 아닌 사람들과 나누는 음식, 기억, 현존.</p><p>프로토타입은 여기서 멈춥니다. 공유된 식탁은 화면이 차릴 수 있는 것이 아닙니다.</p>"
+      },
+      practice: {
+        en: "Share a meal or an unhurried hour this week with someone from a cultural world unlike yours — as a guest receiving their arrangement, not a host explaining your own.",
+        ko: "이번 주에 당신과 다른 문화적 세계의 누군가와 식사나 서두르지 않는 한 시간을 나누십시오 — 당신의 배치를 설명하는 주인이 아니라, 그들의 배치를 받아들이는 손님으로서."
+      },
+      prompt: {
+        en: "Whose table could you be a guest at — and what would it take to receive rather than explain?",
+        ko: "당신은 누구의 식탁에 손님이 될 수 있습니까 — 그리고 설명하기보다 받아들이는 데에는 무엇이 필요하겠습니까?"
+      }
+    },
+    {
+      key: "becoming",
+      movementLabel: { en: "RELATIONAL BECOMING", ko: "관계적 됨" },
+      title: { en: "A self at home across difference", ko: "차이를 가로질러 편안한 자아" },
+      isDestination: true,
+      body: {
+        en: "<p>The end of the route is not cultural mastery but a self that can be at home across difference without erasing anyone — the repositioned cultural self named with Formation Permanence. It does not revert to the enclosure that mistook one arrangement for the world.</p><p>And it is sent — into the fractured rooms of family, institution, and society, carrying restorative coexistence toward the margins power keeps near the door.</p>",
+        ko: "<p>경로의 끝은 문화적 통달이 아니라, 누구도 지우지 않으면서 차이를 가로질러 편안할 수 있는 자아입니다 — 형성 영속성으로 명명된 재위치된 문화적 자아. 그것은 하나의 배치를 세계로 오인하던 폐쇄로 돌아가지 않습니다.</p><p>그리고 그것은 파송됩니다 — 가족, 제도, 사회의 균열된 방들로, 권력이 문 가까이 붙들어 두는 주변부를 향해 회복적 공존을 실어 나르며.</p>"
+      },
+      prompt: {
+        en: "If nothing here were graded, where are you now sent to help rearrange a room — and for whom?",
+        ko: "이것에 대해 아무것도 채점되지 않는다면, 당신은 이제 어떤 방을 다시 배치하도록 어디로 파송됩니까 — 그리고 누구를 위하여?"
+      }
+    }
+  ],
+
+  closure: {
+    en: "This is not a completion. Every room can be rearranged toward dignity. Return to the rhizome when a new encounter calls you into motion.",
+    ko: "이것은 완료가 아닙니다. 모든 방은 존엄을 향해 다시 배치될 수 있습니다. 새로운 만남이 당신을 운동으로 부를 때 리좀으로 돌아오십시오."
+  }
+};
+
+</script>
+  <script>
+  (function(){
+    "use strict";
+    var REG = window.MRIA_PATHWAYS || {};
+    /* Select the pathway from the URL. The hash (#id) is used first because it is
+       reliably preserved on file:// in every browser; the ?p= query is a fallback
+       for http(s) contexts. Accepts "#care-in-motion" or "#p=care-in-motion". */
+    function paramId(){
+      try{
+        var h=(location.hash||"").replace(/^#/,"");
+        if(h){ var hm=/(?:^|[?&])p=([^&]+)/.exec(h); return decodeURIComponent(hm?hm[1]:h); }
+        var m=/[?&]p=([^&]+)/.exec(location.search||"");
+        return m?decodeURIComponent(m[1]):null;
+      }catch(e){ return null; }
+    }
+    if(!Object.keys(REG).length){ document.body.innerHTML="<p style='padding:2rem'>Pathway models failed to load.</p>"; return; }
+    var P = null; /* current pathway; null while the picker (landing) is shown */
+
+    var UI = {
+      en:{ skip:"Skip to the pathway", back:"← Rhizome", reduce_motion:"Reduce motion",
+        prev:"Previous", next:"Next", to_close:"Close",
+        prompt_lbl:"For your reflection", practice_lbl:"Embodied practice", sabbath_lbl:"Sabbath Brake ⫞",
+        all_paths:"All pathways",
+        picker_title:"Formation Pathways",
+        picker_sub:"Read-only prototype routes through the RFLS movements",
+        landing_lead:"Choose a pathway to walk. Each is a read-only route — no score, no completion.",
+        prompt_note:"An invitation only — nothing here is recorded, sent, or stored.",
+        progress:function(i,n){return "Movement "+i+" of "+n;},
+        footer:"Read-only formation pathways · no score, no completion · no personal data collected" },
+      ko:{ skip:"경로로 건너뛰기", back:"← 리좀", reduce_motion:"모션 줄이기",
+        prev:"이전", next:"다음", to_close:"닫기",
+        prompt_lbl:"당신의 성찰을 위하여", practice_lbl:"구현된 실천", sabbath_lbl:"안식일 브레이크 ⫞",
+        all_paths:"모든 경로",
+        picker_title:"형성 경로",
+        picker_sub:"RFLS 움직임을 통과하는 읽기 전용 프로토타입 경로",
+        landing_lead:"걸을 경로를 선택하세요. 각각은 읽기 전용 경로입니다 — 점수 없음, 완료 없음.",
+        prompt_note:"초대일 뿐입니다 — 이곳의 어떤 것도 기록·전송·저장되지 않습니다.",
+        progress:function(i,n){return n+" 중 "+i+" 움직임";},
+        footer:"읽기 전용 형성 경로 · 점수 없음, 완료 없음 · 개인정보 수집 없음" }
+    };
+
+    var state = { lang:"en", i:0, reduce:false };
+    try{
+      var sl=localStorage.getItem("mria_rhizome_lang"); if(sl==="ko"||sl==="en") state.lang=sl;
+      var sm=localStorage.getItem("mria_rhizome_motion"); if(sm==="1") state.reduce=true;
+    }catch(e){}
+    if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) state.reduce=true;
+
+    var $=function(s){return document.querySelector(s);};
+    var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
+    function L(o){ return o ? (o[state.lang]||o.en||"") : ""; }
+    function t(k){ return UI[state.lang][k]; }
+
+    /* preserve ?lang / return link language to the rhizome */
+    function syncBackLink(){ $("#back-link").setAttribute("href","index.html"); }
+
+    function buildRail(){
+      var rail=$("#rail"); rail.innerHTML="";
+      P.stages.forEach(function(st,idx){
+        var li=document.createElement("li");
+        var btn=document.createElement("button");
+        btn.className="rail-step"+(idx<state.i?" done":"");
+        btn.textContent=L(st.movementLabel);
+        if(idx===state.i) btn.setAttribute("aria-current","step");
+        btn.addEventListener("click",function(){ go(idx); });
+        li.appendChild(btn);
+        if(idx<P.stages.length-1){ var sep=document.createElement("span"); sep.className="rail-sep"; sep.setAttribute("aria-hidden","true"); sep.textContent="→"; li.appendChild(sep); }
+        rail.appendChild(li);
+      });
+    }
+
+    function renderStage(){
+      var st=P.stages[state.i];
+      var stageEl=$("#stage");
+      stageEl.classList.toggle("is-destination", !!st.isDestination);
+      $("#s-movement").textContent=L(st.movementLabel);
+      $("#s-title").textContent=L(st.title);
+      $("#s-body").innerHTML=L(st.body);
+
+      /* Sabbath Brake notice (e.g. Care in Motion embodied stage) */
+      var sb=$("#s-sabbath");
+      if(st.sabbathBrake){ $("#s-sabbath-lbl").textContent=t("sabbath_lbl"); $("#s-sabbath-body").textContent=L(st.sabbathBrake); sb.hidden=false; }
+      else sb.hidden=true;
+
+      /* practice (embodied stage only; omitted where a Sabbath Brake applies) */
+      var pr=$("#s-practice");
+      if(st.practice){ $("#s-practice-lbl").textContent=t("practice_lbl"); $("#s-practice-body").textContent=L(st.practice); pr.hidden=false; }
+      else pr.hidden=true;
+
+      /* prompt */
+      $("#s-prompt-lbl").textContent=t("prompt_lbl");
+      $("#s-prompt-q").textContent=L(st.prompt);
+      $("#s-prompt-note").textContent=t("prompt_note");
+
+      /* closure on destination */
+      var cl=$("#s-closure");
+      if(st.isDestination && P.closure){ cl.textContent=L(P.closure); cl.hidden=false; } else cl.hidden=true;
+
+      /* nav + progress */
+      $("#prev-btn").disabled = state.i===0;
+      var nextBtn=$("#next-btn");
+      nextBtn.disabled = state.i===P.stages.length-1;
+      $("#progress").textContent=t("progress")(state.i+1, P.stages.length);
+
+      /* rail current state */
+      $$("#rail .rail-step").forEach(function(b,idx){
+        b.classList.toggle("done", idx<state.i);
+        if(idx===state.i) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current");
+      });
+
+      /* move focus to heading for screen-reader announcement (not on very first paint) */
+      if(renderStage._painted){ $("#s-title").focus(); }
+      renderStage._painted=true;
+      /* ensure current rail chip is visible */
+      var cur=$("#rail .rail-step[aria-current='step']"); if(cur && cur.scrollIntoView) cur.scrollIntoView({inline:"center", block:"nearest"});
+    }
+
+    function go(idx){
+      if(!P) return;
+      state.i=Math.max(0,Math.min(P.stages.length-1,idx));
+      renderStage();
+      window.scrollTo({top:0, behavior: state.reduce?"auto":"smooth"});
+    }
+
+    function applyI18n(){
+      $$("[data-i18n]").forEach(function(el){ var k=el.getAttribute("data-i18n"); if(UI[state.lang][k]) el.textContent=UI[state.lang][k]; });
+      $("#footer-text").textContent=t("footer");
+      $("#landing-lead").textContent=t("landing_lead");
+      if(P){
+        $("#p-anchor").textContent = (state.lang==="ko"?"리좀에서 · ":"From the rhizome · ") + L(P.title);
+        $("#p-title").textContent=L(P.title);
+        $("#p-sub").textContent=L(P.subtitle);
+        $("#p-movement").textContent=L(P.movement);
+      } else {
+        $("#p-anchor").textContent="";
+        $("#p-title").textContent=t("picker_title");
+        $("#p-sub").textContent=t("picker_sub");
+        $("#p-movement").textContent="";
+      }
+    }
+
+    function renderLanding(){
+      var grid=$("#landing-grid"); grid.innerHTML="";
+      Object.keys(REG).forEach(function(id){
+        var p=REG[id];
+        var li=document.createElement("li");
+        var btn=document.createElement("button");
+        btn.className="pathway-card"; btn.setAttribute("data-id",id);
+        btn.style.setProperty("--pc", p.color||"#5DCAA5");
+        var dot=document.createElement("span"); dot.className="pc-dot"; dot.setAttribute("aria-hidden","true");
+        var wrap=document.createElement("span");
+        var ti=document.createElement("span"); ti.className="pc-title"; ti.textContent=L(p.title);
+        var mv=document.createElement("span"); mv.className="pc-move"; mv.textContent=L(p.movement);
+        wrap.appendChild(ti); wrap.appendChild(mv);
+        btn.appendChild(dot); btn.appendChild(wrap);
+        btn.addEventListener("click", function(){ selectPathway(id); });
+        li.appendChild(btn); grid.appendChild(li);
+      });
+    }
+
+    /* Show a chosen pathway (no URL change, so no reload/loop). */
+    function selectPathway(id, syncUrl){
+      if(!REG[id]) return;
+      if(syncUrl !== false && location.hash !== "#"+id){
+        history.pushState(null,"","#"+id);
+      }
+      P=REG[id]; state.i=0;
+      document.body.classList.remove("picker");
+      renderStage._painted=false;
+      applyI18n(); buildRail(); renderStage();
+    }
+    function showLanding(){
+      P=null; document.body.classList.add("picker");
+      applyI18n(); renderLanding();
+      window.scrollTo(0,0);
+    }
+    /* Route from the URL: a valid #id (or ?p=) opens that pathway, else the picker. */
+    function route(){
+      var id=paramId();
+      if(id && REG[id]) selectPathway(id, false); else showLanding();
+    }
+    window.addEventListener("hashchange", route);
+
+    function setLang(lang){
+      state.lang=lang; document.documentElement.lang=lang;
+      document.body.classList.toggle("lang-ko", lang==="ko");
+      try{ localStorage.setItem("mria_rhizome_lang", lang); }catch(e){}
+      $$("[data-lang]").forEach(function(b){ var on=b.getAttribute("data-lang")===lang; b.classList.toggle("active",on); b.setAttribute("aria-pressed",on?"true":"false"); });
+      applyI18n();
+      if(P){ buildRail(); renderStage(); } else { renderLanding(); }
+    }
+    function setMotion(r){
+      state.reduce=r; document.body.classList.toggle("reduce-motion",r);
+      $("#motion-toggle").setAttribute("aria-pressed", r?"true":"false");
+      try{ localStorage.setItem("mria_rhizome_motion", r?"1":"0"); }catch(e){}
+    }
+
+    $$("[data-lang]").forEach(function(b){ b.addEventListener("click",function(){ setLang(b.getAttribute("data-lang")); }); });
+    $("#motion-toggle").addEventListener("click",function(){ setMotion(!state.reduce); });
+    $("#prev-btn").addEventListener("click",function(){ go(state.i-1); });
+    $("#next-btn").addEventListener("click",function(){ go(state.i+1); });
+    document.addEventListener("keydown",function(ev){
+      if(!P) return;
+      if(ev.target && /^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName)) return;
+      if(ev.key==="ArrowRight"){ go(state.i+1); }
+      else if(ev.key==="ArrowLeft"){ go(state.i-1); }
+    });
+
+    /* "All pathways" returns to the picker */
+    var allBtn=$("#all-btn");
+    if(allBtn) allBtn.addEventListener("click", function(){
+      history.pushState(null,"",location.pathname+location.search);
+      showLanding();
+      var first=$("#landing-grid button"); if(first) first.focus();
+    });
+    window.addEventListener("popstate", route);
+
+    /* init */
+    syncBackLink();
+    setMotion(state.reduce);
+    setLang(state.lang);   /* language chrome + initial render (landing while P is null) */
+    route();               /* open the requested pathway from the URL, else show the picker */
+  })();
+  </script>
+</body>
+</html>

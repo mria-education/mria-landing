@@ -496,6 +496,19 @@
   #rhizome { scroll-margin-top: 24px; padding-top: 34px; }
   #rhizome .sem-intro { max-width: 880px; margin: 0 auto; padding: 0 20px 6px; text-align: center; }
 
+  .motion-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 12px;
+    font-family: var(--display); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    color: var(--cardcolor, var(--gold-l));
+    border: 1px solid var(--line); border-radius: 18px;
+    padding: 8px 14px; min-height: 40px;
+    transition: background 0.16s;
+  }
+  body.lang-ko .motion-link { font-family: var(--ko); letter-spacing: 0.02em; }
+  .motion-link:hover { background: rgba(201,168,76,0.1); }
+
   /* roadmap */
   .roadmap-list { margin-top: 26px; display: grid; gap: 12px; }
   .roadmap-item {
@@ -581,8 +594,8 @@
         <p class="lead">MRIA Education develops a <strong>MetaReality Relational Intelligence Architecture</strong> — interdisciplinary relational formation across embodied, digital, communal, interpretive, cultural, ecological, and transformative realities, grounded in biblical studies. Built upon the WHERE–WHO–WHAT framework, MRIA cultivates Human + AI participatory ecosystems where relational spaces shape identity and embodied action discloses future becoming.</p>
       </div>
       <div class="only-ko" lang="ko">
-        <h2>인간 + AI 시대를 위한 관계적 형성.</h2>
-        <p class="lead">MRIA Education은 <strong>MetaReality 관계적 지성 아키텍처</strong>를 세워갑니다 — 성서학에 기반하여, 구현적·디지털적·공동체적·해석적·문화적·생태적·변혁적 현실을 가로지르는 학제간 관계적 형성입니다. WHERE–WHO–WHAT 프레임워크를 토대로, MRIA는 관계적 공간이 정체성을 형성하고 구현된 행동이 미래의 됨을 드러내는 인간 + AI 참여 생태계를 가꿉니다.</p>
+        <h2>사람 + AI 시대를 위한 관계적 형성.</h2>
+        <p class="lead">MRIA Education은 <strong>MetaReality 관계적 지성 아키텍처</strong>를 세워갑니다 — 성서학에 기반하여, 구현적·디지털적·공동체적·해석적·문화적·생태적·변혁적 현실을 가로지르는 학제간 관계적 형성입니다. WHERE–WHO–WHAT 프레임워크를 토대로, MRIA는 관계적 공간이 정체성을 형성하고 구현된 행동이 미래의 됨을 드러내는 사람 + AI 참여 생태계를 가꿉니다.</p>
       </div>
       <div class="arc-strip" role="list" aria-label="Formation arc / 형성 아크">
         <div class="arc-cell" role="listitem"><strong>WHERE</strong>
@@ -649,7 +662,7 @@
       <div class="only-ko" lang="ko">
         <p class="kicker">MRIA 소개</p>
         <h2>관계적 됨을 위한 MetaReality 아키텍처.</h2>
-        <p class="lead">MRIA는 교육을 단순한 정보 전달이 아니라 MetaReality 안에서의 관계적 됨(becoming)으로 이해합니다. 인간은 관계적 공간, 구현된 참여, 공동체적 해석, 펼쳐지는 미래를 통해 형성됩니다. WHERE가 WHO를 형성하고, WHO는 현재의 참여 속에 구현되는 WHAT을 통해 펼쳐집니다. MRIA는 결코 단순한 학교, 교회, 앱, 웹사이트, 플랫폼, 기관이 아닙니다 — 살아 있는 관계적 아키텍처입니다.</p>
+        <p class="lead">MRIA는 교육을 단순한 정보 전달이 아니라 MetaReality 안에서의 관계적 됨(becoming)으로 이해합니다. 사람은 관계적 공간, 구현된 참여, 공동체적 해석, 펼쳐지는 미래를 통해 형성됩니다. WHERE가 WHO를 형성하고, WHO는 현재의 참여 속에 구현되는 WHAT을 통해 펼쳐집니다. MRIA는 결코 단순한 학교, 교회, 앱, 웹사이트, 플랫폼, 기관이 아닙니다 — 살아 있는 관계적 아키텍처입니다.</p>
       </div>
       <div class="card-grid" style="--cols:3">
         <article class="sem-card">
@@ -680,7 +693,7 @@
       <div class="only-ko" lang="ko">
         <p class="kicker">삼중 메타 코어</p>
         <h2>MetaGenesis는 생성하고, MetaWay는 움직이며, MetaCommon은 모읍니다.</h2>
-        <p class="lead">MetaReality는 이 셋을 함께 붙드는 역동적 장입니다 — 기술이 관계적 지혜, 돌봄, 형성, 언어, 문화, 구현된 됨을 뒷받침하는 인간 + AI 참여 생태계입니다.</p>
+        <p class="lead">MetaReality는 이 셋을 함께 붙드는 역동적 장입니다 — 기술이 관계적 지혜, 돌봄, 형성, 언어, 문화, 구현된 됨을 뒷받침하는 사람 + AI 참여 생태계입니다.</p>
       </div>
       <div class="card-grid" style="--cols:3">
         <article class="sem-card" style="--cardcolor:#1D9E75">
@@ -745,38 +758,43 @@
       <div class="only-en">
         <p class="kicker">Five Motions</p>
         <h2 id="motions-h">Five formation currents move through the ecosystem.</h2>
-        <p class="lead">Open their nodes in the rhizome above to explore each relational world. Guided, read-only formation pathways arrive with the future RFLS application.</p>
+        <p class="lead">Open their nodes in the rhizome above to explore each relational world — or begin a guided, read-only formation pathway directly. Seven movements each, toward an embodied event. No account, nothing stored.</p>
       </div>
       <div class="only-ko" lang="ko">
         <p class="kicker">다섯 가지 운동</p>
         <h2>다섯 가지 형성의 운동이 생태계를 관통합니다.</h2>
-        <p class="lead">위 리좀에서 각 노드를 열어 그 관계적 세계를 탐색하세요. 안내형 읽기 전용 형성 경로는 향후 RFLS 애플리케이션과 함께 제공됩니다.</p>
+        <p class="lead">위 리좀에서 각 노드를 열어 그 관계적 세계를 탐색하거나, 안내형 읽기 전용 형성 경로를 직접 시작하세요. 각 경로는 일곱 움직임으로 구현된 사건을 향합니다. 계정 없음, 어떤 것도 저장하지 않습니다.</p>
       </div>
       <div class="card-grid" style="--cols:3">
         <article class="sem-card" id="motion-cognition" style="--cardcolor:#5DCAA5">
           <h3><span class="only-en">Cognition in Motion</span><span class="only-ko" lang="ko">Cognition — 운동 중에</span></h3>
           <p class="only-en">Wisdom, discernment, and transformative understanding.</p>
           <p class="only-ko" lang="ko">지혜, 분별, 변혁적 이해.</p>
+          <a class="motion-link" href="pathways.html#cognition-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
         </article>
         <article class="sem-card" id="motion-communication" style="--cardcolor:#AFA9EC">
           <h3><span class="only-en">Communication in Motion</span><span class="only-ko" lang="ko">Communication — 운동 중에</span></h3>
           <p class="only-en">Interpretive crossing and relational listening across worlds — including language, translation, and cross-cultural understanding.</p>
           <p class="only-ko" lang="ko">세계를 가로지르는 해석적 건넘과 관계적 경청 — 언어, 번역, 문화 간 이해를 포함합니다.</p>
+          <a class="motion-link" href="pathways.html#communication-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
         </article>
         <article class="sem-card" id="motion-culture" style="--cardcolor:#FAC775">
           <h3><span class="only-en">Culture in Motion</span><span class="only-ko" lang="ko">Culture — 운동 중에</span></h3>
           <p class="only-en">Cultural difference held without domination; justice-oriented learning and narrative exchange.</p>
           <p class="only-ko" lang="ko">지배 없이 붙들리는 문화적 차이; 정의 지향적 배움과 서사의 교환.</p>
+          <a class="motion-link" href="pathways.html#culture-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
         </article>
         <article class="sem-card" id="motion-care" style="--cardcolor:#F0997B">
           <h3><span class="only-en">Care in Motion</span><span class="only-ko" lang="ko">Care — 운동 중에</span></h3>
           <p class="only-en">Accompaniment, dignity recovery, and restoration. Sacred and crisis moments belong to embodied human presence, never to AI mediation.</p>
-          <p class="only-ko" lang="ko">동행, 존엄 회복, 회복. 신성한 순간과 위기의 순간은 AI 매개가 아니라 구현된 인간 현존에 속합니다.</p>
+          <p class="only-ko" lang="ko">동행, 존엄 회복, 회복. 신성한 순간과 위기의 순간은 AI 매개가 아니라 구현된 사람 현존에 속합니다.</p>
+          <a class="motion-link" href="pathways.html#care-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
         </article>
         <article class="sem-card" id="motion-communion" style="--cardcolor:#85B7EB">
           <h3><span class="only-en">Communion in Motion</span><span class="only-ko" lang="ko">Communion — 운동 중에</span></h3>
           <p class="only-en">Shared communal life — where becoming is received, named, and sent together.</p>
           <p class="only-ko" lang="ko">공유된 공동체적 삶 — 됨(becoming)이 함께 받아들여지고, 명명되고, 파송되는 곳.</p>
+          <a class="motion-link" href="pathways.html#communion-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
         </article>
       </div>
     </section>
@@ -791,7 +809,7 @@
       <div class="only-ko" lang="ko">
         <p class="kicker">학습 아키텍처</p>
         <h2>High-Touch를 섬기는 High-Tech.</h2>
-        <p class="lead">구현된 인간 형성을 섬기는 기술적 지성 — 그 반대가 아닙니다.</p>
+        <p class="lead">구현된 사람 형성을 섬기는 기술적 지성 — 그 반대가 아닙니다.</p>
       </div>
       <div class="card-grid" style="--cols:4">
         <article class="sem-card" style="--cardcolor:#378ADD">
@@ -802,7 +820,7 @@
         <article class="sem-card" style="--cardcolor:#378ADD">
           <h3>High-Touch</h3>
           <p class="only-en">Embodied care, relational presence, human formation.</p>
-          <p class="only-ko" lang="ko">구현된 돌봄, 관계적 현존, 인간 형성.</p>
+          <p class="only-ko" lang="ko">구현된 돌봄, 관계적 현존, 사람 형성.</p>
         </article>
         <article class="sem-card">
           <h3><span class="only-en">Adaptive Learning</span><span class="only-ko" lang="ko">적응적 학습</span></h3>
@@ -966,11 +984,11 @@ window.RHIZOME_CONTENT = {
       subtitle: { en: "Relational Intelligence Architecture", ko: "관계적 지성 아키텍처" },
       tags: {
         en: ["WHERE · WHO · WHAT", "Matrix Space", "Human + AI era"],
-        ko: ["WHERE · WHO · WHAT", "Matrix Space", "인간 + AI 시대"]
+        ko: ["WHERE · WHO · WHAT", "Matrix Space", "사람 + AI 시대"]
       },
       body: {
         en: "<p>MRIA is a MetaReality Relational Intelligence Architecture for interdisciplinary relational formation across embodied, digital, communal, interpretive, cultural, ecological, and transformative realities. It is grounded in biblical studies and enters dialogue with philosophy, education, justice, technology, and lived communal practice without collapsing their distinct voices.</p><p>Its biblical-studies method is emic: texts and narrative worlds are first engaged on their own historical, literary, linguistic, cultural, spatial, and relational terms rather than treated as demands for prior doctrinal assent.</p><p>Built upon the WHERE–WHO–WHAT framework, MRIA cultivates Human + AI participatory ecosystems where relational spaces shape identity and embodied action discloses future becoming. MetaReality is the charged field that holds MetaGenesis, MetaWay, and MetaCommon together.</p><p>It names the governing topology: <em>the Matrix Space of Becoming</em> — a constitutive in-between through which persons and communities cross thresholds, name Future Selves, and arrive irreversibly at new relational becoming.</p><p>MetaReality does not impose formation from above. It cultivates structural conditions in which the Inherent Formation Capacity already present in every person can be freely exercised.</p>",
-        ko: "<p>MRIA는 구현적, 디지털적, 공동체적, 해석적, 문화적, 생태적, 변혁적 현실을 가로지르는 학제간 관계적 형성을 위한 MetaReality 관계적 지성 아키텍처입니다. 성서학에 기반하며, 철학, 교육, 정의, 기술, 살아 있는 공동체적 실천과 대화하되 각 목소리의 고유성을 붕괴시키지 않습니다.</p><p>MRIA의 성서학 방법은 내재적입니다. 본문과 서사 세계를 교리적 동의의 선행 조건으로 다루지 않고, 먼저 그 자체의 역사적, 문학적, 언어적, 문화적, 공간적, 관계적 맥락에서 만납니다.</p><p>WHERE–WHO–WHAT 프레임워크를 토대로, MRIA는 관계적 공간이 정체성을 형성하고 구현된 행동이 미래의 됨을 드러내는 인간 + AI 참여 생태계를 가꿉니다. MetaReality는 MetaGenesis, MetaWay, MetaCommon을 함께 붙드는 역동적 장입니다.</p><p>그것은 지배적 위상학인 <em>됨의 Matrix Space</em>를 명명합니다 — 인격과 공동체가 문턱을 넘고, 미래 자아를 명명하며, 돌이킬 수 없는 새로운 관계적 됨에 이르는 구성적 사이 공간입니다.</p><p>MetaReality는 위에서 형성을 강요하지 않습니다. 모든 사람 안에 이미 존재하는 내재적 형성 역량이 자유롭게 발휘될 수 있는 구조적 조건을 가꿉니다.</p>"
+        ko: "<p>MRIA는 구현적, 디지털적, 공동체적, 해석적, 문화적, 생태적, 변혁적 현실을 가로지르는 학제간 관계적 형성을 위한 MetaReality 관계적 지성 아키텍처입니다. 성서학에 기반하며, 철학, 교육, 정의, 기술, 살아 있는 공동체적 실천과 대화하되 각 목소리의 고유성을 붕괴시키지 않습니다.</p><p>MRIA의 성서학 방법은 내재적입니다. 본문과 서사 세계를 교리적 동의의 선행 조건으로 다루지 않고, 먼저 그 자체의 역사적, 문학적, 언어적, 문화적, 공간적, 관계적 맥락에서 만납니다.</p><p>WHERE–WHO–WHAT 프레임워크를 토대로, MRIA는 관계적 공간이 정체성을 형성하고 구현된 행동이 미래의 됨을 드러내는 사람 + AI 참여 생태계를 가꿉니다. MetaReality는 MetaGenesis, MetaWay, MetaCommon을 함께 붙드는 역동적 장입니다.</p><p>그것은 지배적 위상학인 <em>됨의 Matrix Space</em>를 명명합니다 — 인격과 공동체가 문턱을 넘고, 미래 자아를 명명하며, 돌이킬 수 없는 새로운 관계적 됨에 이르는 구성적 사이 공간입니다.</p><p>MetaReality는 위에서 형성을 강요하지 않습니다. 모든 사람 안에 이미 존재하는 내재적 형성 역량이 자유롭게 발휘될 수 있는 구조적 조건을 가꿉니다.</p>"
       },
       www: {
         en: ["Where the ecosystem is rooted", "WHO the architecture serves — all persons as image-bearers", "WHAT it enacts — truth · love · justice · grace · peace"],
@@ -978,7 +996,7 @@ window.RHIZOME_CONTENT = {
       },
       arc: {
         en: "truth · love · justice · grace · peace — for the flourishing of others in the Human + AI era",
-        ko: "진리 · 사랑 · 정의 · 은혜 · 평화 — 인간 + AI 시대, 타인의 번영을 위하여"
+        ko: "진리 · 사랑 · 정의 · 은혜 · 평화 — 사람 + AI 시대, 타인의 번영을 위하여"
       },
       classes: { en: [], ko: [] }
     },
@@ -1085,7 +1103,7 @@ window.RHIZOME_CONTENT = {
       },
       body: {
         en: "<p>The dual-axis learning architecture of MRIA — holding the tension between technological intelligence and embodied human formation.</p><p><strong>High-Tech</strong> — AI, adaptive systems, automation, digital intelligence.</p><p><strong>High-Touch</strong> — Embodied care, relational presence, human formation.</p><p><strong>Adaptive Learning</strong> — Individual MetaReality formation.</p><p><strong>Active Learning</strong> — Communal MetaReality participation.</p>",
-        ko: "<p>MRIA의 이중 축 학습 아키텍처 — 기술적 지성과 구현된 인간 형성 사이의 긴장을 붙듭니다.</p><p><strong>High-Tech</strong> — AI, 적응형 시스템, 자동화, 디지털 지성.</p><p><strong>High-Touch</strong> — 구현된 돌봄, 관계적 현존, 인간 형성.</p><p><strong>적응적 학습</strong> — 개인 MetaReality 형성.</p><p><strong>능동적 학습</strong> — 공동체적 MetaReality 참여.</p>"
+        ko: "<p>MRIA의 이중 축 학습 아키텍처 — 기술적 지성과 구현된 사람 형성 사이의 긴장을 붙듭니다.</p><p><strong>High-Tech</strong> — AI, 적응형 시스템, 자동화, 디지털 지성.</p><p><strong>High-Touch</strong> — 구현된 돌봄, 관계적 현존, 사람 형성.</p><p><strong>적응적 학습</strong> — 개인 MetaReality 형성.</p><p><strong>능동적 학습</strong> — 공동체적 MetaReality 참여.</p>"
       },
       www: {
         en: ["WHERE — the learning space between digital and embodied worlds", "WHO — the formation learner navigating both intelligences", "WHAT — adaptive and active practices that embody formation"],
@@ -1229,7 +1247,7 @@ window.RHIZOME_CONTENT = {
       },
       body: {
         en: "<p>Culture in Motion holds open the matrix space of shared human worlds — where memory, creativity, dignity, and difference meet, and where the center/margin topology of every cultural arrangement is exposed and reordered.</p><p>Culture is the visible geometry of relational life. Power is the configuration of space. MRIA asks of every cultural topology: Where does this arrangement locate power, vulnerability, and shared dignity?</p>",
-        ko: "<p>Culture in Motion은 공유된 인간 세계들의 matrix space를 열어 붙듭니다 — 기억, 창조성, 존엄, 차이가 만나고, 모든 문화적 배치의 중심/주변부 위상학이 드러나고 재편되는 곳입니다.</p><p>문화는 관계적 삶의 가시적 기하학입니다. 권력은 공간의 배치입니다. MRIA는 모든 문화적 위상학에 묻습니다: 이 배치는 권력, 취약성, 공유된 존엄을 어디에 위치시킵니까?</p>"
+        ko: "<p>Culture in Motion은 공유된 사람 세계들의 matrix space를 열어 붙듭니다 — 기억, 창조성, 존엄, 차이가 만나고, 모든 문화적 배치의 중심/주변부 위상학이 드러나고 재편되는 곳입니다.</p><p>문화는 관계적 삶의 가시적 기하학입니다. 권력은 공간의 배치입니다. MRIA는 모든 문화적 위상학에 묻습니다: 이 배치는 권력, 취약성, 공유된 존엄을 어디에 위치시킵니까?</p>"
       },
       www: {
         en: ["WHERE — cultural inheritance; center/margin dynamics named", "WHO — repositioned cultural self; neither enclosed nor rootless", "WHAT — restorative coexistence; healing the center/margin fracture"],
@@ -1241,7 +1259,7 @@ window.RHIZOME_CONTENT = {
       },
       classes: {
         en: ["Human Stories", "Food", "Music", "Memory", "Dignity", "Justice", "Cross-Cultural Formation"],
-        ko: ["인간 이야기", "음식", "음악", "기억", "존엄", "정의", "문화 간 형성"]
+        ko: ["사람 이야기", "음식", "음악", "기억", "존엄", "정의", "문화 간 형성"]
       }
     },
 
@@ -1255,7 +1273,7 @@ window.RHIZOME_CONTENT = {
       },
       body: {
         en: "<p>Care in Motion holds open the matrix space of rupture — where fragmentation, wound, and loss have disrupted the relational field, and where covenantal accompaniment makes re-entry into life-giving relationship possible again.</p><p><em>Not rescue — accompaniment.</em> The Three-Stage triage is mandatory: never apply formation modes to a person in Cyclical Imprisonment. That misdiagnosis is pastoral malpractice.</p><p><strong>Sabbath Brake ⫞</strong> operative here: no AI mediation for dying, acute grief, trauma, crisis. Embodied human presence only.</p>",
-        ko: "<p>Care in Motion은 파열의 matrix space를 열어 붙듭니다 — 분열, 상처, 상실이 관계 장을 깨뜨린 곳, 언약적 동행이 생명을 주는 관계로의 재진입을 다시 가능하게 하는 곳.</p><p><em>구조가 아닌 동행.</em> Three-Stage 분류는 필수입니다: 순환적 갇힘에 있는 사람에게 형성 방식을 절대 적용하지 마십시오. 그 오진은 목회적 과실입니다.</p><p><strong>안식일 브레이크 ⫞</strong> 작동: 임종, 급성 슬픔, 트라우마, 위기에는 AI 매개 없음. 구현된 인간 현존만.</p>"
+        ko: "<p>Care in Motion은 파열의 matrix space를 열어 붙듭니다 — 분열, 상처, 상실이 관계 장을 깨뜨린 곳, 언약적 동행이 생명을 주는 관계로의 재진입을 다시 가능하게 하는 곳.</p><p><em>구조가 아닌 동행.</em> Three-Stage 분류는 필수입니다: 순환적 갇힘에 있는 사람에게 형성 방식을 절대 적용하지 마십시오. 그 오진은 목회적 과실입니다.</p><p><strong>안식일 브레이크 ⫞</strong> 작동: 임종, 급성 슬픔, 트라우마, 위기에는 AI 매개 없음. 구현된 사람 현존만.</p>"
       },
       www: {
         en: ["WHERE — cyclical imprisonment; rupture not yet received", "WHO — dignity received again; person ready to cross threshold", "WHAT — covenantal presence; not rescue but accompaniment"],
@@ -1324,15 +1342,15 @@ window.RHIZOME_CONTENT = {
     if (!C) { document.body.innerHTML = "<p style='padding:2rem'>Content data failed to load.</p>"; return; }
 
     /* Nodes with an associated RFLS formation pathway.
-       On the public landing these bridge to the Five Motions section;
-       the guided read-only pathway experience arrives with the future,
-       separately governed RFLS application (app.mria.education). */
+       Each opens the read-only guided pathway page (pathways.html),
+       derived from the validated RFLS prototype: five pathways, seven
+       movements each, EMBODIED endpoint, no personal data collected. */
     var PATHWAYS = {
-      C1: { url: "#motion-cognition",     labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" },
-      C2: { url: "#motion-communication", labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" },
-      C3: { url: "#motion-culture",       labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" },
-      C4: { url: "#motion-care",          labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" },
-      C5: { url: "#motion-communion",     labelEn: "About this formation pathway", labelKo: "이 형성 경로 소개" }
+      C1: { url: "pathways.html#cognition-in-motion",     labelEn: "Begin the formation pathway", labelKo: "형성 경로 시작하기" },
+      C2: { url: "pathways.html#communication-in-motion", labelEn: "Begin the formation pathway", labelKo: "형성 경로 시작하기" },
+      C3: { url: "pathways.html#culture-in-motion",       labelEn: "Begin the formation pathway", labelKo: "형성 경로 시작하기" },
+      C4: { url: "pathways.html#care-in-motion",          labelEn: "Begin the formation pathway", labelKo: "형성 경로 시작하기" },
+      C5: { url: "pathways.html#communion-in-motion",     labelEn: "Begin the formation pathway", labelKo: "형성 경로 시작하기" }
     };
 
     /* ---------------- i18n strings for UI chrome ---------------- */
@@ -1586,28 +1604,12 @@ window.RHIZOME_CONTENT = {
       if (path) {
         var label = state.lang === "ko" ? path.labelKo : path.labelEn;
         var note = state.lang === "ko"
-          ? "안내형 읽기 전용 경로는 향후 RFLS 애플리케이션과 함께 제공됩니다 · 개인정보 없음"
-          : "Guided read-only pathways arrive with the future RFLS application · no personal data";
+          ? "읽기 전용 · 계정 없음 · 개인정보 없음"
+          : "Read-only · no account · no personal data";
         pathWrap.innerHTML =
           '<a class="pathway-launch" style="--pl-color:' + col + '" href="' + path.url + '">' +
             '<span aria-hidden="true">↳</span>' + esc(label) +
           '</a><span class="pathway-note">' + esc(note) + '</span>';
-        var launchLink = pathWrap.querySelector(".pathway-launch");
-        if (launchLink) launchLink.addEventListener("click", function (ev) {
-          /* The panel locks body scrolling while open, which swallows a plain
-             anchor jump. Close first, then scroll and move focus to the card. */
-          ev.preventDefault();
-          var targetId = path.url.slice(1);
-          closePanel();
-          setTimeout(function () {
-            var target = document.getElementById(targetId);
-            if (!target) return;
-            if (history.replaceState) history.replaceState(null, "", path.url);
-            target.scrollIntoView();
-            target.setAttribute("tabindex", "-1");
-            target.focus({ preventScroll: true });
-          }, state.reduceMotion ? 0 : 360);
-        });
         pathWrap.hidden = false;
       } else {
         pathWrap.hidden = true;
