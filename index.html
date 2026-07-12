@@ -539,6 +539,26 @@
     margin: 56px auto 0;
   }
 
+  /* ============================ SECTION ROUTER ============================ */
+  /* body.routed is added by JS. Without JS all sections render in sequence. */
+  body.routed #orientation,
+  body.routed #rhizome,
+  body.routed .sem-divider,
+  body.routed main > .sem { display: none; }
+  body.routed.route-home #orientation,
+  body.routed.route-home #rhizome,
+  body.routed.route-home .sem-divider,
+  body.routed.route-rhizome #rhizome { display: block; }
+  body.routed.route-about #about,
+  body.routed.route-core #core,
+  body.routed.route-formation #formation,
+  body.routed.route-motions #motions,
+  body.routed.route-learning #learning,
+  body.routed.route-roadmap #roadmap,
+  body.routed.route-participation #participation { display: block; }
+  body.routed main > .sem { padding-top: 40px; padding-bottom: 56px; }
+  .site-nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
+
   /* ============================ REDUCED MOTION ============================ */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -1850,6 +1870,60 @@ window.RHIZOME_CONTENT = {
       camera.lookAt(0, 0, 0);
       renderer.render(scene, camera);
     }
+
+    /* ============================================================
+       SECTION ROUTER — one section visible at a time (progressive)
+       ============================================================ */
+    var ROUTES = ["rhizome","about","core","formation","motions","learning","roadmap","participation"];
+    var ROUTE_CLASSES = ["route-home","route-rhizome","route-about","route-core","route-formation",
+                         "route-motions","route-learning","route-roadmap","route-participation"];
+
+    function currentRoute() {
+      var h = (location.hash || "").replace(/^#/, "");
+      if (!h) return { route: "home", target: null };
+      if (ROUTES.indexOf(h) !== -1) return { route: h, target: null };
+      /* deep link to an element inside a section (e.g. #motion-care) */
+      var el = document.getElementById(h);
+      if (el) {
+        var sec = el.closest ? el.closest("main > .sem, #rhizome") : null;
+        if (sec && ROUTES.indexOf(sec.id) !== -1) return { route: sec.id, target: el };
+      }
+      return { route: "home", target: null };
+    }
+
+    function applyRoute(focusHeading) {
+      var r = currentRoute();
+      ROUTE_CLASSES.forEach(function (c) { document.body.classList.remove(c); });
+      document.body.classList.add("route-" + r.route);
+      $$(".site-nav a").forEach(function (a) {
+        a.classList.toggle("active", a.getAttribute("href") === "#" + r.route);
+      });
+      if (r.target) {
+        r.target.scrollIntoView();
+        r.target.setAttribute("tabindex", "-1");
+        r.target.focus({ preventScroll: true });
+      } else {
+        window.scrollTo(0, 0);
+        if (focusHeading) {
+          var sec = r.route === "home" ? $("#orientation") : $("#" + r.route);
+          if (sec) { sec.setAttribute("tabindex", "-1"); sec.focus({ preventScroll: true }); }
+        }
+      }
+    }
+
+    /* Map/List/3D buttons should always bring the rhizome into view */
+    $$("#view-switch .seg-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (!document.body.classList.contains("route-rhizome") &&
+            !document.body.classList.contains("route-home")) {
+          location.hash = "#rhizome";
+        }
+      });
+    });
+
+    document.body.classList.add("routed");
+    window.addEventListener("hashchange", function () { applyRoute(true); });
+    applyRoute(false);
 
     /* ============================================================
        INIT
