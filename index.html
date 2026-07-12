@@ -509,6 +509,14 @@
   body.lang-ko .motion-link { font-family: var(--ko); letter-spacing: 0.02em; }
   .motion-link:hover { background: rgba(201,168,76,0.1); }
 
+  /* subsection inside a section (e.g. How MRIA Works within About) */
+  .sem-sub { margin-top: 52px; scroll-margin-top: 24px; }
+  .sem-sub .sub-head {
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(18px, 4.2vw, 24px); line-height: 1.35; color: var(--paper);
+  }
+  body.lang-ko .sem-sub .sub-head { font-family: var(--ko); }
+
   /* participation / notes */
   .note-grid { display: grid; gap: 12px; margin-top: 26px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .note-grid { grid-template-columns: 1fr 1fr 1fr; } }
@@ -688,6 +696,56 @@
           <p class="only-ko" lang="ko">미래 자아는 현재의 관계적 참여와 구현된 실천을 통해 펼쳐집니다.</p>
         </article>
       </div>
+    
+      <!-- ===== HOW MRIA WORKS (subsection of About) ===== -->
+      <div class="sem-sub" id="how">
+        <div class="only-en">
+          <p class="kicker">How MRIA Works</p>
+          <h3 class="sub-head">Begin anywhere. Formation moves with you.</h3>
+          <p class="lead">MRIA Education's public world is open, free, and anonymous. You explore, you walk a pathway, and you carry what forms into embodied life — no account, no enrollment, nothing collected.</p>
+          <p class="lead">What a formation pathway gives you is an honest mirror. Step by step, you come to see your own life clearly: <strong>WHERE</strong> you actually stand, <strong>WHO</strong> you are living with and becoming with, <strong>WHAT</strong> you are giving your days to — and what kind of <strong>embodied</strong> life all of it is forming. Not a score, not a diagnosis: a clearer sight of your own life, and one real practice to begin within it.</p>
+        </div>
+        <div class="only-ko" lang="ko">
+          <p class="kicker">이용 안내</p>
+          <h3 class="sub-head">어디서든 시작하세요. 형성은 당신과 함께 움직입니다.</h3>
+          <p class="lead">MRIA Education의 공개 세계는 열려 있고, 무료이며, 익명입니다. 탐색하고, 경로를 걷고, 형성된 것을 구현된 삶으로 가져가세요 — 계정도, 등록도, 어떤 수집도 없습니다.</p>
+          <p class="lead">형성 경로가 주는 것은 정직한 거울입니다. 걸음마다 자기 삶을 객관적으로 보게 됩니다: 지금 <strong>어디에(WHERE)</strong> 서 있는지, <strong>누구와(WHO)</strong> 살아가며 되어가고 있는지, <strong>무엇에(WHAT)</strong> 하루하루를 쏟고 있는지 — 그리고 이 모든 것이 어떤 <strong>구현된(EMBODIED)</strong> 삶을 형성하고 있는지. 점수도 진단도 아닙니다. 자기 삶을 향한 더 맑은 시선과, 그 안에서 시작할 하나의 실천입니다.</p>
+        </div>
+        <div class="card-grid" style="--cols:4">
+          <article class="sem-card">
+            <h3><span class="only-en">1 · Explore the rhizome</span><span class="only-ko" lang="ko">1 · 리좀 탐색</span></h3>
+            <p class="only-en">Open the living map above. Every node is a doorway into MRIA's relational world, in English and Korean, on any device.</p>
+            <p class="only-ko" lang="ko">위의 살아 있는 지도를 여세요. 모든 노드는 MRIA의 관계적 세계로 들어가는 문이며, 영어와 한국어로, 어떤 기기에서든 열립니다.</p>
+          </article>
+          <article class="sem-card">
+            <h3><span class="only-en">2 · Walk a pathway</span><span class="only-ko" lang="ko">2 · 형성 경로 걷기</span></h3>
+            <p class="only-en">Choose one of five read-only formation pathways — seven movements each, from the WHERE you stand toward an embodied event. Twenty minutes or twenty days; nothing is timed, tracked, or scored.</p>
+            <p class="only-ko" lang="ko">다섯 개의 읽기 전용 형성 경로 중 하나를 선택하세요. 각 경로는 일곱 움직임을 지나, 당신이 서 있는 WHERE에서 구현된 사건을 향해 나아갑니다. 이십 분이 걸려도, 이십 일이 걸려도 좋습니다. 시간을 재거나, 추적하거나, 점수를 매기지 않습니다.</p>
+          </article>
+          <article class="sem-card">
+            <h3><span class="only-en">3 · Practice embodied</span><span class="only-ko" lang="ko">3 · 구현된 실천</span></h3>
+            <p class="only-en">Every movement ends in reflection and practice that belong to your real relationships. No screen can complete them for you — that is the point.</p>
+            <p class="only-ko" lang="ko">모든 움직임은 당신의 실제 관계에 속한 성찰과 실천으로 끝납니다. 어떤 화면도 그것을 대신 완성할 수 없습니다 — 바로 그것이 핵심입니다.</p>
+          </article>
+          <article class="sem-card">
+            <h3><span class="only-en">4 · Stay in relation</span><span class="only-ko" lang="ko">4 · 관계 안에 머물기</span></h3>
+            <p class="only-en">Learners, educators, and communities are welcome to write: hello@mria.education.</p>
+            <p class="only-ko" lang="ko">배우는 사람, 교육자, 공동체를 환영합니다: hello@mria.education.</p>
+          </article>
+        </div>
+        <div class="card-grid" style="--cols:2">
+          <article class="sem-card" style="--cardcolor:#1D9E75">
+            <h3><span class="only-en">Available now, free</span><span class="only-ko" lang="ko">지금 이용 가능, 무료</span></h3>
+            <p class="only-en">The bilingual rhizome and all five read-only formation pathways. No account, no payment, no data collected. This public world stays free.</p>
+            <p class="only-ko" lang="ko">이중 언어 리좀과 다섯 개의 읽기 전용 형성 경로 전부. 계정 없음, 비용 없음, 수집 없음. 이 공개 세계는 계속 무료입니다.</p>
+          </article>
+          <article class="sem-card" style="--cardcolor:#EF9F27">
+            <h3><span class="only-en">In preparation, tuition-supported</span><span class="only-ko" lang="ko">준비 중, 수강료 기반</span></h3>
+            <p class="only-en">Guided courses taught and accompanied by real teachers, adaptive and active learning environments, and the global-student transitional program. When these open, tuition sustains the people who teach and accompany — announced clearly before anything is offered.</p>
+            <p class="only-ko" lang="ko">실제 교사가 가르치고 동반하는 정식 과정, 적응적·능동적 학습 환경, 그리고 글로벌 학생 전환기 프로그램. 이것들이 열릴 때의 수강료는 가르치고 동반하는 사람들의 수고를 지탱하며, 어떤 것도 제공되기 전에 명확하게 안내됩니다.</p>
+          </article>
+        </div>
+      </div>
     </section>
 
     <!-- ============ TRIADIC META CORE ============ -->
@@ -840,6 +898,17 @@
           <p class="only-en">Communal participation environments.</p>
           <p class="only-ko" lang="ko">공동체적 참여 환경.</p>
           <span class="status-chip"><span class="only-en">In design</span><span class="only-ko" lang="ko">설계 중</span></span>
+        </article>
+      </div>
+      <div class="sem-sub" id="global-students">
+        <p class="kicker"><span class="only-en">Initiatives in development</span><span class="only-ko" lang="ko">준비 중인 여정</span></p>
+        <article class="sem-card" style="--cardcolor:#F0997B">
+          <h3><span class="only-en">Transitional Formation for Global Students</span><span class="only-ko" lang="ko">글로벌 학생을 위한 전환기 형성</span></h3>
+          <p class="only-en">For high-school students preparing to study in the United States — a formation companion for the crossing itself. Leaving a known WHERE, carrying identity through new language and culture, and arriving with relational roots rather than survival strategies: this journey is built on Communication, Culture, and Care in Motion, with High-Touch human accompaniment at its center.</p>
+          <p class="only-ko" lang="ko">미국 유학을 준비하는 고등학생을 위한 — 건넘 그 자체를 위한 형성의 동반입니다. 익숙한 WHERE를 떠나, 새로운 언어와 문화를 가로질러 정체성을 지니고 가며, 생존 전략이 아니라 관계적 뿌리를 내리며 도착하는 여정. 이 여정은 Communication·Culture·Care in Motion 위에 세워지며, 그 중심에는 High-Touch의 사람 동반이 있습니다.</p>
+          <p class="only-en" style="font-style:italic; font-size:13px; color:rgba(232,228,216,0.6); margin-top:12px;">In development. There is no enrollment, no student account, and no collection of student information today. Families and educators may write to hello@mria.education.</p>
+          <p class="only-ko" lang="ko" style="font-style:italic; font-size:13px; color:rgba(232,228,216,0.6); margin-top:12px;">개발 중입니다. 현재 등록, 학생 계정, 학생 정보 수집은 없습니다. 가족과 교육자는 hello@mria.education으로 문의해 주세요.</p>
+          <span class="status-chip"><span class="only-en">In development</span><span class="only-ko" lang="ko">개발 중</span></span>
         </article>
       </div>
       <p class="lead only-en" style="font-size:14.5px; margin-top:20px;">MediaVerse (public expression) and AppVerse (participatory applications) are described in the rhizome above; each layer is announced only as it actually becomes available.</p>
