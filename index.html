@@ -509,17 +509,6 @@
   body.lang-ko .motion-link { font-family: var(--ko); letter-spacing: 0.02em; }
   .motion-link:hover { background: rgba(201,168,76,0.1); }
 
-  /* roadmap */
-  .roadmap-list { margin-top: 26px; display: grid; gap: 12px; }
-  .roadmap-item {
-    display: flex; gap: 14px; align-items: flex-start;
-    background: rgba(255,255,255,0.03); border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 16px;
-  }
-  .roadmap-item .status-chip { margin-top: 2px; flex: none; min-width: 96px; text-align: center; }
-  .roadmap-item p { font-size: 14.5px; line-height: 1.7; color: rgba(232,228,216,0.78); }
-  body.lang-ko .roadmap-item p { font-size: 13.5px; line-height: 1.85; }
-
   /* participation / notes */
   .note-grid { display: grid; gap: 12px; margin-top: 26px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .note-grid { grid-template-columns: 1fr 1fr 1fr; } }
@@ -554,7 +543,6 @@
   body.routed.route-formation #formation,
   body.routed.route-motions #motions,
   body.routed.route-learning #learning,
-  body.routed.route-roadmap #roadmap,
   body.routed.route-participation #participation { display: block; }
   body.routed main > .sem { padding-top: 40px; padding-bottom: 56px; }
   .site-nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
@@ -599,7 +587,6 @@
       <a href="#formation" data-i18n="nav_formation">Formation</a>
       <a href="#motions" data-i18n="nav_motions">Five Motions</a>
       <a href="#learning" data-i18n="nav_learning">Learning</a>
-      <a href="#roadmap" data-i18n="nav_roadmap">Roadmap</a>
       <a href="#participation" data-i18n="nav_contact">Contact</a>
     </nav>
   </header>
@@ -859,47 +846,17 @@
       <p class="lead only-ko" lang="ko" style="font-size:13.5px; margin-top:20px;">MediaVerse(공적 표현)와 AppVerse(참여적 앱)는 위 리좀에 소개되어 있으며, 각 층위는 실제로 제공되는 시점에 공지됩니다.</p>
     </section>
 
-    <!-- ============ ROADMAP ============ -->
-    <section class="sem" id="roadmap" aria-labelledby="roadmap-h">
-      <div class="only-en">
-        <p class="kicker">Roadmap</p>
-        <h2 id="roadmap-h">Developing progressively, honestly labeled.</h2>
-      </div>
-      <div class="only-ko" lang="ko">
-        <p class="kicker">로드맵</p>
-        <h2>단계적으로, 정직하게 표기하며 발전합니다.</h2>
-      </div>
-      <div class="roadmap-list">
-        <div class="roadmap-item">
-          <span class="status-chip"><span class="only-en">Current</span><span class="only-ko" lang="ko">현재</span></span>
-          <p><span class="only-en">Public landing and the accessible bilingual rhizome — Map and List are complete experiences; 3D is optional.</span><span class="only-ko" lang="ko">공개 랜딩과 접근 가능한 이중 언어 리좀 — 지도와 목록은 완전한 경험이며 3D는 선택입니다.</span></p>
-        </div>
-        <div class="roadmap-item">
-          <span class="status-chip"><span class="only-en">Approved next</span><span class="only-ko" lang="ko">승인된 다음</span></span>
-          <p><span class="only-en">Rhizome-first integrated landing for mria.education, in private preview before any public release.</span><span class="only-ko" lang="ko">mria.education을 위한 리좀 우선 통합 랜딩 — 공개 이전에 비공개 프리뷰로 진행됩니다.</span></p>
-        </div>
-        <div class="roadmap-item">
-          <span class="status-chip"><span class="only-en">Proposed</span><span class="only-ko" lang="ko">제안됨</span></span>
-          <p><span class="only-en">A small usability pilot — adults only, read-only, nothing stored.</span><span class="only-ko" lang="ko">소규모 사용성 파일럿 — 성인 대상, 읽기 전용, 어떤 것도 저장하지 않습니다.</span></p>
-        </div>
-        <div class="roadmap-item">
-          <span class="status-chip"><span class="only-en">Future</span><span class="only-ko" lang="ko">미래</span></span>
-          <p><span class="only-en">The RFLS application at app.mria.education with separately governed privacy, consent, and authentication — and expanding media and app layers.</span><span class="only-ko" lang="ko">별도로 관리되는 프라이버시·동의·인증을 갖춘 app.mria.education의 RFLS 애플리케이션, 그리고 확장되는 미디어·앱 층위.</span></p>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ PARTICIPATION / CONTACT ============ -->
     <section class="sem" id="participation" aria-labelledby="participation-h" style="padding-bottom:56px;">
       <div class="only-en">
         <p class="kicker">Participation</p>
         <h2 id="participation-h">Build the future of relational becoming.</h2>
-        <p class="lead">MRIA Education is building this ecosystem slowly and carefully. Questions, interest, and conversation are welcome.</p>
+        <p class="lead">MRIA Education is in early development: the rhizome and the read-only formation pathways are live today; fuller learning environments come later, carefully. Questions, interest, and conversation are welcome.</p>
       </div>
       <div class="only-ko" lang="ko">
         <p class="kicker">참여</p>
         <h2>관계적 됨의 미래를 함께 세워갑니다.</h2>
-        <p class="lead">MRIA Education은 이 생태계를 천천히, 신중하게 세워가고 있습니다. 질문과 관심, 대화를 환영합니다.</p>
+        <p class="lead">MRIA Education은 초기 개발 단계에 있습니다. 리좀과 읽기 전용 형성 경로는 지금 제공되며, 더 풍성한 학습 환경은 신중하게 준비되어 이후에 옵니다. 질문과 관심, 대화를 환영합니다.</p>
       </div>
       <div class="btn-row" style="justify-content:flex-start;">
         <a class="btn-gold" href="mailto:hello@mria.education"><span class="only-en">Contact MRIA</span><span class="only-ko" lang="ko">MRIA에 연락하기</span></a>
@@ -1387,7 +1344,7 @@ window.RHIZOME_CONTENT = {
         close: "Close",
         nav_rhizome: "Rhizome", nav_about: "About", nav_core: "Meta Core",
         nav_formation: "Formation", nav_motions: "Five Motions", nav_learning: "Learning",
-        nav_roadmap: "Roadmap", nav_contact: "Contact",
+        nav_contact: "Contact",
         footer: "© 2026 MRIA Education · MetaReality Relational Intelligence Architecture · anonymous & read-only · no personal data collected",
         groups: { architecture: "MetaReality", node: "Ecosystem Nodes", layer: "MRIA Layers", "5c": "5C Ecosystem — in Motion" },
         threed_loading: "Loading the 3D rhizome…",
@@ -1406,7 +1363,7 @@ window.RHIZOME_CONTENT = {
         close: "닫기",
         nav_rhizome: "리좀", nav_about: "소개", nav_core: "메타 코어",
         nav_formation: "형성", nav_motions: "다섯 운동", nav_learning: "학습",
-        nav_roadmap: "로드맵", nav_contact: "연락",
+        nav_contact: "연락",
         footer: "© 2026 MRIA Education · 메타리얼리티 관계적 지성 아키텍처 · 익명 · 읽기 전용 · 개인정보 수집 없음",
         groups: { architecture: "MetaReality", node: "생태계 노드", layer: "MRIA 층위", "5c": "5C 생태계 — 운동 중에" },
         threed_loading: "3D 리좀을 불러오는 중…",
@@ -1874,9 +1831,9 @@ window.RHIZOME_CONTENT = {
     /* ============================================================
        SECTION ROUTER — one section visible at a time (progressive)
        ============================================================ */
-    var ROUTES = ["rhizome","about","core","formation","motions","learning","roadmap","participation"];
+    var ROUTES = ["rhizome","about","core","formation","motions","learning","participation"];
     var ROUTE_CLASSES = ["route-home","route-rhizome","route-about","route-core","route-formation",
-                         "route-motions","route-learning","route-roadmap","route-participation"];
+                         "route-motions","route-learning","route-participation"];
 
     function currentRoute() {
       var h = (location.hash || "").replace(/^#/, "");
