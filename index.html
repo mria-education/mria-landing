@@ -12,7 +12,7 @@
      Fonts load from Google Fonts as PROGRESSIVE ENHANCEMENT only;
      web-safe serif fallbacks are declared so the page works offline.
      ============================================================ */
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&family=Noto+Serif+KR:wght@300;400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500&family=Noto+Serif+KR:wght@300;400&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -27,7 +27,7 @@
     --line:     rgba(201,168,76,0.20);
     --line-soft:rgba(255,255,255,0.08);
     --focus:    #86c5ff;
-    --serif:    'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --serif:    'Lora', Georgia, 'Times New Roman', serif;
     --display:  'Cinzel', Georgia, serif;
     --ko:       'Noto Serif KR', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
     --radius:   10px;
@@ -302,7 +302,7 @@
   body.lang-ko .p-tag { font-family: var(--ko); }
 
   #p-body { font-size: 16.5px; line-height: 1.75; color: rgba(232,228,216,0.85); }
-  body.lang-ko #p-body { font-size: 15px; line-height: 1.9; }
+  body.lang-ko #p-body { font-size: 16.5px; line-height: 1.95; }
   #p-body p { margin-bottom: 13px; }
   #p-body strong { color: var(--gold-l); }
 
@@ -314,7 +314,7 @@
     background: rgba(255,255,255,0.04); border: 1px solid var(--line-soft);
     border-radius: 8px; padding: 11px; font-size: 14px; line-height: 1.55;
   }
-  body.lang-ko .www-cell { font-size: 13px; }
+  body.lang-ko .www-cell { font-size: 14px; }
   .www-cell strong {
     display: block; font-family: var(--display); font-size: 11px;
     letter-spacing: 0.2em; margin-bottom: 5px; color: var(--gold-l);
@@ -425,14 +425,15 @@
   }
   body.lang-ko .sem h2 { font-family: var(--ko); }
   .sem .lead {
-    margin-top: 14px; font-size: 17px; line-height: 1.8;
-    color: rgba(232,228,216,0.82); max-width: 46em;
+    margin-top: 14px; font-size: 19px; line-height: 1.8;
+    color: rgba(232,228,216,0.92); max-width: 46em;
   }
-  body.lang-ko .sem .lead { font-size: 15.5px; line-height: 1.95; }
+  body.lang-ko .sem .lead { font-size: 17.5px; line-height: 1.95; }
   .sem .lead strong { color: var(--gold-l); font-weight: 500; }
 
   .card-grid { display: grid; gap: 12px; margin-top: 26px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .card-grid { grid-template-columns: repeat(var(--cols, 3), 1fr); } }
+  @media (min-width: 640px) and (max-width: 900px) { .card-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } .arc-strip { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); } }
   .sem-card {
     background: rgba(255,255,255,0.03);
     border: 1px solid var(--line-soft);
@@ -450,8 +451,8 @@
   .sem-card .sub {
     font-size: 13px; font-style: italic; color: var(--paper-dim); margin-top: 2px;
   }
-  .sem-card p { margin-top: 10px; font-size: 14.5px; line-height: 1.7; color: rgba(232,228,216,0.78); }
-  body.lang-ko .sem-card p { font-size: 13.5px; line-height: 1.85; }
+  .sem-card p { margin-top: 10px; font-size: 17px; line-height: 1.72; color: rgba(232,228,216,0.90); }
+  body.lang-ko .sem-card p { font-size: 15.5px; line-height: 1.9; }
   .status-chip {
     display: inline-block; margin-top: 10px;
     font-family: var(--display); font-size: 10px; letter-spacing: 0.18em;
@@ -465,9 +466,9 @@
   #orientation .lead { margin-left: auto; margin-right: auto; }
   .arc-strip {
     display: grid; gap: 10px; margin: 28px auto 0;
-    grid-template-columns: 1fr 1fr; max-width: 720px;
+    grid-template-columns: 1fr 1fr; max-width: 880px;
   }
-  @media (min-width: 640px) { .arc-strip { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 640px) { .arc-strip { grid-template-columns: repeat(5, 1fr); } }
   .arc-cell {
     background: rgba(255,255,255,0.03); border: 1px solid var(--line-soft);
     border-radius: var(--radius); padding: 14px 10px;
