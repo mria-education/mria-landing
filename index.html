@@ -393,19 +393,39 @@
   .site-nav {
     display: flex; flex-wrap: wrap; gap: 4px 14px;
     justify-content: center;
-    margin-top: 12px;
-    padding: 0 6px;
+    margin-top: 16px;
+    padding: 0 10px;
   }
   .site-nav a {
     font-family: var(--display);
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--paper-dim); text-decoration: none;
-    padding: 8px 6px; min-height: 40px; display: inline-flex; align-items: center;
-    border-bottom: 1px solid transparent;
-    transition: color 0.16s, border-color 0.16s;
+    padding: 11px 16px; min-height: 46px; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.035);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.025) inset;
+    transition: color 0.16s, border-color 0.16s, background 0.16s, transform 0.16s, box-shadow 0.16s;
   }
   body.lang-ko .site-nav a { font-family: var(--ko); letter-spacing: 0.03em; }
-  .site-nav a:hover { color: var(--gold-l); border-bottom-color: var(--line); }
+  .site-nav a:hover {
+    color: var(--gold-l);
+    border-color: rgba(232,213,163,0.5);
+    background: rgba(201,168,76,0.12);
+    transform: translateY(-1px);
+  }
+  .site-nav a.active,
+  .site-nav a[aria-current="page"] {
+    color: var(--ink);
+    border-color: var(--gold);
+    background: var(--gold);
+    box-shadow: 0 8px 24px rgba(201,168,76,0.16);
+  }
+  .site-nav a.active:hover,
+  .site-nav a[aria-current="page"]:hover {
+    color: var(--ink);
+    filter: brightness(1.06);
+  }
 
   /* ============================ SEMANTIC SECTIONS ============================ */
   .sem {
@@ -1946,7 +1966,10 @@ window.RHIZOME_CONTENT = {
       ROUTE_CLASSES.forEach(function (c) { document.body.classList.remove(c); });
       document.body.classList.add("route-" + r.route);
       $$(".site-nav a").forEach(function (a) {
-        a.classList.toggle("active", a.getAttribute("href") === "#" + r.route);
+        var isActive = a.getAttribute("href") === "#" + r.route;
+        a.classList.toggle("active", isActive);
+        if (isActive) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
       });
       if (r.target) {
         r.target.scrollIntoView();
