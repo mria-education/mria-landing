@@ -31,6 +31,7 @@
     --display:  'Cinzel', Georgia, serif;
     --ko:       'Noto Serif KR', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
     --radius:   10px;
+    --contentw: 1120px;
     --maxw:     620px;
   }
 
@@ -155,7 +156,7 @@
   #view-map { flex: 1; }
   .map-wrap {
     width: 100%;
-    max-width: 1000px;
+    max-width: var(--contentw);
     margin: 0 auto;
     padding: 8px 8px 24px;
   }
@@ -429,7 +430,7 @@
 
   /* ============================ SEMANTIC SECTIONS ============================ */
   .sem {
-    max-width: 880px; margin: 0 auto;
+    max-width: var(--contentw); margin: 0 auto;
     padding: 56px 20px 8px;
     scroll-margin-top: 24px;
   }
@@ -486,7 +487,7 @@
   #orientation .lead { margin-left: auto; margin-right: auto; }
   .arc-strip {
     display: grid; gap: 10px; margin: 28px auto 0;
-    grid-template-columns: 1fr 1fr; max-width: 880px;
+    grid-template-columns: 1fr 1fr; max-width: var(--contentw);
   }
   @media (min-width: 640px) { .arc-strip { grid-template-columns: repeat(5, 1fr); } }
   .arc-cell {
@@ -515,7 +516,15 @@
 
   /* rhizome section anchor spacing */
   #rhizome { scroll-margin-top: 24px; padding-top: 34px; }
-  #rhizome .sem-intro { max-width: 880px; margin: 0 auto; padding: 0 20px 6px; text-align: center; }
+  #rhizome .sem-intro { max-width: var(--contentw); margin: 0 auto; padding: 0 20px 6px; text-align: center; }
+
+  @media (min-width: 1120px) {
+    .motion-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .motion-grid .sem-card { padding: 16px 14px; }
+  }
 
   .motion-link {
     display: inline-flex; align-items: center; gap: 6px;
@@ -866,7 +875,7 @@
         <h2>다섯 가지 형성의 운동이 삶의 공간을 관통합니다.</h2>
         <p class="lead">위 리좀에서 각 노드를 열어 그 관계적 세계를 탐색하거나, 안내형 읽기 전용 형성 경로를 직접 시작하세요. 각 경로는 일곱 움직임으로 구현된 사건을 향합니다. 계정 없음, 어떤 것도 저장하지 않습니다.</p>
       </div>
-      <div class="card-grid" style="--cols:3">
+      <div class="card-grid motion-grid" style="--cols:3">
         <article class="sem-card" id="motion-cognition" style="--cardcolor:#5DCAA5">
           <h3><span class="only-en">Cognition in Motion</span><span class="only-ko" lang="ko">Cognition — 운동 중에</span></h3>
           <p class="only-en">Wisdom, discernment, and transformative understanding.</p>
