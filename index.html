@@ -17,23 +17,23 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --gold:     #9b6b16;
-    --gold-l:   #745014;
-    --ink:      #f7f1e6;
-    --ink2:     #fffaf0;
-    --ink3:     #ece1cf;
-    --paper:    #202733;
-    --paper-dim:rgba(32,39,51,0.68);
-    --line:     rgba(124,83,18,0.28);
-    --line-soft:rgba(32,39,51,0.14);
-    --focus:    #1d5fd0;
-    --surface:  rgba(255,255,255,0.72);
-    --surface-muted: rgba(255,255,255,0.48);
-    --surface-strong: #fffdf7;
-    --text-soft: rgba(32,39,51,0.82);
-    --text-faint: rgba(32,39,51,0.52);
-    --on-gold:  #17120a;
-    --shadow:   rgba(72,54,22,0.10);
+    --gold:     #1f4e79;
+    --gold-l:   #12395f;
+    --ink:      #f5f7fb;
+    --ink2:     #ffffff;
+    --ink3:     #e6ebf2;
+    --paper:    #111827;
+    --paper-dim:rgba(17,24,39,0.72);
+    --line:     rgba(31,78,121,0.24);
+    --line-soft:rgba(17,24,39,0.12);
+    --focus:    #1d4ed8;
+    --surface:  #ffffff;
+    --surface-muted: rgba(248,250,252,0.86);
+    --surface-strong: #ffffff;
+    --text-soft: rgba(17,24,39,0.86);
+    --text-faint: rgba(17,24,39,0.56);
+    --on-gold:  #ffffff;
+    --shadow:   rgba(15,23,42,0.10);
     --serif:    'Lora', Georgia, 'Times New Roman', serif;
     --display:  'Cinzel', Georgia, serif;
     --ko:       'Noto Serif KR', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
@@ -44,8 +44,8 @@
 
   html, body {
     background:
-      radial-gradient(circle at 20% 0%, rgba(201,168,76,0.16), transparent 34%),
-      linear-gradient(180deg, #fffaf0 0%, var(--ink) 42%, #efe5d3 100%);
+      radial-gradient(circle at 18% 0%, rgba(31,78,121,0.08), transparent 32%),
+      linear-gradient(180deg, #ffffff 0%, var(--ink) 48%, #eef2f7 100%);
     color: var(--paper);
     font-family: var(--serif);
     min-height: 100%;
@@ -82,7 +82,7 @@
   header {
     padding: 18px 20px 14px;
     border-bottom: 1px solid var(--line-soft);
-    background: linear-gradient(to bottom, rgba(255,250,240,0.96), rgba(247,241,230,0.88));
+    background: linear-gradient(to bottom, rgba(255,255,255,0.98), rgba(245,247,251,0.94));
     box-shadow: 0 10px 30px var(--shadow);
   }
   .titles { text-align: center; margin-bottom: 14px; }
@@ -132,7 +132,7 @@
     transition: background 0.18s, color 0.18s;
   }
   body.lang-ko .seg-btn, body.lang-ko .toggle-btn { font-family: var(--ko); letter-spacing: 0.02em; }
-  .seg-btn:hover, .toggle-btn:hover { color: var(--paper); background: rgba(201,168,76,0.14); }
+  .seg-btn:hover, .toggle-btn:hover { color: var(--paper); background: rgba(31,78,121,0.10); }
   .seg-btn[aria-pressed="true"], .seg-btn.active {
     color: var(--on-gold);
     background: var(--gold);
@@ -144,7 +144,7 @@
   .toggle-btn[aria-pressed="true"] {
     color: var(--gold);
     border-color: var(--gold);
-    background: rgba(201,168,76,0.12);
+    background: rgba(31,78,121,0.10);
   }
 
   /* ============================ MAIN ============================ */
@@ -176,7 +176,7 @@
     display: block;
     touch-action: manipulation;
   }
-  .edge { stroke: rgba(201,168,76,0.16); stroke-width: 1.4; }
+  .edge { stroke: rgba(31,78,121,0.18); stroke-width: 1.4; }
   .node-hit { cursor: pointer; }
   .node-dot { transition: filter 0.2s; }
   .node-hit:hover .node-dot,
@@ -227,7 +227,7 @@
     transition: background 0.16s, border-color 0.16s;
     min-height: 44px;
   }
-  .node-card:hover { background: rgba(201,168,76,0.14); }
+  .node-card:hover { background: rgba(31,78,121,0.10); }
   .node-card .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--nodecolor); margin-top: 5px; flex: none; }
   .node-card .nc-body { flex: 1; }
   .node-card .nc-title { font-family: var(--display); font-size: 16px; letter-spacing: 0.06em; }
@@ -296,7 +296,7 @@
     font-size: 18px; cursor: pointer;
     transition: background 0.18s;
   }
-  .icon-btn:hover { background: rgba(201,168,76,0.12); }
+  .icon-btn:hover { background: rgba(31,78,121,0.10); }
 
   .panel-body-wrap { overflow-y: auto; padding: 20px 20px 40px; flex: 1; }
 
@@ -421,8 +421,8 @@
   body.lang-ko .site-nav a { font-family: var(--ko); letter-spacing: 0.03em; }
   .site-nav a:hover {
     color: var(--gold-l);
-    border-color: rgba(124,83,18,0.42);
-    background: rgba(201,168,76,0.18);
+    border-color: rgba(31,78,121,0.42);
+    background: rgba(31,78,121,0.10);
     transform: translateY(-1px);
   }
   .site-nav a.active,
@@ -430,7 +430,7 @@
     color: var(--on-gold);
     border-color: var(--gold);
     background: var(--gold);
-    box-shadow: 0 8px 24px rgba(201,168,76,0.16);
+    box-shadow: 0 8px 24px rgba(31,78,121,0.18);
   }
   .site-nav a.active:hover,
   .site-nav a[aria-current="page"]:hover {
@@ -522,7 +522,7 @@
   .btn-gold { color: var(--on-gold); background: var(--gold); }
   .btn-gold:hover { filter: brightness(1.08); }
   .btn-ghost { color: var(--gold-l); border: 1px solid var(--line); background: var(--surface); }
-  .btn-ghost:hover { background: rgba(201,168,76,0.16); }
+  .btn-ghost:hover { background: rgba(31,78,121,0.10); }
 
   /* rhizome section anchor spacing */
   #rhizome { scroll-margin-top: 24px; padding-top: 34px; }
@@ -547,7 +547,7 @@
     transition: background 0.16s;
   }
   body.lang-ko .motion-link { font-family: var(--ko); letter-spacing: 0.02em; }
-  .motion-link:hover { background: rgba(201,168,76,0.16); }
+  .motion-link:hover { background: rgba(31,78,121,0.10); }
 
   /* subsection inside a section (e.g. How MRIA Works within About) */
   .sem-sub { margin-top: 52px; scroll-margin-top: 24px; }
@@ -1864,11 +1864,11 @@ window.RHIZOME_CONTENT = {
       var canvas = $("#c");
       renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0xf7f1e6, 1);
+      renderer.setClearColor(0xf5f7fb, 1);
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
       scene.add(new THREE.AmbientLight(0xffffff, 0.45));
-      var pl = new THREE.PointLight(0x9b6b16, 1.1, 40); pl.position.set(0, 4, 10); scene.add(pl);
+      var pl = new THREE.PointLight(0x1f4e79, 1.1, 40); pl.position.set(0, 4, 10); scene.add(pl);
 
       var group = new THREE.Group(); scene.add(group);
       window._rhizomeGroup = group;
@@ -1885,7 +1885,7 @@ window.RHIZOME_CONTENT = {
         meshes[n.id] = mesh;
       });
 
-      var lineMat = new THREE.LineBasicMaterial({ color: 0x9b6b16, transparent: true, opacity: 0.22 });
+      var lineMat = new THREE.LineBasicMaterial({ color: 0x1f4e79, transparent: true, opacity: 0.22 });
       C.edges.forEach(function (e) {
         var a = state.nodeById[e[0]], b = state.nodeById[e[1]];
         if (!a || !b) return;
