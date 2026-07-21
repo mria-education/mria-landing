@@ -17,16 +17,23 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --gold:     #c9a84c;
-    --gold-l:   #e8d5a3;
-    --ink:      #0e0e10;
-    --ink2:     #17171c;
-    --ink3:     #20202a;
-    --paper:    #e8e4d8;
-    --paper-dim:rgba(232,228,216,0.62);
-    --line:     rgba(201,168,76,0.20);
-    --line-soft:rgba(255,255,255,0.08);
-    --focus:    #86c5ff;
+    --gold:     #9b6b16;
+    --gold-l:   #745014;
+    --ink:      #f7f1e6;
+    --ink2:     #fffaf0;
+    --ink3:     #ece1cf;
+    --paper:    #202733;
+    --paper-dim:rgba(32,39,51,0.68);
+    --line:     rgba(124,83,18,0.28);
+    --line-soft:rgba(32,39,51,0.14);
+    --focus:    #1d5fd0;
+    --surface:  rgba(255,255,255,0.72);
+    --surface-muted: rgba(255,255,255,0.48);
+    --surface-strong: #fffdf7;
+    --text-soft: rgba(32,39,51,0.82);
+    --text-faint: rgba(32,39,51,0.52);
+    --on-gold:  #17120a;
+    --shadow:   rgba(72,54,22,0.10);
     --serif:    'Lora', Georgia, 'Times New Roman', serif;
     --display:  'Cinzel', Georgia, serif;
     --ko:       'Noto Serif KR', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
@@ -36,7 +43,9 @@
   }
 
   html, body {
-    background: var(--ink);
+    background:
+      radial-gradient(circle at 20% 0%, rgba(201,168,76,0.16), transparent 34%),
+      linear-gradient(180deg, #fffaf0 0%, var(--ink) 42%, #efe5d3 100%);
     color: var(--paper);
     font-family: var(--serif);
     min-height: 100%;
@@ -73,7 +82,8 @@
   header {
     padding: 18px 20px 14px;
     border-bottom: 1px solid var(--line-soft);
-    background: linear-gradient(to bottom, var(--ink2), var(--ink));
+    background: linear-gradient(to bottom, rgba(255,250,240,0.96), rgba(247,241,230,0.88));
+    box-shadow: 0 10px 30px var(--shadow);
   }
   .titles { text-align: center; margin-bottom: 14px; }
   header h1 {
@@ -105,7 +115,7 @@
     border: 1px solid var(--line);
     border-radius: 22px;
     overflow: hidden;
-    background: rgba(255,255,255,0.03);
+    background: var(--surface-muted);
   }
   .control-group[role="group"] { padding: 0; }
   .seg-btn, .toggle-btn {
@@ -122,9 +132,9 @@
     transition: background 0.18s, color 0.18s;
   }
   body.lang-ko .seg-btn, body.lang-ko .toggle-btn { font-family: var(--ko); letter-spacing: 0.02em; }
-  .seg-btn:hover, .toggle-btn:hover { color: var(--paper); background: rgba(201,168,76,0.08); }
+  .seg-btn:hover, .toggle-btn:hover { color: var(--paper); background: rgba(201,168,76,0.14); }
   .seg-btn[aria-pressed="true"], .seg-btn.active {
-    color: var(--ink);
+    color: var(--on-gold);
     background: var(--gold);
   }
   .toggle-btn {
@@ -144,7 +154,7 @@
     text-align: center;
     font-size: 12px;
     font-style: italic;
-    color: rgba(232,228,216,0.4);
+    color: var(--text-faint);
     letter-spacing: 0.08em;
     padding: 10px 16px 0;
   }
@@ -201,12 +211,12 @@
     color: var(--gold); margin-bottom: 4px;
   }
   body.lang-ko .group h2 { letter-spacing: 0.06em; }
-  .group .group-desc { font-size: 13px; color: rgba(232,228,216,0.4); font-style: italic; margin-bottom: 12px; }
+  .group .group-desc { font-size: 13px; color: var(--text-faint); font-style: italic; margin-bottom: 12px; }
   ul.node-list { list-style: none; display: grid; gap: 10px; }
   .node-card {
     width: 100%; text-align: left;
     display: flex; align-items: flex-start; gap: 12px;
-    background: rgba(255,255,255,0.03);
+    background: var(--surface);
     border: 1px solid var(--line-soft);
     border-left: 3px solid var(--nodecolor, var(--gold));
     border-radius: var(--radius);
@@ -217,7 +227,7 @@
     transition: background 0.16s, border-color 0.16s;
     min-height: 44px;
   }
-  .node-card:hover { background: rgba(201,168,76,0.07); }
+  .node-card:hover { background: rgba(201,168,76,0.14); }
   .node-card .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--nodecolor); margin-top: 5px; flex: none; }
   .node-card .nc-body { flex: 1; }
   .node-card .nc-title { font-family: var(--display); font-size: 16px; letter-spacing: 0.06em; }
@@ -238,13 +248,13 @@
   }
   #threed-hint {
     text-align: center; font-size: 12px; font-style: italic;
-    color: rgba(232,228,216,0.4); padding: 8px;
+    color: var(--text-faint); padding: 8px;
   }
 
   /* ============================ PANEL ============================ */
   #overlay {
     position: fixed; inset: 0;
-    background: rgba(6,6,8,0.55);
+    background: rgba(32,39,51,0.36);
     opacity: 0; visibility: hidden;
     transition: opacity 0.3s;
     z-index: 500;
@@ -302,7 +312,7 @@
   }
   body.lang-ko .p-tag { font-family: var(--ko); }
 
-  #p-body { font-size: 16.5px; line-height: 1.75; color: rgba(232,228,216,0.85); }
+  #p-body { font-size: 16.5px; line-height: 1.75; color: var(--text-soft); }
   body.lang-ko #p-body { font-size: 16.5px; line-height: 1.95; }
   #p-body p { margin-bottom: 13px; }
   #p-body strong { color: var(--gold-l); }
@@ -312,7 +322,7 @@
   }
   @media (min-width: 480px) { .www { grid-template-columns: 1fr 1fr 1fr; } }
   .www-cell {
-    background: rgba(255,255,255,0.04); border: 1px solid var(--line-soft);
+    background: var(--surface); border: 1px solid var(--line-soft);
     border-radius: 8px; padding: 11px; font-size: 14px; line-height: 1.55;
   }
   body.lang-ko .www-cell { font-size: 14px; }
@@ -324,7 +334,7 @@
 
   .arc {
     margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--line-soft);
-    font-size: 14.5px; font-style: italic; color: rgba(232,228,216,0.55); line-height: 1.6;
+    font-size: 14.5px; font-style: italic; color: var(--text-faint); line-height: 1.6;
   }
   .arc .arc-label {
     font-family: var(--display); font-style: normal; font-size: 10px;
@@ -342,14 +352,14 @@
   .classes .cl-grid { display: flex; flex-wrap: wrap; gap: 7px; }
   .cl-chip {
     font-size: 13px; font-style: italic; padding: 5px 12px; border-radius: 18px;
-    border: 1px solid var(--line-soft); background: rgba(255,255,255,0.04);
-    color: rgba(232,228,216,0.7);
+    border: 1px solid var(--line-soft); background: var(--surface-muted);
+    color: var(--paper-dim);
   }
   .pathway-launch {
     display: inline-flex; align-items: center; gap: 8px;
     font-family: var(--display); font-size: 12px; letter-spacing: 0.12em;
     text-transform: uppercase; text-decoration: none;
-    color: var(--ink); background: var(--pl-color, var(--gold));
+    color: var(--on-gold); background: var(--pl-color, var(--gold));
     border-radius: 24px; padding: 12px 20px; min-height: 46px; margin-top: 4px;
     transition: filter 0.16s;
   }
@@ -374,7 +384,7 @@
     padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
     border-top: 1px solid var(--line-soft);
     text-align: center;
-    font-size: 12px; color: rgba(232,228,216,0.35);
+    font-size: 12px; color: var(--text-faint);
     font-style: italic; line-height: 1.6;
   }
 
@@ -404,27 +414,27 @@
     padding: 11px 16px; min-height: 46px; display: inline-flex; align-items: center; justify-content: center;
     border: 1px solid var(--line);
     border-radius: 999px;
-    background: rgba(255,255,255,0.035);
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.025) inset;
+    background: var(--surface);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.7) inset, 0 6px 18px var(--shadow);
     transition: color 0.16s, border-color 0.16s, background 0.16s, transform 0.16s, box-shadow 0.16s;
   }
   body.lang-ko .site-nav a { font-family: var(--ko); letter-spacing: 0.03em; }
   .site-nav a:hover {
     color: var(--gold-l);
-    border-color: rgba(232,213,163,0.5);
-    background: rgba(201,168,76,0.12);
+    border-color: rgba(124,83,18,0.42);
+    background: rgba(201,168,76,0.18);
     transform: translateY(-1px);
   }
   .site-nav a.active,
   .site-nav a[aria-current="page"] {
-    color: var(--ink);
+    color: var(--on-gold);
     border-color: var(--gold);
     background: var(--gold);
     box-shadow: 0 8px 24px rgba(201,168,76,0.16);
   }
   .site-nav a.active:hover,
   .site-nav a[aria-current="page"]:hover {
-    color: var(--ink);
+    color: var(--on-gold);
     filter: brightness(1.06);
   }
 
@@ -447,7 +457,7 @@
   body.lang-ko .sem h2 { font-family: var(--ko); }
   .sem .lead {
     margin-top: 14px; font-size: 19px; line-height: 1.8;
-    color: rgba(232,228,216,0.92); max-width: 46em;
+    color: var(--text-soft); max-width: 46em;
   }
   body.lang-ko .sem .lead { font-size: 17.5px; line-height: 1.95; }
   .sem .lead strong { color: var(--gold-l); font-weight: 500; }
@@ -456,7 +466,7 @@
   @media (min-width: 640px) { .card-grid { grid-template-columns: repeat(var(--cols, 3), 1fr); } }
   @media (min-width: 640px) and (max-width: 900px) { .card-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } .arc-strip { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); } }
   .sem-card {
-    background: rgba(255,255,255,0.03);
+    background: var(--surface);
     border: 1px solid var(--line-soft);
     border-top: 3px solid var(--cardcolor, var(--gold));
     border-radius: var(--radius);
@@ -472,7 +482,7 @@
   .sem-card .sub {
     font-size: 13px; font-style: italic; color: var(--paper-dim); margin-top: 2px;
   }
-  .sem-card p { margin-top: 10px; font-size: 17px; line-height: 1.72; color: rgba(232,228,216,0.90); }
+  .sem-card p { margin-top: 10px; font-size: 17px; line-height: 1.72; color: var(--text-soft); }
   body.lang-ko .sem-card p { font-size: 15.5px; line-height: 1.9; }
   .status-chip {
     display: inline-block; margin-top: 10px;
@@ -491,7 +501,7 @@
   }
   @media (min-width: 640px) { .arc-strip { grid-template-columns: repeat(5, 1fr); } }
   .arc-cell {
-    background: rgba(255,255,255,0.03); border: 1px solid var(--line-soft);
+    background: var(--surface); border: 1px solid var(--line-soft);
     border-radius: var(--radius); padding: 14px 10px;
   }
   .arc-cell strong {
@@ -499,7 +509,7 @@
     letter-spacing: 0.24em; color: var(--gold); margin-bottom: 6px;
   }
   body.lang-ko .arc-cell strong { letter-spacing: 0.1em; }
-  .arc-cell span { font-size: 13px; font-style: italic; color: rgba(232,228,216,0.7); line-height: 1.55; display: block; }
+  .arc-cell span { font-size: 13px; font-style: italic; color: var(--paper-dim); line-height: 1.55; display: block; }
   .btn-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px; }
   .btn-gold, .btn-ghost {
     display: inline-flex; align-items: center; gap: 8px;
@@ -509,10 +519,10 @@
     transition: filter 0.16s, background 0.16s;
   }
   body.lang-ko .btn-gold, body.lang-ko .btn-ghost { font-family: var(--ko); letter-spacing: 0.03em; }
-  .btn-gold { color: var(--ink); background: var(--gold); }
+  .btn-gold { color: var(--on-gold); background: var(--gold); }
   .btn-gold:hover { filter: brightness(1.08); }
-  .btn-ghost { color: var(--gold-l); border: 1px solid var(--line); background: rgba(255,255,255,0.03); }
-  .btn-ghost:hover { background: rgba(201,168,76,0.1); }
+  .btn-ghost { color: var(--gold-l); border: 1px solid var(--line); background: var(--surface); }
+  .btn-ghost:hover { background: rgba(201,168,76,0.16); }
 
   /* rhizome section anchor spacing */
   #rhizome { scroll-margin-top: 24px; padding-top: 34px; }
@@ -537,7 +547,7 @@
     transition: background 0.16s;
   }
   body.lang-ko .motion-link { font-family: var(--ko); letter-spacing: 0.02em; }
-  .motion-link:hover { background: rgba(201,168,76,0.1); }
+  .motion-link:hover { background: rgba(201,168,76,0.16); }
 
   /* subsection inside a section (e.g. How MRIA Works within About) */
   .sem-sub { margin-top: 52px; scroll-margin-top: 24px; }
@@ -551,9 +561,9 @@
   .note-grid { display: grid; gap: 12px; margin-top: 26px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .note-grid { grid-template-columns: 1fr 1fr 1fr; } }
   .note-cell {
-    background: rgba(255,255,255,0.03); border: 1px solid var(--line-soft);
+    background: var(--surface); border: 1px solid var(--line-soft);
     border-radius: var(--radius); padding: 14px 14px;
-    font-size: 13px; line-height: 1.7; color: rgba(232,228,216,0.66);
+    font-size: 13px; line-height: 1.7; color: var(--paper-dim);
   }
   .note-cell strong {
     display: block; font-family: var(--display); font-size: 10px;
@@ -583,7 +593,7 @@
   body.routed.route-learning #learning,
   body.routed.route-participation #participation { display: block; }
   body.routed main > .sem { padding-top: 40px; padding-bottom: 56px; }
-  .site-nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .site-nav a.active { color: var(--on-gold); border-color: var(--gold); }
 
   /* ============================ REDUCED MOTION ============================ */
   @media (prefers-reduced-motion: reduce) {
@@ -951,8 +961,8 @@
           <h3><span class="only-en">Transitional Formation for Global Students</span><span class="only-ko" lang="ko">글로벌 학생을 위한 전환기 형성</span></h3>
           <p class="only-en">For high-school students preparing to study in the United States — a formation companion for the crossing itself. Leaving a known WHERE, carrying identity through new language and culture, and arriving with relational roots rather than survival strategies: this journey is built on Communication, Culture, and Care in Motion, with High-Touch human accompaniment at its center.</p>
           <p class="only-ko" lang="ko">미국 유학을 준비하는 고등학생을 위한 — 건넘 그 자체를 위한 형성의 동반입니다. 익숙한 WHERE를 떠나, 새로운 언어와 문화를 가로질러 정체성을 지니고 가며, 생존 전략이 아니라 관계적 뿌리를 내리며 도착하는 여정. 이 여정은 Communication·Culture·Care in Motion 위에 세워지며, 그 중심에는 High-Touch의 사람 동반이 있습니다.</p>
-          <p class="only-en" style="font-style:italic; font-size:13px; color:rgba(232,228,216,0.6); margin-top:12px;">In development. There is no enrollment, no student account, and no collection of student information today. Families and educators may write to hello@mria.education.</p>
-          <p class="only-ko" lang="ko" style="font-style:italic; font-size:13px; color:rgba(232,228,216,0.6); margin-top:12px;">개발 중입니다. 현재 등록, 학생 계정, 학생 정보 수집은 없습니다. 가족과 교육자는 hello@mria.education으로 문의해 주세요.</p>
+          <p class="only-en" style="font-style:italic; font-size:13px; color:var(--paper-dim); margin-top:12px;">In development. There is no enrollment, no student account, and no collection of student information today. Families and educators may write to hello@mria.education.</p>
+          <p class="only-ko" lang="ko" style="font-style:italic; font-size:13px; color:var(--paper-dim); margin-top:12px;">개발 중입니다. 현재 등록, 학생 계정, 학생 정보 수집은 없습니다. 가족과 교육자는 hello@mria.education으로 문의해 주세요.</p>
           <span class="status-chip"><span class="only-en">In development</span><span class="only-ko" lang="ko">개발 중</span></span>
         </article>
         <article class="sem-card" style="--cardcolor:#7BA7C9">
@@ -1854,11 +1864,11 @@ window.RHIZOME_CONTENT = {
       var canvas = $("#c");
       renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0x0e0e10, 1);
+      renderer.setClearColor(0xf7f1e6, 1);
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
       scene.add(new THREE.AmbientLight(0xffffff, 0.45));
-      var pl = new THREE.PointLight(0xc9a84c, 1.1, 40); pl.position.set(0, 4, 10); scene.add(pl);
+      var pl = new THREE.PointLight(0x9b6b16, 1.1, 40); pl.position.set(0, 4, 10); scene.add(pl);
 
       var group = new THREE.Group(); scene.add(group);
       window._rhizomeGroup = group;
@@ -1875,7 +1885,7 @@ window.RHIZOME_CONTENT = {
         meshes[n.id] = mesh;
       });
 
-      var lineMat = new THREE.LineBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.18 });
+      var lineMat = new THREE.LineBasicMaterial({ color: 0x9b6b16, transparent: true, opacity: 0.22 });
       C.edges.forEach(function (e) {
         var a = state.nodeById[e[0]], b = state.nodeById[e[1]];
         if (!a || !b) return;
