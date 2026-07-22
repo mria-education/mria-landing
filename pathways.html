@@ -62,6 +62,10 @@
   /* landing / pathway picker (shown when no specific pathway is requested) */
   #landing{ max-width:680px; margin:0 auto; padding:22px 20px 40px; }
   .landing-lead{ text-align:center; font-style:italic; color:var(--paper-dim); font-size:18px; margin-bottom:20px; }
+  .htht{ border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:12px; background:rgba(201,168,76,.05); padding:16px 18px; margin:0 0 22px; }
+  .htht .lbl{ font-family:var(--display); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
+  body.lang-ko .htht .lbl{ font-family:var(--ko); letter-spacing:.03em; }
+  .htht .body{ margin-top:8px; font-size:15px; line-height:1.55; color:var(--paper); }
   ul.landing-grid{ list-style:none; display:grid; gap:12px; }
   .pathway-card{ width:100%; text-align:left; display:flex; align-items:flex-start; gap:14px; background:rgba(255,255,255,.03); border:1px solid var(--line-soft); border-left:4px solid var(--pc,#5DCAA5); border-radius:12px; padding:16px 18px; color:var(--paper); cursor:pointer; font-family:inherit; min-height:56px; transition:background .16s,border-color .16s; }
   .pathway-card:hover{ background:rgba(201,168,76,.07); }
@@ -69,6 +73,14 @@
   .pathway-card .pc-title{ font-family:var(--display); font-size:18px; letter-spacing:.05em; }
   body.lang-ko .pathway-card .pc-title{ font-family:var(--ko); letter-spacing:.01em; }
   .pathway-card .pc-move{ display:block; font-size:16px; font-style:italic; color:var(--paper-dim); margin-top:3px; }
+  .sub-list{ list-style:none; margin:6px 0 0; padding:0 0 0 26px; display:flex; flex-direction:column; gap:8px; }
+  .offering-card{ width:100%; text-align:left; display:flex; align-items:flex-start; gap:12px; background:rgba(255,255,255,.02); border:1px dashed var(--line-soft); border-left:3px solid var(--pc,#AFA9EC); border-radius:10px; padding:12px 14px; color:var(--paper); font-family:inherit; }
+  .offering-card .oc-title{ font-family:var(--display); font-size:14px; letter-spacing:.04em; }
+  body.lang-ko .offering-card .oc-title{ font-family:var(--ko); }
+  .offering-card .oc-sub{ display:block; font-size:14px; font-style:italic; color:var(--paper-dim); margin-top:3px; }
+  .offering-card .oc-handoff{ display:block; font-size:13px; color:rgba(232,228,216,.5); margin-top:6px; }
+  .badge{ font-family:var(--display); font-size:9px; letter-spacing:.14em; text-transform:uppercase; padding:4px 9px; border-radius:20px; border:1px solid var(--line); color:var(--gold-l); background:rgba(201,168,76,.10); white-space:nowrap; }
+  body.lang-ko .badge{ font-family:var(--ko); letter-spacing:.03em; }
 
   /* hide pathway chrome while the picker is showing */
   body.picker .rail-wrap, body.picker #stage, body.picker .nav, body.picker #p-anchor, body.picker #p-movement, body.picker #all-btn{ display:none; }
@@ -153,6 +165,10 @@
   <main id="stage-region">
     <section id="landing" aria-label="Choose a formation pathway">
       <p class="landing-lead" id="landing-lead"></p>
+      <section class="htht" aria-label="High-Tech to High-Touch">
+        <span class="lbl" id="htht-lbl"></span>
+        <div class="body" id="htht-body"></div>
+      </section>
       <ul class="landing-grid" id="landing-grid"></ul>
     </section>
     <article class="stage" id="stage" aria-live="polite">
@@ -903,6 +919,39 @@
 
 </script>
   <script>
+window.MRIA_OFFERINGS = window.MRIA_OFFERINGS || {};
+window.MRIA_OFFERINGS["civic-engine"] = {
+  id:"civic-engine", motionId:"C2", type:"intake",
+  version:"0.0.1", status:"in-development", gating:"gated-app", color:"#AFA9EC",
+  title:{ en:"Civic Engine", ko:"Civic Engine" },
+  subtitle:{
+    en:"Your civic narrative, read back as an honest mirror — crossing, not sorting",
+    ko:"당신의 시민적 서사를, 정직한 거울로 되읽음 — 분류가 아니라 건넘"
+  },
+  handoff:{
+    en:"High-Tech hands off to High-Touch: the mirror ends in one real act of public listening across a boundary you named.",
+    ko:"High-Tech는 High-Touch에게 넘겨줍니다: 거울은 당신이 이름한 경계를 넘어 공적으로 듣는 하나의 실제 행위로 끝납니다."
+  },
+  reviewerClass:"trained-facilitator", sabbathBrake:false, scoringMechanic:null, adrChain:["0008"]
+};
+(function(){
+  function asOffering(p){
+    return { id:p.id, motionId:p.anchorNodeId, type:"pathway", gating:"free-public",
+             color:p.color, title:p.title, subtitle:p.movement, handoff:null,
+             status:p.status||"live", scoringMechanic:null };
+  }
+  window.MRIA = window.MRIA || {};
+  window.MRIA.offeringsFor = function(motionId){
+    return [].concat(
+      Object.keys(window.MRIA_PATHWAYS||{}).map(function(k){return window.MRIA_PATHWAYS[k];})
+        .filter(function(p){return p.anchorNodeId===motionId;}).map(asOffering),
+      Object.keys(window.MRIA_OFFERINGS||{}).map(function(k){return window.MRIA_OFFERINGS[k];})
+        .filter(function(o){return o.motionId===motionId;})
+    );
+  };
+})();
+</script>
+  <script>
   (function(){
     "use strict";
     var REG = window.MRIA_PATHWAYS || {};
@@ -928,6 +977,9 @@
         picker_title:"Formation Pathways",
         picker_sub:"Read-only prototype routes through the RFLS movements",
         landing_lead:"Choose a pathway to walk. Each is a read-only route — no score, no completion.",
+        htht_lbl:"High-Tech → High-Touch · Adaptive + Active",
+        htht:"Every pathway, course, and app is High-Tech to bring you to the threshold — and then hands off to High-Touch. Adaptive learning meets you where you are; Active learning moves you into practice with real people. The screen never completes the formation; it prepares an embodied crossing and then steps back.",
+        indev:"In development", intake:"Intake app", course:"Course", gated:"Gated",
         prompt_note:"An invitation only — nothing here is recorded, sent, or stored.",
         progress:function(i,n){return "Movement "+i+" of "+n;},
         footer:"Read-only formation pathways · no score, no completion · no personal data collected" },
@@ -938,6 +990,9 @@
         picker_title:"형성 경로",
         picker_sub:"RFLS 움직임을 통과하는 읽기 전용 프로토타입 경로",
         landing_lead:"걸을 경로를 선택하세요. 각각은 읽기 전용 경로입니다 — 점수 없음, 완료 없음.",
+        htht_lbl:"High-Tech → High-Touch · 적응형 + 능동형",
+        htht:"모든 경로·강좌·앱은 당신을 문턱까지 데려오기 위해 High-Tech이며 — 그런 다음 High-Touch에게 넘겨줍니다. 적응형 학습은 당신이 있는 자리에서 당신을 만나고, 능동형 학습은 실제 사람들과의 실천으로 당신을 움직입니다. 화면은 결코 형성을 완성하지 않습니다. 구현된 건넘을 준비한 뒤 물러섭니다.",
+        indev:"개발 중", intake:"인테이크 앱", course:"강좌", gated:"게이트",
         prompt_note:"초대일 뿐입니다 — 이곳의 어떤 것도 기록·전송·저장되지 않습니다.",
         progress:function(i,n){return n+" 중 "+i+" 움직임";},
         footer:"읽기 전용 형성 경로 · 점수 없음, 완료 없음 · 개인정보 수집 없음" }
@@ -954,6 +1009,7 @@
     var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
     function L(o){ return o ? (o[state.lang]||o.en||"") : ""; }
     function t(k){ return UI[state.lang][k]; }
+    function typeLabel(o){ return o.type==="intake"?t("intake"):o.type==="course"?t("course"):""; }
 
     /* preserve ?lang / return link language to the rhizome */
     function syncBackLink(){ $("#back-link").setAttribute("href","index.html"); }
@@ -1030,6 +1086,8 @@
       $$("[data-i18n]").forEach(function(el){ var k=el.getAttribute("data-i18n"); if(UI[state.lang][k]) el.textContent=UI[state.lang][k]; });
       $("#footer-text").textContent=t("footer");
       $("#landing-lead").textContent=t("landing_lead");
+      if($("#htht-lbl")) $("#htht-lbl").textContent = t("htht_lbl");
+      if($("#htht-body")) $("#htht-body").textContent = t("htht");
       if(P){
         $("#p-anchor").textContent = (state.lang==="ko"?"리좀에서 · ":"From the rhizome · ") + L(P.title);
         $("#p-title").textContent=L(P.title);
@@ -1059,6 +1117,26 @@
         btn.appendChild(dot); btn.appendChild(wrap);
         btn.addEventListener("click", function(){ selectPathway(id); });
         li.appendChild(btn); grid.appendChild(li);
+        var subs=(window.MRIA.offeringsFor(p.anchorNodeId)||[]).filter(function(o){return o.type!=="pathway";});
+        if(subs.length){
+          var sl=document.createElement("ul"); sl.className="sub-list";
+          subs.forEach(function(o){
+            var sli=document.createElement("li");
+            var card=document.createElement("div"); card.className="offering-card"; card.style.setProperty("--pc", o.color||p.color);
+            var w=document.createElement("div"); w.style.flex="1";
+            var otitle=document.createElement("span"); otitle.className="oc-title"; otitle.textContent=L(o.title)+" · "+typeLabel(o);
+            var osub=document.createElement("span"); osub.className="oc-sub"; osub.textContent=L(o.subtitle);
+            w.appendChild(otitle); w.appendChild(osub);
+            if(o.handoff){ var oh=document.createElement("span"); oh.className="oc-handoff"; oh.textContent="⟶ "+L(o.handoff); w.appendChild(oh); }
+            if(o.reviewerClass){ var rf=document.createElement("span"); rf.className="oc-handoff"; rf.textContent=(state.lang==="ko"?"검토자: ":"Reviewer: ")+o.reviewerClass+" · "+(state.lang==="ko"?"표시 전용, 수집 없음":"display only, no collection"); w.appendChild(rf); }
+            var badges=document.createElement("div"); badges.style.display="flex"; badges.style.flexDirection="column"; badges.style.gap="4px"; badges.style.alignItems="flex-end";
+            if(o.status==="in-development"||o.status==="draft"){ var b=document.createElement("span"); b.className="badge"; b.textContent=t("indev"); badges.appendChild(b); }
+            if(o.gating==="gated-app"){ var g=document.createElement("span"); g.className="badge"; g.textContent=t("gated"); badges.appendChild(g); }
+            card.appendChild(w); card.appendChild(badges);
+            sli.appendChild(card); sl.appendChild(sli);
+          });
+          li.appendChild(sl);
+        }
       });
     }
 
