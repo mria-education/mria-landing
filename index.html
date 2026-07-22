@@ -1809,7 +1809,7 @@ window.RHIZOME_CONTENT = {
       document.body.classList.toggle("lang-ko", lang === "ko");
       document.body.classList.toggle("lang-en", lang === "en");
       try { localStorage.setItem("mria_rhizome_lang", lang); } catch (e) {}
-      $("[data-engine-link]").forEach(function (a) {
+      document.querySelectorAll("[data-engine-link]").forEach(function (a) {
         a.setAttribute("href", lang === "ko" ? "political-engine.html?lang=ko" : "political-engine.html");
       });
       $$("[data-lang]").forEach(function (b) {
