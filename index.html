@@ -647,7 +647,7 @@
       <a href="#formation" data-i18n="nav_formation">Formation</a>
       <a href="#motions" data-i18n="nav_motions">Five Motions</a>
       <a href="#learning" data-i18n="nav_learning">Learning</a>
-      <a href="political-engine.html" data-i18n="nav_engine">Civic Engine</a>
+      <a href="political-engine.html" data-engine-link data-i18n="nav_engine">Civic Engine</a>
       <a href="#participation" data-i18n="nav_contact">Contact</a>
     </nav>
   </header>
@@ -684,7 +684,7 @@
       </div>
       <div class="btn-row">
         <a class="btn-gold" href="#rhizome"><span class="only-en">Explore the rhizome</span><span class="only-ko" lang="ko">리좀 탐색하기</span></a>
-        <a class="btn-ghost" href="political-engine.html"><span class="only-en">Open civic engine</span><span class="only-ko" lang="ko">시민 분석 엔진 열기</span></a>
+        <a class="btn-ghost" href="political-engine.html" data-engine-link><span class="only-en">Open civic engine</span><span class="only-ko" lang="ko">시민 분석 엔진 열기</span></a>
         <a class="btn-ghost" href="#about"><span class="only-en">About MRIA</span><span class="only-ko" lang="ko">MRIA 소개</span></a>
       </div>
     </section>
@@ -1809,6 +1809,9 @@ window.RHIZOME_CONTENT = {
       document.body.classList.toggle("lang-ko", lang === "ko");
       document.body.classList.toggle("lang-en", lang === "en");
       try { localStorage.setItem("mria_rhizome_lang", lang); } catch (e) {}
+      $("[data-engine-link]").forEach(function (a) {
+        a.setAttribute("href", lang === "ko" ? "political-engine.html?lang=ko" : "political-engine.html");
+      });
       $$("[data-lang]").forEach(function (b) {
         var on = b.getAttribute("data-lang") === lang;
         b.setAttribute("aria-pressed", on ? "true" : "false");
