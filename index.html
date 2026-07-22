@@ -38,8 +38,7 @@
     --display:  'Cinzel', Georgia, serif;
     --ko:       'Noto Serif KR', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
     --radius:   10px;
-    --contentw: 1120px;
-    --maxw:     620px;
+    --contentw: min(2200px, calc(100% - 32px));
   }
 
   html, body {
@@ -165,8 +164,7 @@
   /* ---- MAP (2D SVG) view ---- */
   #view-map { flex: 1; }
   .map-wrap {
-    width: 100%;
-    max-width: var(--contentw);
+    width: var(--contentw);
     margin: 0 auto;
     padding: 8px 8px 24px;
   }
@@ -203,7 +201,7 @@
 
   /* ---- LIST view ---- */
   #view-list { padding: 8px 16px 40px; }
-  .list-inner { max-width: var(--maxw); margin: 0 auto; }
+  .list-inner { width: var(--contentw); margin: 0 auto; }
   .group { margin-top: 26px; }
   .group h2 {
     font-family: var(--display);
@@ -212,7 +210,7 @@
   }
   body.lang-ko .group h2 { letter-spacing: 0.06em; }
   .group .group-desc { font-size: 13px; color: var(--text-faint); font-style: italic; margin-bottom: 12px; }
-  ul.node-list { list-style: none; display: grid; gap: 10px; }
+  ul.node-list { list-style: none; display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
   .node-card {
     width: 100%; text-align: left;
     display: flex; align-items: flex-start; gap: 12px;
@@ -440,7 +438,7 @@
 
   /* ============================ SEMANTIC SECTIONS ============================ */
   .sem {
-    max-width: var(--contentw); margin: 0 auto;
+    width: var(--contentw); margin: 0 auto;
     padding: 56px 20px 8px;
     scroll-margin-top: 24px;
   }
@@ -497,7 +495,7 @@
   #orientation .lead { margin-left: auto; margin-right: auto; }
   .arc-strip {
     display: grid; gap: 10px; margin: 28px auto 0;
-    grid-template-columns: 1fr 1fr; max-width: var(--contentw);
+    grid-template-columns: 1fr 1fr; width: 100%;
   }
   @media (min-width: 640px) { .arc-strip { grid-template-columns: repeat(5, 1fr); } }
   .arc-cell {
@@ -526,7 +524,7 @@
 
   /* rhizome section anchor spacing */
   #rhizome { scroll-margin-top: 24px; padding-top: 34px; }
-  #rhizome .sem-intro { max-width: var(--contentw); margin: 0 auto; padding: 0 20px 6px; text-align: center; }
+  #rhizome .sem-intro { width: var(--contentw); margin: 0 auto; padding: 0 20px 6px; text-align: center; }
 
   @media (min-width: 1120px) {
     .motion-grid {
