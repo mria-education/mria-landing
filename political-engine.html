@@ -434,41 +434,6 @@
       margin: 8px 0 0;
     }
 
-    .matrix {
-      overflow-x: auto;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
-    }
-
-    th,
-    td {
-      padding: 13px 14px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th {
-      background: #edf4ed;
-      font-size: 0.84rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    td:first-child {
-      font-weight: 760;
-      color: var(--green);
-      width: 22%;
-    }
-
     .mode-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -586,7 +551,7 @@
       </div>
       <nav class="nav-links">
         <a href="#workspace">Analyze</a>
-        <a href="#architecture">Architecture</a>
+        <a href="#architecture">Workflow</a>
         <a href="#modes">Modes</a>
         <a href="#rubric">Rubric</a>
         <div class="language-switch" aria-label="Language">
@@ -607,7 +572,7 @@
         </p>
         <div class="quick-actions">
           <a class="button-link" href="#workspace">Start an analysis</a>
-          <a class="button-link secondary" href="#architecture">View the framework</a>
+          <a class="button-link secondary" href="#architecture">View the workflow</a>
           <button type="button" id="hero-lang-ko" class="button-link secondary">한국어로 보기</button>
         </div>
       </div>
@@ -663,7 +628,7 @@
               Operating mode
               <select id="mode">
                 <option value="Rapid Political Analysis">Mode A: Rapid Political Analysis</option>
-                <option value="Full 7x5D Analysis">Mode B: Full 7x5D Analysis</option>
+                <option value="Full Analysis">Mode B: Full Analysis</option>
                 <option value="Comparative Philosophy">Mode C: Comparative Philosophy</option>
                 <option value="Speech and Media Analysis">Mode D: Speech and Media Analysis</option>
                 <option value="Policy Evaluation">Mode E: Policy Evaluation</option>
@@ -732,14 +697,14 @@
     </section>
 
     <section id="architecture" class="section">
-      <h2>Core Architecture</h2>
+      <h2>Public Analysis Workflow</h2>
       <div class="cards">
         <article class="card">
-          <h3>Three-Level Test</h3>
+          <h3>Claim → Context → Consequence</h3>
           <ol>
-            <li>Object-level political claim: what is asserted?</li>
-            <li>Meta-level structure: what makes the claim intelligible?</li>
-            <li>Embodied-relational outcome: what happens when it becomes practice?</li>
+            <li>State the political claim clearly.</li>
+            <li>Locate the context, assumptions, and affected communities.</li>
+            <li>Name the embodied consequences before forming judgment.</li>
           </ol>
         </article>
         <article class="card">
@@ -753,71 +718,11 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="matrix-title">
-      <h2 id="matrix-title">7x5D Matrix</h2>
-      <div class="matrix">
-        <table>
-          <thead>
-            <tr>
-              <th>Dimension</th>
-              <th>Main Question</th>
-              <th>Distortion Risk</th>
-              <th>Developmental Possibility</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>D1 Domains</td>
-              <td>Which philosophical, historical, legal, economic, cultural, technological, ecological, and relational domains are active?</td>
-              <td>Reducing the issue to one cause or one discipline.</td>
-              <td>Multi-domain public reasoning.</td>
-            </tr>
-            <tr>
-              <td>D2 Thinking Modes</td>
-              <td>Which conceptual, contextual, comparative, critical, and creative modes are strong or missing?</td>
-              <td>Logical clarity without context, or critique without alternatives.</td>
-              <td>Balanced and imaginative judgment.</td>
-            </tr>
-            <tr>
-              <td>D3 Formation Arc</td>
-              <td>What must be discerned, disrupted, disclosed, displaced, and practiced?</td>
-              <td>Insight that never becomes accountable civic participation.</td>
-              <td>Disciplined participation.</td>
-            </tr>
-            <tr>
-              <td>D4 5C Capacities</td>
-              <td>Does the discourse cultivate critical, creative, communicative, collaborative, and compassionate capacity?</td>
-              <td>Critique without compassion, or collaboration without justice.</td>
-              <td>Responsible civic formation.</td>
-            </tr>
-            <tr>
-              <td>D5 Learning Arc</td>
-              <td>Does knowledge become study, understanding, wisdom, and transformative action?</td>
-              <td>Information mistaken for wisdom.</td>
-              <td>Embodied learning.</td>
-            </tr>
-            <tr>
-              <td>D6 Becoming</td>
-              <td>What kind of political subject is being formed?</td>
-              <td>Passive receiver, loyal partisan, or resentful opponent.</td>
-              <td>Architect-steward of shared life.</td>
-            </tr>
-            <tr>
-              <td>D7 Embodied Integration</td>
-              <td>What happens to bodies, families, neighborhoods, institutions, ecosystems, and future generations?</td>
-              <td>Abstract principle detached from human consequence.</td>
-              <td>Life-giving shared world.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
     <section id="modes" class="section">
       <h2>Operating Modes</h2>
       <div class="mode-grid">
         <div class="mode-chip"><strong>A Rapid</strong>Claim, assumptions, evidence, weakness, consequence, judgment.</div>
-        <div class="mode-chip"><strong>B Full 7x5D</strong>The complete workflow for major issues and public arguments.</div>
+        <div class="mode-chip"><strong>B Full Analysis</strong>The complete workflow for major issues and public arguments.</div>
         <div class="mode-chip"><strong>C Comparative</strong>Compare philosophies, thinkers, systems, or civic traditions.</div>
         <div class="mode-chip"><strong>D Speech</strong>Analyze language, media, framing, emotion, and identity formation.</div>
         <div class="mode-chip"><strong>E Policy</strong>Evaluate goals, mechanisms, beneficiaries, burdens, justice, and alternatives.</div>
@@ -842,7 +747,7 @@
         </article>
         <article class="card">
           <h3>Formation</h3>
-          <p>Meta-cognitive reflexivity, 7x5D integration, embodied consequence analysis, practical usefulness, and transformative learning potential.</p>
+          <p>Meta-cognitive reflexivity, integrated analysis, embodied consequence analysis, practical usefulness, and transformative learning potential.</p>
         </article>
       </div>
     </section>
@@ -870,7 +775,7 @@
     const modeInstructions = {
       en: {
         "Rapid Political Analysis": "Produce: central claim; philosophical assumptions; strongest evidence; principal weakness; embodied consequence; provisional judgment.",
-        "Full 7x5D Analysis": "Apply the complete workflow: intake, claim reconstruction, meta-language, context, philosophical foundations, evidence, meta-cognition, meta-critique, comparative lenses, 7x5D integration, embodied consequences, alternatives, judgment, formation and action.",
+        "Full Analysis": "Apply the complete public workflow: intake, claim reconstruction, meta-language, context, philosophical foundations, evidence, meta-cognition, meta-critique, comparative lenses, embodied consequences, alternatives, judgment, formation and action.",
         "Comparative Philosophy": "Compare political philosophies, thinkers, traditions, or systems across human person, freedom, justice, power, state, strengths, limits, and embodied outcomes.",
         "Speech and Media Analysis": "Analyze naming, labeling, metaphor, crisis framing, enemy and victim construction, selective memory, emotion, identity activation, and legitimized action.",
         "Policy Evaluation": "Assess policy goal, mechanism, beneficiaries, burden bearers, evidence, implementation, unintended effects, justice, alternatives, and safeguards.",
@@ -882,7 +787,7 @@
       },
       ko: {
         "Rapid Political Analysis": "산출물: 핵심 주장, 철학적 전제, 가장 강한 근거, 주요 약점, embodied consequence, 잠정 판단.",
-        "Full 7x5D Analysis": "전체 절차를 적용하십시오: 입력 정리, 주장 재구성, 메타언어, 맥락, 철학적 토대, 증거, 메타인지, 메타비평, 비교 렌즈, 7x5D 통합, embodied consequence, 대안, 판단, 형성과 실천.",
+        "Full Analysis": "전체 공개 절차를 적용하십시오: 입력 정리, 주장 재구성, 메타언어, 맥락, 철학적 토대, 증거, 메타인지, 메타비평, 비교 렌즈, embodied consequence, 대안, 판단, 형성과 실천.",
         "Comparative Philosophy": "정치철학, 사상가, 전통, 체계를 사람 이해, 자유, 정의, 권력, 국가, 강점, 한계, embodied outcome을 따라 비교하십시오.",
         "Speech and Media Analysis": "명명, 낙인, 은유, 위기 프레임, 적과 피해자 구성, 선택적 기억, 감정, 정체성 활성화, 정당화되는 행동을 분석하십시오.",
         "Policy Evaluation": "정책 목표, 작동 방식, 수혜자, 부담을 지는 사람들, 증거, 실행 가능성, 의도하지 않은 효과, 정의, 대안, 보호장치를 평가하십시오.",
@@ -897,7 +802,7 @@
     const modeLabels = {
       en: [
         "Mode A: Rapid Political Analysis",
-        "Mode B: Full 7x5D Analysis",
+        "Mode B: Full Analysis",
         "Mode C: Comparative Philosophy",
         "Mode D: Speech and Media Analysis",
         "Mode E: Policy Evaluation",
@@ -909,7 +814,7 @@
       ],
       ko: [
         "모드 A: 신속 정치 분석",
-        "모드 B: 전체 7x5D 분석",
+        "모드 B: 전체 분석",
         "모드 C: 비교 정치철학",
         "모드 D: 연설 및 미디어 분석",
         "모드 E: 정책 평가",
@@ -944,11 +849,11 @@
         description: "A prompt-building and civic analysis workspace for the MRIA 7x5D Meta-Political Philosophy Engine.",
         brand: "MRIA 7x5D Engine",
         tagline: "Meta-language, meta-cognition, meta-critique, embodied civic formation",
-        nav: ["Analyze", "Architecture", "Modes", "Rubric"],
+        nav: ["Analyze", "Workflow", "Modes", "Rubric"],
         eyebrow: "MRIA civic formation workspace",
         h1: "7x5D Meta-Political Philosophy Engine",
         lead: "Analyze political claims, speeches, policies, ideologies, and civic conflicts by tracing how language, perception, power, place, identity, and embodied consequences form a shared world.",
-        actions: ["Start an analysis", "View the framework", "View in Korean"],
+        actions: ["Start an analysis", "View the workflow", "View in Korean"],
         triadTitles: ["Meta-language", "Meta-cognition", "Meta-critique"],
         triadBody: [
           "Clarify contested terms, frames, metaphors, premises, categories, evidence, omissions, and rhetoric.",
@@ -987,27 +892,16 @@
           copy: "Copy",
           download: "Download .md"
         },
-        architectureTitle: "Core Architecture",
+        architectureTitle: "Public Analysis Workflow",
         cards: [
-          ["Three-Level Test", ["Object-level political claim: what is asserted?", "Meta-level structure: what makes the claim intelligible?", "Embodied-relational outcome: what happens when it becomes practice?"]],
+          ["Claim → Context → Consequence", ["State the political claim clearly.", "Locate the context, assumptions, and affected communities.", "Name the embodied consequences before forming judgment."]],
           ["WHERE-WHO-WHAT", "Map political space, formed identities, at-stake values, movement across center and margin, and the embodied event produced in actual life."],
           ["Evidence Discipline", "Distinguish verified fact, allegation, interpretation, inference, prediction, moral judgment, rhetoric, and unsupported claims."]
-        ],
-        matrixTitle: "7x5D Matrix",
-        matrixHead: ["Dimension", "Main Question", "Distortion Risk", "Developmental Possibility"],
-        matrixRows: [
-          ["D1 Domains", "Which philosophical, historical, legal, economic, cultural, technological, ecological, and relational domains are active?", "Reducing the issue to one cause or one discipline.", "Multi-domain public reasoning."],
-          ["D2 Thinking Modes", "Which conceptual, contextual, comparative, critical, and creative modes are strong or missing?", "Logical clarity without context, or critique without alternatives.", "Balanced and imaginative judgment."],
-          ["D3 Formation Arc", "What must be discerned, disrupted, disclosed, displaced, and practiced?", "Insight that never becomes accountable civic participation.", "Disciplined participation."],
-          ["D4 5C Capacities", "Does the discourse cultivate critical, creative, communicative, collaborative, and compassionate capacity?", "Critique without compassion, or collaboration without justice.", "Responsible civic formation."],
-          ["D5 Learning Arc", "Does knowledge become study, understanding, wisdom, and transformative action?", "Information mistaken for wisdom.", "Embodied learning."],
-          ["D6 Becoming", "What kind of political subject is being formed?", "Passive receiver, loyal partisan, or resentful opponent.", "Architect-steward of shared life."],
-          ["D7 Embodied Integration", "What happens to bodies, families, neighborhoods, institutions, ecosystems, and future generations?", "Abstract principle detached from human consequence.", "Life-giving shared world."]
         ],
         modesTitle: "Operating Modes",
         modeChips: [
           ["A Rapid", "Claim, assumptions, evidence, weakness, consequence, judgment."],
-          ["B Full 7x5D", "The complete workflow for major issues and public arguments."],
+          ["B Full Analysis", "The complete workflow for major issues and public arguments."],
           ["C Comparative", "Compare philosophies, thinkers, systems, or civic traditions."],
           ["D Speech", "Analyze language, media, framing, emotion, and identity formation."],
           ["E Policy", "Evaluate goals, mechanisms, beneficiaries, burdens, justice, and alternatives."],
@@ -1021,7 +915,7 @@
         rubricCards: [
           ["Truthfulness", "Conceptual clarity, contextual accuracy, evidence quality, uncertainty, and correction readiness."],
           ["Justice and Power", "Fair representation, power analysis, attention to marginalized voices, non-dehumanizing language, and hidden costs."],
-          ["Formation", "Meta-cognitive reflexivity, 7x5D integration, embodied consequence analysis, practical usefulness, and transformative learning potential."]
+          ["Formation", "Meta-cognitive reflexivity, integrated analysis, embodied consequence analysis, practical usefulness, and transformative learning potential."]
         ],
         footer: ["MRIA 7x5D Meta-Political Philosophy Engine", "For civic wisdom, bridge-space dialogue, and embodied relational practice."],
         status: {
@@ -1038,11 +932,11 @@
         description: "MRIA 7x5D 메타-정치철학 엔진을 위한 프롬프트 생성 및 시민 분석 작업공간.",
         brand: "MRIA 7x5D 엔진",
         tagline: "메타언어, 메타인지, 메타비평, 체화된 시민 형성",
-        nav: ["분석", "구조", "모드", "평가표"],
+        nav: ["분석", "흐름", "모드", "평가표"],
         eyebrow: "MRIA 시민 형성 작업공간",
         h1: "7x5D 메타-정치철학 엔진",
         lead: "정치적 주장, 연설, 정책, 이념, 시민 갈등을 분석합니다. 언어, 인식, 권력, 장소, 정체성, 체화된 결과가 어떻게 하나의 공유 세계를 형성하는지 추적합니다.",
-        actions: ["분석 시작", "프레임워크 보기", "한국어로 보기"],
+        actions: ["분석 시작", "분석 흐름 보기", "한국어로 보기"],
         triadTitles: ["메타언어", "메타인지", "메타비평"],
         triadBody: [
           "논쟁적 용어, 프레임, 은유, 전제, 범주, 증거, 누락, 수사를 명료화합니다.",
@@ -1081,27 +975,16 @@
           copy: "복사",
           download: ".md 다운로드"
         },
-        architectureTitle: "핵심 구조",
+        architectureTitle: "공개 분석 흐름",
         cards: [
-          ["세 수준 테스트", ["대상 수준의 정치적 주장: 무엇을 주장하는가?", "메타 수준의 구조: 무엇이 그 주장을 이해 가능하게 만드는가?", "체화-관계적 결과: 그것이 실천이 될 때 무엇이 발생하는가?"]],
+          ["주장 → 맥락 → 결과", ["정치적 주장을 명확하게 진술합니다.", "맥락, 전제, 영향을 받는 공동체를 찾습니다.", "판단하기 전에 체화된 결과를 명명합니다."]],
           ["WHERE-WHO-WHAT", "정치적 공간, 형성되는 정체성, 걸려 있는 가치, 중심과 주변을 가로지르는 움직임, 실제 삶에서 만들어지는 embodied event를 지도화합니다."],
           ["증거 규율", "검증된 사실, 의혹 또는 주장, 해석, 추론, 예측, 도덕 판단, 수사, 근거 없는 주장을 구분합니다."]
-        ],
-        matrixTitle: "7x5D 매트릭스",
-        matrixHead: ["차원", "핵심 질문", "왜곡 위험", "발달 가능성"],
-        matrixRows: [
-          ["D1 영역", "철학, 역사, 법, 경제, 문화, 기술, 생태, 관계 영역 중 무엇이 작동하는가?", "쟁점을 하나의 원인이나 하나의 학문으로 축소함.", "다중 영역 공적 추론."],
-          ["D2 사고 모드", "개념적, 맥락적, 비교적, 비판적, 창의적 모드 중 무엇이 강하거나 빠져 있는가?", "맥락 없는 논리적 명료성, 또는 대안 없는 비판.", "균형 있고 상상력 있는 판단."],
-          ["D3 형성 아크", "무엇을 분별하고, 교란하고, 드러내고, 이동시키고, 실천해야 하는가?", "통찰이 책임 있는 시민 참여로 이어지지 못함.", "훈련된 참여."],
-          ["D4 5C 역량", "담론이 비판적, 창의적, 소통적, 협력적, 공감적 역량을 기르는가?", "공감 없는 비판, 또는 정의 없는 협력.", "책임 있는 시민 형성."],
-          ["D5 학습 아크", "지식이 공부, 이해, 지혜, 변혁적 행동으로 나아가는가?", "정보를 지혜로 오해함.", "체화된 학습."],
-          ["D6 되어감", "어떤 정치적 주체가 형성되고 있는가?", "수동적 수용자, 충성적 당파, 또는 원한에 사로잡힌 반대자.", "공유 생명의 설계자-청지기."],
-          ["D7 체화 통합", "몸, 가족, 이웃, 제도, 생태계, 미래 세대에게 무엇이 발생하는가?", "사람에게 미치는 결과에서 분리된 추상 원리.", "생명을 살리는 공유 세계."]
         ],
         modesTitle: "작동 모드",
         modeChips: [
           ["A 신속", "주장, 전제, 증거, 약점, 결과, 판단."],
-          ["B 전체 7x5D", "중요한 쟁점과 공적 논증을 위한 전체 워크플로."],
+          ["B 전체 분석", "중요한 쟁점과 공적 논증을 위한 전체 워크플로."],
           ["C 비교", "철학, 사상가, 체계, 시민 전통을 비교."],
           ["D 연설", "언어, 미디어, 프레임, 감정, 정체성 형성 분석."],
           ["E 정책", "목표, 메커니즘, 수혜자, 부담, 정의, 대안 평가."],
@@ -1115,7 +998,7 @@
         rubricCards: [
           ["진실성", "개념적 명료성, 맥락적 정확성, 증거의 질, 불확실성, 수정 준비성."],
           ["정의와 권력", "공정한 재현, 권력 분석, 주변화된 목소리, 사람을 대상화하지 않는 언어, 숨겨진 비용."],
-          ["형성", "메타인지적 성찰성, 7x5D 통합, embodied consequence 분석, 실제 유용성, 변혁적 학습 가능성."]
+          ["형성", "메타인지적 성찰성, 통합 분석, embodied consequence 분석, 실제 유용성, 변혁적 학습 가능성."]
         ],
         footer: ["MRIA 7x5D 메타-정치철학 엔진", "시민적 지혜, 브리지-공간 대화, 체화된 관계적 실천을 위하여."],
         status: {
@@ -1206,13 +1089,6 @@
 
       setText("#architecture h2", t().architectureTitle);
       setCardContent(t().cards, "#architecture .card");
-      setText("#matrix-title", t().matrixTitle);
-      setAllText("thead th", t().matrixHead);
-      document.querySelectorAll("tbody tr").forEach((row, rowIndex) => {
-        row.querySelectorAll("td").forEach((cell, cellIndex) => {
-          cell.textContent = t().matrixRows[rowIndex][cellIndex];
-        });
-      });
       setText("#modes h2", t().modesTitle);
       document.querySelectorAll(".mode-chip").forEach((chip, index) => {
         chip.querySelector("strong").textContent = t().modeChips[index][0];
@@ -1276,7 +1152,7 @@ ${sources === "[list supplied sources; if none, state that current facts must be
 3. 메타언어를 적용하십시오: 개념, 정의, 전제, 프레임, 은유, 이분법, 누락, 증거, 수사를 명료화하십시오.
 4. 메타인지를 적용하십시오: 입장, 선택, 프레임, 감정, 정체성, 확증, 일관성, 불확실성, 수정 가능성, 형성을 성찰하십시오.
 5. 메타비평을 적용하십시오: 권력, 제도, 이해관계, 정상화, 배제, 불균등한 위험, 숨겨진 비용, 중심-주변 관계를 분석하십시오.
-6. 관련 7x5D 차원을 사용하십시오: 다중 영역 추론, 다섯 사고 모드, 형성 아크, 5C 역량, 학습 아크, 되어감의 궤적, 체화-행위적 통합.
+6. MRIA의 내부 분석 엔진을 적용하되, 공개 응답에서는 내부 구조를 노출하지 말고 사용자가 이해할 수 있는 분석 흐름으로 설명하십시오.
 7. WHERE-WHO-WHAT-MOVEMENT-EMBODIED EVENT를 포함하십시오:
    - WHERE: 이 정치적 현실은 어디에서 생산되고 있는가?
    - WHO: 누가 형성되고, 중심에 놓이고, 주변화되고, 보호받고, 배제되는가?
@@ -1326,7 +1202,7 @@ Required method:
 3. Apply meta-language: clarify concepts, definitions, premises, frames, metaphors, binaries, omissions, evidence, and rhetoric.
 4. Apply meta-cognition: examine standpoint, selection, framing, emotion, identity, confirmation, consistency, uncertainty, correctability, and formation.
 5. Apply meta-critique: analyze power, institutions, interests, normalization, exclusion, unequal risk, hidden costs, and center-margin relations.
-6. Use relevant 7x5D dimensions: multi-domain reasoning, five thinking modes, formation arc, 5C capacities, learning arc, becoming trajectory, and embodied-enactive integration.
+6. Apply the internal MRIA analysis engine, but do not expose the underlying structure in the public response; translate it into a user-facing analysis flow.
 7. Include WHERE-WHO-WHAT-MOVEMENT-EMBODIED EVENT:
    - WHERE is this political reality being produced?
    - WHO is being formed, centered, marginalized, protected, or excluded?
@@ -1381,7 +1257,7 @@ Required method:
       document.querySelector("#context").value = currentLanguage === "ko" ? "대한민국, 현재 시민적·정치적 양극화." : "South Korea, current civic and political polarization.";
       document.querySelector("#timeframe").value = currentLanguage === "ko" ? "현재, 역사적 기억과 경제 구조를 함께 고려." : "Current, with attention to historical memory and economic structure.";
       document.querySelector("#material").value = currentLanguage === "ko" ? "분열의 뿌리가 이념인지, 아니면 돈, 권력, 미디어, 두려움, 제도, 역사적 기억이 더 깊은 힘인지 분석하십시오." : "Analyze whether ideology is the root cause of division, or whether money, power, media, fear, institutions, and historical memory are deeper forces.";
-      document.querySelector("#mode").value = "Full 7x5D Analysis";
+      document.querySelector("#mode").value = "Full Analysis";
       document.querySelector("#length").value = "Standard";
       document.querySelector("#purpose").value = currentLanguage === "ko" ? "수업, 공적 글쓰기, 시민 형성." : "Teaching, public writing, and civic formation.";
       document.querySelector("#lenses").value = currentLanguage === "ko" ? "관계적 정치철학, 정치경제, 민족주의, 보수주의, 진보주의, 비판이론, 돌봄 윤리." : "Relational political philosophy, political economy, nationalism, conservatism, progressivism, critical theory, care ethics.";
