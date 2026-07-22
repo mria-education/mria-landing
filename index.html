@@ -558,6 +558,40 @@
     box-shadow: 0 10px 22px rgba(31,78,121,0.22);
     transform: translateY(-1px);
   }
+  .motion-offering {
+    margin-top: 14px;
+    border: 1px dashed var(--line);
+    border-left: 3px solid var(--cardcolor, var(--gold));
+    border-radius: var(--radius);
+    background: var(--surface-muted);
+    padding: 12px 12px;
+  }
+  .motion-offering strong {
+    display: block;
+    font-family: var(--display);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--gold-l);
+    line-height: 1.35;
+  }
+  body.lang-ko .motion-offering strong { font-family: var(--ko); letter-spacing: 0.02em; }
+  .motion-offering span {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--text-soft);
+  }
+  .motion-offering a {
+    display: inline-flex;
+    margin-top: 9px;
+    color: var(--gold-l);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .motion-offering a:hover { text-decoration: underline; }
 
   /* subsection inside a section (e.g. How MRIA Works within About) */
   .sem-sub { margin-top: 52px; scroll-margin-top: 24px; }
@@ -645,7 +679,6 @@
       <a href="#formation" data-i18n="nav_formation">Formation</a>
       <a href="#motions" data-i18n="nav_motions">Five Motions</a>
       <a href="#learning" data-i18n="nav_learning">Learning</a>
-      <a href="political-engine.html" data-engine-link data-i18n="nav_engine">Civic Engine</a>
       <a href="#participation" data-i18n="nav_contact">Contact</a>
     </nav>
   </header>
@@ -682,7 +715,6 @@
       </div>
       <div class="btn-row">
         <a class="btn-gold" href="#rhizome"><span class="only-en">Explore the rhizome</span><span class="only-ko" lang="ko">리좀 탐색하기</span></a>
-        <a class="btn-ghost" href="political-engine.html" data-engine-link><span class="only-en">Open civic engine</span><span class="only-ko" lang="ko">시민 분석 엔진 열기</span></a>
         <a class="btn-ghost" href="#about"><span class="only-en">About MRIA</span><span class="only-ko" lang="ko">MRIA 소개</span></a>
       </div>
     </section>
@@ -908,6 +940,12 @@
           <h3><span class="only-en">Communication in Motion</span><span class="only-ko" lang="ko">Communication — 운동 중에</span></h3>
           <p class="only-en">Interpretive crossing and relational listening across worlds — including language, translation, and cross-cultural understanding.</p>
           <p class="only-ko" lang="ko">세계를 가로지르는 해석적 건넘과 관계적 경청 — 언어, 번역, 문화 간 이해를 포함합니다.</p>
+          <div class="motion-offering">
+            <strong><span class="only-en">Civic Engine</span><span class="only-ko" lang="ko">Civic Engine</span></strong>
+            <span class="only-en">A Communication in Motion intake offering for civic narrative reflection — display-only, in development, gated.</span>
+            <span class="only-ko" lang="ko">시민적 서사를 성찰하기 위한 Communication in Motion 인테이크 오퍼링 — 표시 전용, 개발 중, 게이트.</span>
+            <a href="political-engine.html" data-engine-link><span class="only-en">Open Civic Engine</span><span class="only-ko" lang="ko">Civic Engine 열기</span><span aria-hidden="true"> →</span></a>
+          </div>
           <a class="motion-link" href="pathways.html#communication-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
         </article>
         <article class="sem-card" id="motion-culture" style="--cardcolor:#FAC775">
@@ -1488,7 +1526,7 @@ window.RHIZOME_CONTENT = {
         close: "Close",
         nav_rhizome: "Rhizome", nav_about: "About", nav_core: "Meta Core",
         nav_formation: "Formation", nav_motions: "Five Motions", nav_learning: "Learning",
-        nav_engine: "Civic Engine", nav_contact: "Contact",
+        nav_contact: "Contact",
         footer: "© 2026 MRIA Education · MetaReality Relational Intelligence Architecture · anonymous & read-only · no personal data collected",
         groups: { architecture: "MetaReality", node: "Life-Space Nodes", layer: "MRIA Layers", "5c": "5C in Motion" },
         threed_loading: "Loading the 3D rhizome…",
@@ -1507,7 +1545,7 @@ window.RHIZOME_CONTENT = {
         close: "닫기",
         nav_rhizome: "리좀", nav_about: "소개", nav_core: "메타 코어",
         nav_formation: "형성", nav_motions: "다섯 운동", nav_learning: "학습",
-        nav_engine: "시민 엔진", nav_contact: "연락",
+        nav_contact: "연락",
         footer: "© 2026 MRIA Education · 메타리얼리티 관계적 지성 아키텍처 · 익명 · 읽기 전용 · 개인정보 수집 없음",
         groups: { architecture: "MetaReality", node: "생명 공간 노드", layer: "MRIA 층위", "5c": "5C 운동 중에" },
         threed_loading: "3D 리좀을 불러오는 중…",
