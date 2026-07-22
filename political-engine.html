@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MRIA 7x5D Meta-Political Philosophy Engine</title>
+  <meta name="description" content="A prompt-building and civic analysis workspace for the MRIA 7x5D Meta-Political Philosophy Engine.">
+  <style>
+    :root {
+      --ink: #17211b;
+      --muted: #627167;
+      --line: #dfe8e1;
+      --paper: #fbfdf9;
+      --panel: #ffffff;
+      --green: #2f7d55;
+      --green-soft: #e8f4eb;
+      --purple: #6544a1;
+      --purple-soft: #f0ebfa;
+      --orange: #c86a2a;
+      --orange-soft: #fff0e5;
+      --gold: #aa842b;
+      --shadow: 0 18px 50px rgba(23, 33, 27, 0.08);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(47, 125, 85, 0.14), transparent 34rem),
+        linear-gradient(180deg, #f4f8f0 0%, #fbfdf9 36%, #f7f4ee 100%);
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--green);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(223, 232, 225, 0.86);
+      background: rgba(251, 253, 249, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0;
+      background:
+        conic-gradient(from 10deg, var(--green), var(--purple), var(--orange), var(--green));
+      box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.72);
+      flex: 0 0 auto;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 0.98rem;
+      line-height: 1.15;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 54vw;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+
+    .nav-links a:hover {
+      background: var(--green-soft);
+    }
+
+    .language-switch {
+      display: inline-flex;
+      gap: 4px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+    }
+
+    .language-switch button {
+      min-height: 32px;
+      padding: 6px 10px;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      font-size: 0.82rem;
+    }
+
+    .language-switch button[aria-pressed="true"] {
+      color: #fff;
+      background: var(--ink);
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 34px;
+    }
+
+    .intro {
+      padding: 28px 0;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      margin: 0 0 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.15rem, 5vw, 4.6rem);
+      line-height: 0.96;
+      max-width: 10ch;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 62ch;
+      color: #405046;
+      font-size: 1.08rem;
+      margin: 20px 0 0;
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    button,
+    .button-link {
+      appearance: none;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: var(--ink);
+      color: white;
+      padding: 11px 16px;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+    }
+
+    button.secondary,
+    .button-link.secondary {
+      background: #fff;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    button.ghost {
+      color: var(--green);
+      background: transparent;
+      border-color: transparent;
+      padding-inline: 10px;
+    }
+
+    button:hover,
+    .button-link:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.56;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .triad {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(223, 232, 225, 0.9);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+      align-content: center;
+    }
+
+    .triad-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: var(--panel);
+    }
+
+    .triad-card:nth-child(1) {
+      border-left: 5px solid var(--green);
+    }
+
+    .triad-card:nth-child(2) {
+      border-left: 5px solid var(--purple);
+    }
+
+    .triad-card:nth-child(3) {
+      border-left: 5px solid var(--orange);
+    }
+
+    .triad-card h2,
+    .triad-card h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+
+    .triad-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+      gap: 20px;
+      align-items: start;
+      margin: 22px 0 38px;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .panel-header span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    form {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      font-weight: 740;
+      font-size: 0.92rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #cfdacf;
+      border-radius: var(--radius);
+      padding: 10px 11px;
+      color: var(--ink);
+      background: #fff;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.83rem;
+      font-weight: 500;
+    }
+
+    .output-wrap {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .output-toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 0.88rem;
+      min-height: 1.4em;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin: 0;
+      min-height: 520px;
+      max-height: 72vh;
+      overflow: auto;
+      background: #122018;
+      color: #f6fff6;
+      border-radius: var(--radius);
+      padding: 18px;
+      font: 0.92rem/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    .section {
+      margin: 42px 0 0;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 1.55rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 17px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .card p {
+      margin: 0;
+    }
+
+    .card ul,
+    .card ol {
+      padding-left: 20px;
+      margin: 8px 0 0;
+    }
+
+    .matrix {
+      overflow-x: auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf4ed;
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    td:first-child {
+      font-weight: 760;
+      color: var(--green);
+      width: 22%;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .mode-chip {
+      border-radius: var(--radius);
+      padding: 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .mode-chip strong {
+      display: block;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 26px 0 38px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    footer .inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 940px) {
+      .hero,
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        max-width: 12ch;
+      }
+
+      .cards,
+      .mode-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      pre {
+        min-height: 420px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 0;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .brand-text span {
+        max-width: 84vw;
+      }
+
+      main {
+        width: min(100% - 22px, 1180px);
+        padding-top: 22px;
+      }
+
+      .intro {
+        padding: 8px 0 0;
+      }
+
+      .two-col,
+      .cards,
+      .mode-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-header,
+      .output-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      button,
+      .button-link {
+        width: 100%;
+      }
+
+      .language-switch,
+      .language-switch button {
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav" aria-label="Main navigation">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">7</div>
+        <div class="brand-text">
+          <strong>MRIA 7x5D Engine</strong>
+          <span>Meta-language, meta-cognition, meta-critique, embodied civic formation</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#workspace">Analyze</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#modes">Modes</a>
+        <a href="#rubric">Rubric</a>
+        <div class="language-switch" aria-label="Language">
+          <button type="button" id="lang-en" aria-pressed="true">EN</button>
+          <button type="button" id="lang-ko" aria-pressed="false">한국어</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="intro">
+        <p class="eyebrow">MRIA civic formation workspace</p>
+        <h1 id="page-title">7x5D Meta-Political Philosophy Engine</h1>
+        <p class="lead">
+          Analyze political claims, speeches, policies, ideologies, and civic conflicts by tracing how language, perception, power, place, identity, and embodied consequences form a shared world.
+        </p>
+        <div class="quick-actions">
+          <a class="button-link" href="#workspace">Start an analysis</a>
+          <a class="button-link secondary" href="#architecture">View the framework</a>
+          <button type="button" id="hero-lang-ko" class="button-link secondary">한국어로 보기</button>
+        </div>
+      </div>
+
+      <aside class="triad" aria-label="Three meta functions">
+        <article class="triad-card">
+          <h2>Meta-language</h2>
+          <p>Clarify contested terms, frames, metaphors, premises, categories, evidence, omissions, and rhetoric.</p>
+        </article>
+        <article class="triad-card">
+          <h2>Meta-cognition</h2>
+          <p>Examine standpoint, emotion, identity, selection, bias, consistency, uncertainty, and correctability.</p>
+        </article>
+        <article class="triad-card">
+          <h2>Meta-critique</h2>
+          <p>Expose power, normalization, institutional interests, center-margin relations, exclusion, and hidden costs.</p>
+        </article>
+      </aside>
+    </section>
+
+    <section id="workspace" class="workspace" aria-label="Analysis prompt builder">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Analysis Intake</h2>
+            <span>Fill only what you know. The prompt will preserve uncertainty.</span>
+          </div>
+        </div>
+        <form id="engine-form">
+          <label>
+            Topic or political claim
+            <textarea id="topic" placeholder="Example: Korean society is divided because of ideology."></textarea>
+          </label>
+
+          <div class="two-col">
+            <label>
+              Political context
+              <input id="context" placeholder="Country, institution, community, or region">
+            </label>
+            <label>
+              Timeframe
+              <input id="timeframe" placeholder="Current, historical, or specified period">
+            </label>
+          </div>
+
+          <label>
+            Material to analyze
+            <textarea id="material" placeholder="Paste a speech excerpt, news claim, policy summary, social-media post, or your own question."></textarea>
+          </label>
+
+          <div class="two-col">
+            <label>
+              Operating mode
+              <select id="mode">
+                <option value="Rapid Political Analysis">Mode A: Rapid Political Analysis</option>
+                <option value="Full 7x5D Analysis">Mode B: Full 7x5D Analysis</option>
+                <option value="Comparative Philosophy">Mode C: Comparative Philosophy</option>
+                <option value="Speech and Media Analysis">Mode D: Speech and Media Analysis</option>
+                <option value="Policy Evaluation">Mode E: Policy Evaluation</option>
+                <option value="Ideology Audit">Mode F: Ideology Audit</option>
+                <option value="Political Metacognition">Mode G: Political Metacognition</option>
+                <option value="Civic Learning Design">Mode H: Civic Learning Design</option>
+                <option value="Bridge-Space Dialogue">Mode I: Bridge-Space Dialogue</option>
+                <option value="Political Formation Audit">Mode J: Political Formation Audit</option>
+              </select>
+            </label>
+            <label>
+              Output length
+              <select id="length">
+                <option value="Standard">Standard</option>
+                <option value="Brief">Brief</option>
+                <option value="Extended">Extended</option>
+                <option value="Teaching handout">Teaching handout</option>
+                <option value="Public essay outline">Public essay outline</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="two-col">
+            <label>
+              Primary purpose
+              <input id="purpose" placeholder="Teaching, research, public writing, dialogue, discernment">
+            </label>
+            <label>
+              Relevant lenses
+              <input id="lenses" placeholder="Liberalism, conservatism, care ethics, nationalism, etc.">
+            </label>
+          </div>
+
+          <label>
+            Sources supplied
+            <textarea id="sources" placeholder="List links, documents, authors, or say: no sources supplied."></textarea>
+            <span class="hint">For current political facts, ask the AI to verify with reliable sources before judging.</span>
+          </label>
+
+          <div class="quick-actions">
+            <button type="submit">Generate prompt</button>
+            <button type="button" class="secondary" id="load-example">Load example</button>
+            <button type="button" class="ghost" id="clear-form">Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Generated Engine Prompt</h2>
+            <span>Use this in ChatGPT, Codex, a classroom, or a research workflow.</span>
+          </div>
+        </div>
+        <div class="output-wrap">
+          <div class="output-toolbar">
+            <div class="quick-actions">
+              <button type="button" id="copy-output">Copy</button>
+              <button type="button" class="secondary" id="download-output">Download .md</button>
+            </div>
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+          </div>
+          <pre id="output" tabindex="0"></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section">
+      <h2>Core Architecture</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Three-Level Test</h3>
+          <ol>
+            <li>Object-level political claim: what is asserted?</li>
+            <li>Meta-level structure: what makes the claim intelligible?</li>
+            <li>Embodied-relational outcome: what happens when it becomes practice?</li>
+          </ol>
+        </article>
+        <article class="card">
+          <h3>WHERE-WHO-WHAT</h3>
+          <p>Map political space, formed identities, at-stake values, movement across center and margin, and the embodied event produced in actual life.</p>
+        </article>
+        <article class="card">
+          <h3>Evidence Discipline</h3>
+          <p>Distinguish verified fact, allegation, interpretation, inference, prediction, moral judgment, rhetoric, and unsupported claims.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="matrix-title">
+      <h2 id="matrix-title">7x5D Matrix</h2>
+      <div class="matrix">
+        <table>
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>Main Question</th>
+              <th>Distortion Risk</th>
+              <th>Developmental Possibility</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>D1 Domains</td>
+              <td>Which philosophical, historical, legal, economic, cultural, technological, ecological, and relational domains are active?</td>
+              <td>Reducing the issue to one cause or one discipline.</td>
+              <td>Multi-domain public reasoning.</td>
+            </tr>
+            <tr>
+              <td>D2 Thinking Modes</td>
+              <td>Which conceptual, contextual, comparative, critical, and creative modes are strong or missing?</td>
+              <td>Logical clarity without context, or critique without alternatives.</td>
+              <td>Balanced and imaginative judgment.</td>
+            </tr>
+            <tr>
+              <td>D3 Formation Arc</td>
+              <td>What must be discerned, disrupted, disclosed, displaced, and practiced?</td>
+              <td>Insight that never becomes accountable civic participation.</td>
+              <td>Disciplined participation.</td>
+            </tr>
+            <tr>
+              <td>D4 5C Capacities</td>
+              <td>Does the discourse cultivate critical, creative, communicative, collaborative, and compassionate capacity?</td>
+              <td>Critique without compassion, or collaboration without justice.</td>
+              <td>Responsible civic formation.</td>
+            </tr>
+            <tr>
+              <td>D5 Learning Arc</td>
+              <td>Does knowledge become study, understanding, wisdom, and transformative action?</td>
+              <td>Information mistaken for wisdom.</td>
+              <td>Embodied learning.</td>
+            </tr>
+            <tr>
+              <td>D6 Becoming</td>
+              <td>What kind of political subject is being formed?</td>
+              <td>Passive receiver, loyal partisan, or resentful opponent.</td>
+              <td>Architect-steward of shared life.</td>
+            </tr>
+            <tr>
+              <td>D7 Embodied Integration</td>
+              <td>What happens to bodies, families, neighborhoods, institutions, ecosystems, and future generations?</td>
+              <td>Abstract principle detached from human consequence.</td>
+              <td>Life-giving shared world.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="modes" class="section">
+      <h2>Operating Modes</h2>
+      <div class="mode-grid">
+        <div class="mode-chip"><strong>A Rapid</strong>Claim, assumptions, evidence, weakness, consequence, judgment.</div>
+        <div class="mode-chip"><strong>B Full 7x5D</strong>The complete workflow for major issues and public arguments.</div>
+        <div class="mode-chip"><strong>C Comparative</strong>Compare philosophies, thinkers, systems, or civic traditions.</div>
+        <div class="mode-chip"><strong>D Speech</strong>Analyze language, media, framing, emotion, and identity formation.</div>
+        <div class="mode-chip"><strong>E Policy</strong>Evaluate goals, mechanisms, beneficiaries, burdens, justice, and alternatives.</div>
+        <div class="mode-chip"><strong>F Ideology</strong>Audit ontology, anthropology, epistemology, ethics, and power theory.</div>
+        <div class="mode-chip"><strong>G Metacognition</strong>Examine how a person or group formed its political judgment.</div>
+        <div class="mode-chip"><strong>H Learning</strong>Create lessons, seminars, simulations, and formation exercises.</div>
+        <div class="mode-chip"><strong>I Bridge</strong>Structure non-dehumanizing disagreement across difference.</div>
+        <div class="mode-chip"><strong>J Formation</strong>Evaluate what kind of citizen and community a movement forms.</div>
+      </div>
+    </section>
+
+    <section id="rubric" class="section">
+      <h2>Quality Control Rubric</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Truthfulness</h3>
+          <p>Conceptual clarity, contextual accuracy, evidence quality, uncertainty, and correction readiness.</p>
+        </article>
+        <article class="card">
+          <h3>Justice and Power</h3>
+          <p>Fair representation, power analysis, attention to marginalized voices, non-dehumanizing language, and hidden costs.</p>
+        </article>
+        <article class="card">
+          <h3>Formation</h3>
+          <p>Meta-cognitive reflexivity, 7x5D integration, embodied consequence analysis, practical usefulness, and transformative learning potential.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="inner">
+      <span>MRIA 7x5D Meta-Political Philosophy Engine</span>
+      <span>For civic wisdom, bridge-space dialogue, and embodied relational practice.</span>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.querySelector("#engine-form");
+    const fields = ["topic", "context", "timeframe", "material", "mode", "length", "purpose", "lenses", "sources"];
+    const output = document.querySelector("#output");
+    const statusEl = document.querySelector("#status");
+    const langButtons = {
+      en: document.querySelector("#lang-en"),
+      ko: document.querySelector("#lang-ko")
+    };
+    const queryLanguage = new URLSearchParams(window.location.search).get("lang");
+    let currentLanguage = queryLanguage === "ko" || queryLanguage === "en"
+      ? queryLanguage
+      : localStorage.getItem("mria-7x5d-language") || "en";
+
+    const modeInstructions = {
+      en: {
+        "Rapid Political Analysis": "Produce: central claim; philosophical assumptions; strongest evidence; principal weakness; embodied consequence; provisional judgment.",
+        "Full 7x5D Analysis": "Apply the complete workflow: intake, claim reconstruction, meta-language, context, philosophical foundations, evidence, meta-cognition, meta-critique, comparative lenses, 7x5D integration, embodied consequences, alternatives, judgment, formation and action.",
+        "Comparative Philosophy": "Compare political philosophies, thinkers, traditions, or systems across human person, freedom, justice, power, state, strengths, limits, and embodied outcomes.",
+        "Speech and Media Analysis": "Analyze naming, labeling, metaphor, crisis framing, enemy and victim construction, selective memory, emotion, identity activation, and legitimized action.",
+        "Policy Evaluation": "Assess policy goal, mechanism, beneficiaries, burden bearers, evidence, implementation, unintended effects, justice, alternatives, and safeguards.",
+        "Ideology Audit": "Map ontology, anthropology, epistemology, ethics, power theory, justice theory, freedom theory, identity formation, and embodied outcomes.",
+        "Political Metacognition": "Examine standpoint, framing, emotion, identity, confirmation, consistency, uncertainty, correctability, and habits of political perception.",
+        "Civic Learning Design": "Turn the issue into lesson plans, seminar questions, debates, case studies, simulations, reflection exercises, and collaborative learning activities.",
+        "Bridge-Space Dialogue": "Design a process where sides define terms, reconstruct each other fairly, distinguish facts from interpretations, name value conflicts and power differences, examine embodied consequences, and propose next steps without forced consensus.",
+        "Political Formation Audit": "Evaluate what kind of citizen, community, identity, habits, relationships, and shared world a movement or institution forms."
+      },
+      ko: {
+        "Rapid Political Analysis": "산출물: 핵심 주장, 철학적 전제, 가장 강한 근거, 주요 약점, embodied consequence, 잠정 판단.",
+        "Full 7x5D Analysis": "전체 절차를 적용하십시오: 입력 정리, 주장 재구성, 메타언어, 맥락, 철학적 토대, 증거, 메타인지, 메타비평, 비교 렌즈, 7x5D 통합, embodied consequence, 대안, 판단, 형성과 실천.",
+        "Comparative Philosophy": "정치철학, 사상가, 전통, 체계를 인간 이해, 자유, 정의, 권력, 국가, 강점, 한계, embodied outcome을 따라 비교하십시오.",
+        "Speech and Media Analysis": "명명, 낙인, 은유, 위기 프레임, 적과 피해자 구성, 선택적 기억, 감정, 정체성 활성화, 정당화되는 행동을 분석하십시오.",
+        "Policy Evaluation": "정책 목표, 작동 방식, 수혜자, 부담을 지는 사람들, 증거, 실행 가능성, 의도하지 않은 효과, 정의, 대안, 보호장치를 평가하십시오.",
+        "Ideology Audit": "존재론, 인간론, 인식론, 윤리, 권력이론, 정의론, 자유론, 정체성 형성, embodied outcome을 지도화하십시오.",
+        "Political Metacognition": "입장, 프레임, 감정, 정체성, 확증, 일관성, 불확실성, 수정 가능성, 정치적 지각의 습관을 성찰하십시오.",
+        "Civic Learning Design": "쟁점을 수업안, 세미나 질문, 토론, 사례 연구, 시뮬레이션, 성찰 활동, 협력 학습으로 전환하십시오.",
+        "Bridge-Space Dialogue": "각 입장이 용어를 정의하고, 상대를 공정하게 재구성하며, 사실과 해석을 구분하고, 가치 갈등과 권력 차이를 명명하며, embodied consequence를 살피고, 강제된 합의 없이 다음 실천을 제안하는 과정을 설계하십시오.",
+        "Political Formation Audit": "한 운동이나 제도가 어떤 시민, 공동체, 정체성, 습관, 관계, 공유 세계를 형성하는지 평가하십시오."
+      }
+    };
+
+    const modeLabels = {
+      en: [
+        "Mode A: Rapid Political Analysis",
+        "Mode B: Full 7x5D Analysis",
+        "Mode C: Comparative Philosophy",
+        "Mode D: Speech and Media Analysis",
+        "Mode E: Policy Evaluation",
+        "Mode F: Ideology Audit",
+        "Mode G: Political Metacognition",
+        "Mode H: Civic Learning Design",
+        "Mode I: Bridge-Space Dialogue",
+        "Mode J: Political Formation Audit"
+      ],
+      ko: [
+        "모드 A: 신속 정치 분석",
+        "모드 B: 전체 7x5D 분석",
+        "모드 C: 비교 정치철학",
+        "모드 D: 연설 및 미디어 분석",
+        "모드 E: 정책 평가",
+        "모드 F: 이념 감사",
+        "모드 G: 정치적 메타인지",
+        "모드 H: 시민 학습 설계",
+        "모드 I: 브리지-공간 대화",
+        "모드 J: 정치적 형성 감사"
+      ]
+    };
+
+    const lengthLabels = {
+      en: {
+        "Standard": "Standard",
+        "Brief": "Brief",
+        "Extended": "Extended",
+        "Teaching handout": "Teaching handout",
+        "Public essay outline": "Public essay outline"
+      },
+      ko: {
+        "Standard": "표준",
+        "Brief": "간략",
+        "Extended": "확장",
+        "Teaching handout": "수업용 핸드아웃",
+        "Public essay outline": "공적 글쓰기 개요"
+      }
+    };
+
+    const uiText = {
+      en: {
+        title: "MRIA 7x5D Meta-Political Philosophy Engine",
+        description: "A prompt-building and civic analysis workspace for the MRIA 7x5D Meta-Political Philosophy Engine.",
+        brand: "MRIA 7x5D Engine",
+        tagline: "Meta-language, meta-cognition, meta-critique, embodied civic formation",
+        nav: ["Analyze", "Architecture", "Modes", "Rubric"],
+        eyebrow: "MRIA civic formation workspace",
+        h1: "7x5D Meta-Political Philosophy Engine",
+        lead: "Analyze political claims, speeches, policies, ideologies, and civic conflicts by tracing how language, perception, power, place, identity, and embodied consequences form a shared world.",
+        actions: ["Start an analysis", "View the framework", "View in Korean"],
+        triadTitles: ["Meta-language", "Meta-cognition", "Meta-critique"],
+        triadBody: [
+          "Clarify contested terms, frames, metaphors, premises, categories, evidence, omissions, and rhetoric.",
+          "Examine standpoint, emotion, identity, selection, bias, consistency, uncertainty, and correctability.",
+          "Expose power, normalization, institutional interests, center-margin relations, exclusion, and hidden costs."
+        ],
+        intakeTitle: "Analysis Intake",
+        intakeSub: "Fill only what you know. The prompt will preserve uncertainty.",
+        outputTitle: "Generated Engine Prompt",
+        outputSub: "Use this in ChatGPT, Codex, a classroom, or a research workflow.",
+        labels: {
+          topic: "Topic or political claim",
+          context: "Political context",
+          timeframe: "Timeframe",
+          material: "Material to analyze",
+          mode: "Operating mode",
+          length: "Output length",
+          purpose: "Primary purpose",
+          lenses: "Relevant lenses",
+          sources: "Sources supplied"
+        },
+        placeholders: {
+          topic: "Example: Korean society is divided because of ideology.",
+          context: "Country, institution, community, or region",
+          timeframe: "Current, historical, or specified period",
+          material: "Paste a speech excerpt, news claim, policy summary, social-media post, or your own question.",
+          purpose: "Teaching, research, public writing, dialogue, discernment",
+          lenses: "Liberalism, conservatism, care ethics, nationalism, etc.",
+          sources: "List links, documents, authors, or say: no sources supplied."
+        },
+        hint: "For current political facts, ask the AI to verify with reliable sources before judging.",
+        buttons: {
+          generate: "Generate prompt",
+          example: "Load example",
+          clear: "Clear",
+          copy: "Copy",
+          download: "Download .md"
+        },
+        architectureTitle: "Core Architecture",
+        cards: [
+          ["Three-Level Test", ["Object-level political claim: what is asserted?", "Meta-level structure: what makes the claim intelligible?", "Embodied-relational outcome: what happens when it becomes practice?"]],
+          ["WHERE-WHO-WHAT", "Map political space, formed identities, at-stake values, movement across center and margin, and the embodied event produced in actual life."],
+          ["Evidence Discipline", "Distinguish verified fact, allegation, interpretation, inference, prediction, moral judgment, rhetoric, and unsupported claims."]
+        ],
+        matrixTitle: "7x5D Matrix",
+        matrixHead: ["Dimension", "Main Question", "Distortion Risk", "Developmental Possibility"],
+        matrixRows: [
+          ["D1 Domains", "Which philosophical, historical, legal, economic, cultural, technological, ecological, and relational domains are active?", "Reducing the issue to one cause or one discipline.", "Multi-domain public reasoning."],
+          ["D2 Thinking Modes", "Which conceptual, contextual, comparative, critical, and creative modes are strong or missing?", "Logical clarity without context, or critique without alternatives.", "Balanced and imaginative judgment."],
+          ["D3 Formation Arc", "What must be discerned, disrupted, disclosed, displaced, and practiced?", "Insight that never becomes accountable civic participation.", "Disciplined participation."],
+          ["D4 5C Capacities", "Does the discourse cultivate critical, creative, communicative, collaborative, and compassionate capacity?", "Critique without compassion, or collaboration without justice.", "Responsible civic formation."],
+          ["D5 Learning Arc", "Does knowledge become study, understanding, wisdom, and transformative action?", "Information mistaken for wisdom.", "Embodied learning."],
+          ["D6 Becoming", "What kind of political subject is being formed?", "Passive receiver, loyal partisan, or resentful opponent.", "Architect-steward of shared life."],
+          ["D7 Embodied Integration", "What happens to bodies, families, neighborhoods, institutions, ecosystems, and future generations?", "Abstract principle detached from human consequence.", "Life-giving shared world."]
+        ],
+        modesTitle: "Operating Modes",
+        modeChips: [
+          ["A Rapid", "Claim, assumptions, evidence, weakness, consequence, judgment."],
+          ["B Full 7x5D", "The complete workflow for major issues and public arguments."],
+          ["C Comparative", "Compare philosophies, thinkers, systems, or civic traditions."],
+          ["D Speech", "Analyze language, media, framing, emotion, and identity formation."],
+          ["E Policy", "Evaluate goals, mechanisms, beneficiaries, burdens, justice, and alternatives."],
+          ["F Ideology", "Audit ontology, anthropology, epistemology, ethics, and power theory."],
+          ["G Metacognition", "Examine how a person or group formed its political judgment."],
+          ["H Learning", "Create lessons, seminars, simulations, and formation exercises."],
+          ["I Bridge", "Structure non-dehumanizing disagreement across difference."],
+          ["J Formation", "Evaluate what kind of citizen and community a movement forms."]
+        ],
+        rubricTitle: "Quality Control Rubric",
+        rubricCards: [
+          ["Truthfulness", "Conceptual clarity, contextual accuracy, evidence quality, uncertainty, and correction readiness."],
+          ["Justice and Power", "Fair representation, power analysis, attention to marginalized voices, non-dehumanizing language, and hidden costs."],
+          ["Formation", "Meta-cognitive reflexivity, 7x5D integration, embodied consequence analysis, practical usefulness, and transformative learning potential."]
+        ],
+        footer: ["MRIA 7x5D Meta-Political Philosophy Engine", "For civic wisdom, bridge-space dialogue, and embodied relational practice."],
+        status: {
+          generated: "Prompt generated.",
+          example: "Example loaded.",
+          cleared: "Workspace cleared.",
+          copied: "Copied to clipboard.",
+          copyFailed: "Copy failed. Select the text and copy manually.",
+          downloaded: "Markdown prompt downloaded."
+        }
+      },
+      ko: {
+        title: "MRIA 7x5D 메타-정치철학 엔진",
+        description: "MRIA 7x5D 메타-정치철학 엔진을 위한 프롬프트 생성 및 시민 분석 작업공간.",
+        brand: "MRIA 7x5D 엔진",
+        tagline: "메타언어, 메타인지, 메타비평, 체화된 시민 형성",
+        nav: ["분석", "구조", "모드", "평가표"],
+        eyebrow: "MRIA 시민 형성 작업공간",
+        h1: "7x5D 메타-정치철학 엔진",
+        lead: "정치적 주장, 연설, 정책, 이념, 시민 갈등을 분석합니다. 언어, 인식, 권력, 장소, 정체성, 체화된 결과가 어떻게 하나의 공유 세계를 형성하는지 추적합니다.",
+        actions: ["분석 시작", "프레임워크 보기", "한국어로 보기"],
+        triadTitles: ["메타언어", "메타인지", "메타비평"],
+        triadBody: [
+          "논쟁적 용어, 프레임, 은유, 전제, 범주, 증거, 누락, 수사를 명료화합니다.",
+          "입장, 감정, 정체성, 선택, 편향, 일관성, 불확실성, 수정 가능성을 성찰합니다.",
+          "권력, 정상화, 제도적 이해관계, 중심-주변 관계, 배제, 숨겨진 비용을 드러냅니다."
+        ],
+        intakeTitle: "분석 입력",
+        intakeSub: "아는 내용만 입력하십시오. 프롬프트는 불확실성을 보존합니다.",
+        outputTitle: "생성된 엔진 프롬프트",
+        outputSub: "ChatGPT, Codex, 수업, 연구 워크플로에서 사용할 수 있습니다.",
+        labels: {
+          topic: "주제 또는 정치적 주장",
+          context: "정치적 맥락",
+          timeframe: "시간 범위",
+          material: "분석 자료",
+          mode: "작동 모드",
+          length: "출력 길이",
+          purpose: "주요 목적",
+          lenses: "관련 렌즈",
+          sources: "제공한 자료"
+        },
+        placeholders: {
+          topic: "예: 한국 사회는 이념 때문에 갈라졌다.",
+          context: "국가, 기관, 공동체, 지역",
+          timeframe: "현재, 역사적 시기, 또는 특정 기간",
+          material: "연설 일부, 뉴스 주장, 정책 요약, 소셜미디어 글, 또는 질문을 붙여넣으십시오.",
+          purpose: "수업, 연구, 공적 글쓰기, 대화, 분별",
+          lenses: "자유주의, 보수주의, 돌봄 윤리, 민족주의 등",
+          sources: "링크, 문서, 저자, 또는 '제공 자료 없음'이라고 적으십시오."
+        },
+        hint: "현재 정치 사실은 판단하기 전에 신뢰할 수 있는 자료로 검증하도록 요청하십시오.",
+        buttons: {
+          generate: "프롬프트 생성",
+          example: "예시 불러오기",
+          clear: "지우기",
+          copy: "복사",
+          download: ".md 다운로드"
+        },
+        architectureTitle: "핵심 구조",
+        cards: [
+          ["세 수준 테스트", ["대상 수준의 정치적 주장: 무엇을 주장하는가?", "메타 수준의 구조: 무엇이 그 주장을 이해 가능하게 만드는가?", "체화-관계적 결과: 그것이 실천이 될 때 무엇이 발생하는가?"]],
+          ["WHERE-WHO-WHAT", "정치적 공간, 형성되는 정체성, 걸려 있는 가치, 중심과 주변을 가로지르는 움직임, 실제 삶에서 만들어지는 embodied event를 지도화합니다."],
+          ["증거 규율", "검증된 사실, 의혹 또는 주장, 해석, 추론, 예측, 도덕 판단, 수사, 근거 없는 주장을 구분합니다."]
+        ],
+        matrixTitle: "7x5D 매트릭스",
+        matrixHead: ["차원", "핵심 질문", "왜곡 위험", "발달 가능성"],
+        matrixRows: [
+          ["D1 영역", "철학, 역사, 법, 경제, 문화, 기술, 생태, 관계 영역 중 무엇이 작동하는가?", "쟁점을 하나의 원인이나 하나의 학문으로 축소함.", "다중 영역 공적 추론."],
+          ["D2 사고 모드", "개념적, 맥락적, 비교적, 비판적, 창의적 모드 중 무엇이 강하거나 빠져 있는가?", "맥락 없는 논리적 명료성, 또는 대안 없는 비판.", "균형 있고 상상력 있는 판단."],
+          ["D3 형성 아크", "무엇을 분별하고, 교란하고, 드러내고, 이동시키고, 실천해야 하는가?", "통찰이 책임 있는 시민 참여로 이어지지 못함.", "훈련된 참여."],
+          ["D4 5C 역량", "담론이 비판적, 창의적, 소통적, 협력적, 공감적 역량을 기르는가?", "공감 없는 비판, 또는 정의 없는 협력.", "책임 있는 시민 형성."],
+          ["D5 학습 아크", "지식이 공부, 이해, 지혜, 변혁적 행동으로 나아가는가?", "정보를 지혜로 오해함.", "체화된 학습."],
+          ["D6 되어감", "어떤 정치적 주체가 형성되고 있는가?", "수동적 수용자, 충성적 당파, 또는 원한에 사로잡힌 반대자.", "공유 생명의 설계자-청지기."],
+          ["D7 체화 통합", "몸, 가족, 이웃, 제도, 생태계, 미래 세대에게 무엇이 발생하는가?", "인간적 결과에서 분리된 추상 원리.", "생명을 살리는 공유 세계."]
+        ],
+        modesTitle: "작동 모드",
+        modeChips: [
+          ["A 신속", "주장, 전제, 증거, 약점, 결과, 판단."],
+          ["B 전체 7x5D", "중요한 쟁점과 공적 논증을 위한 전체 워크플로."],
+          ["C 비교", "철학, 사상가, 체계, 시민 전통을 비교."],
+          ["D 연설", "언어, 미디어, 프레임, 감정, 정체성 형성 분석."],
+          ["E 정책", "목표, 메커니즘, 수혜자, 부담, 정의, 대안 평가."],
+          ["F 이념", "존재론, 인간론, 인식론, 윤리, 권력이론 감사."],
+          ["G 메타인지", "개인이나 집단이 정치적 판단을 어떻게 형성했는지 성찰."],
+          ["H 학습", "수업, 세미나, 시뮬레이션, 형성 활동 제작."],
+          ["I 브리지", "차이 속에서 비인간화하지 않는 이견 대화 구성."],
+          ["J 형성", "운동이 어떤 시민과 공동체를 형성하는지 평가."]
+        ],
+        rubricTitle: "품질 관리 평가표",
+        rubricCards: [
+          ["진실성", "개념적 명료성, 맥락적 정확성, 증거의 질, 불확실성, 수정 준비성."],
+          ["정의와 권력", "공정한 재현, 권력 분석, 주변화된 목소리, 비인간화하지 않는 언어, 숨겨진 비용."],
+          ["형성", "메타인지적 성찰성, 7x5D 통합, embodied consequence 분석, 실제 유용성, 변혁적 학습 가능성."]
+        ],
+        footer: ["MRIA 7x5D 메타-정치철학 엔진", "시민적 지혜, 브리지-공간 대화, 체화된 관계적 실천을 위하여."],
+        status: {
+          generated: "프롬프트가 생성되었습니다.",
+          example: "예시를 불러왔습니다.",
+          cleared: "작업공간을 비웠습니다.",
+          copied: "클립보드에 복사했습니다.",
+          copyFailed: "복사하지 못했습니다. 텍스트를 선택하여 직접 복사하십시오.",
+          downloaded: "마크다운 프롬프트를 다운로드했습니다."
+        }
+      }
+    };
+
+    const getValue = id => document.querySelector("#" + id).value.trim();
+    const t = () => uiText[currentLanguage];
+
+    function setFirstText(element, text) {
+      const node = Array.from(element.childNodes).find(child => child.nodeType === Node.TEXT_NODE && child.nodeValue.trim());
+      if (node) node.nodeValue = `\n              ${text}\n              `;
+    }
+
+    function setText(selector, text) {
+      const element = document.querySelector(selector);
+      if (element) element.textContent = text;
+    }
+
+    function setAllText(selector, values) {
+      document.querySelectorAll(selector).forEach((element, index) => {
+        if (values[index] !== undefined) element.textContent = values[index];
+      });
+    }
+
+    function setCardContent(cards, selector) {
+      document.querySelectorAll(selector).forEach((card, index) => {
+        const data = cards[index];
+        if (!data) return;
+        const heading = card.querySelector("h3");
+        if (heading) heading.textContent = data[0];
+        if (Array.isArray(data[1])) {
+          card.querySelectorAll("li").forEach((item, itemIndex) => {
+            if (data[1][itemIndex]) item.textContent = data[1][itemIndex];
+          });
+        } else {
+          const paragraph = card.querySelector("p");
+          if (paragraph) paragraph.textContent = data[1];
+        }
+      });
+    }
+
+    function applyLanguage(language) {
+      currentLanguage = language;
+      localStorage.setItem("mria-7x5d-language", language);
+      document.documentElement.lang = language === "ko" ? "ko" : "en";
+      document.title = t().title;
+      const description = document.querySelector('meta[name="description"]');
+      if (description) description.setAttribute("content", t().description);
+
+      langButtons.en.setAttribute("aria-pressed", String(language === "en"));
+      langButtons.ko.setAttribute("aria-pressed", String(language === "ko"));
+
+      setText(".brand-text strong", t().brand);
+      setText(".brand-text span", t().tagline);
+      setAllText(".nav-links a", t().nav);
+      setText(".eyebrow", t().eyebrow);
+      setText("#page-title", t().h1);
+      setText(".lead", t().lead);
+      setAllText(".quick-actions .button-link", t().actions);
+      setAllText(".triad-card h2", t().triadTitles);
+      setAllText(".triad-card p", t().triadBody);
+      setAllText(".panel-header h2", [t().intakeTitle, t().outputTitle]);
+      setAllText(".panel-header span", [t().intakeSub, t().outputSub]);
+
+      Object.entries(t().labels).forEach(([id, text]) => setFirstText(document.querySelector("#" + id).closest("label"), text));
+      Object.entries(t().placeholders).forEach(([id, text]) => document.querySelector("#" + id).setAttribute("placeholder", text));
+      setText(".hint", t().hint);
+
+      const formButtons = document.querySelectorAll("form .quick-actions button");
+      formButtons[0].textContent = t().buttons.generate;
+      formButtons[1].textContent = t().buttons.example;
+      formButtons[2].textContent = t().buttons.clear;
+      setText("#copy-output", t().buttons.copy);
+      setText("#download-output", t().buttons.download);
+
+      document.querySelectorAll("#mode option").forEach((option, index) => option.textContent = modeLabels[language][index]);
+      document.querySelectorAll("#length option").forEach(option => option.textContent = lengthLabels[language][option.value]);
+
+      setText("#architecture h2", t().architectureTitle);
+      setCardContent(t().cards, "#architecture .card");
+      setText("#matrix-title", t().matrixTitle);
+      setAllText("thead th", t().matrixHead);
+      document.querySelectorAll("tbody tr").forEach((row, rowIndex) => {
+        row.querySelectorAll("td").forEach((cell, cellIndex) => {
+          cell.textContent = t().matrixRows[rowIndex][cellIndex];
+        });
+      });
+      setText("#modes h2", t().modesTitle);
+      document.querySelectorAll(".mode-chip").forEach((chip, index) => {
+        chip.querySelector("strong").textContent = t().modeChips[index][0];
+        chip.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim()) node.nodeValue = t().modeChips[index][1];
+        });
+      });
+      setText("#rubric h2", t().rubricTitle);
+      setCardContent(t().rubricCards, "#rubric .card");
+      setAllText("footer span", t().footer);
+      output.textContent = buildPrompt();
+    }
+
+    function buildPrompt() {
+      const topic = getValue("topic") || "[insert topic or political claim]";
+      const context = getValue("context") || "[country, institution, community, or region]";
+      const timeframe = getValue("timeframe") || "[current, historical, or specified period]";
+      const material = getValue("material") || "[paste policy, speech, article, debate, ideology, event, movement, or question]";
+      const mode = getValue("mode");
+      const length = lengthLabels[currentLanguage][getValue("length")];
+      const purpose = getValue("purpose") || "[research, teaching, public writing, dialogue, curriculum, or personal discernment]";
+      const lenses = getValue("lenses") || "[select only relevant lenses; use philosophers as dialogue partners, not final authorities]";
+      const sources = getValue("sources") || "[list supplied sources; if none, state that current facts must be verified]";
+
+      if (currentLanguage === "ko") {
+        return `MRIA 7x5D 메타-정치철학 엔진을 사용하십시오.
+
+주제 또는 정치적 주장:
+${topic === "[insert topic or political claim]" ? "[주제 또는 정치적 주장을 입력하십시오]" : topic}
+
+장소 또는 정치적 맥락:
+${context === "[country, institution, community, or region]" ? "[국가, 기관, 공동체, 지역]" : context}
+
+시간 범위:
+${timeframe === "[current, historical, or specified period]" ? "[현재, 역사적 시기, 또는 특정 기간]" : timeframe}
+
+분석 자료:
+${material === "[paste policy, speech, article, debate, ideology, event, movement, or question]" ? "[정책, 연설, 기사, 토론, 이념, 사건, 운동, 질문을 붙여넣으십시오]" : material}
+
+원하는 모드:
+${modeLabels.ko[Array.from(document.querySelectorAll("#mode option")).findIndex(option => option.value === mode)]}
+
+모드 지시:
+${modeInstructions.ko[mode]}
+
+주요 목적:
+${purpose === "[research, teaching, public writing, dialogue, curriculum, or personal discernment]" ? "[연구, 수업, 공적 글쓰기, 대화, 커리큘럼, 개인적 분별]" : purpose}
+
+관련 정치철학 전통 또는 렌즈:
+${lenses === "[select only relevant lenses; use philosophers as dialogue partners, not final authorities]" ? "[관련 렌즈만 선택하십시오. 사상가는 최종 권위가 아니라 대화 파트너로 사용하십시오]" : lenses}
+
+선호 출력 길이:
+${length}
+
+제공한 자료:
+${sources === "[list supplied sources; if none, state that current facts must be verified]" ? "[제공 자료를 적으십시오. 없으면 현재 사실은 검증이 필요하다고 명시하십시오]" : sources}
+
+필수 방법:
+1. 판단하기 전에 쟁점을 공정하게 재구성하십시오.
+2. 검증된 사실, 보도된 의혹 또는 주장, 해석, 추론, 예측, 도덕 판단, 수사, 근거 없는 주장을 구분하십시오.
+3. 메타언어를 적용하십시오: 개념, 정의, 전제, 프레임, 은유, 이분법, 누락, 증거, 수사를 명료화하십시오.
+4. 메타인지를 적용하십시오: 입장, 선택, 프레임, 감정, 정체성, 확증, 일관성, 불확실성, 수정 가능성, 형성을 성찰하십시오.
+5. 메타비평을 적용하십시오: 권력, 제도, 이해관계, 정상화, 배제, 불균등한 위험, 숨겨진 비용, 중심-주변 관계를 분석하십시오.
+6. 관련 7x5D 차원을 사용하십시오: 다중 영역 추론, 다섯 사고 모드, 형성 아크, 5C 역량, 학습 아크, 되어감의 궤적, 체화-행위적 통합.
+7. WHERE-WHO-WHAT-MOVEMENT-EMBODIED EVENT를 포함하십시오:
+   - WHERE: 이 정치적 현실은 어디에서 생산되고 있는가?
+   - WHO: 누가 형성되고, 중심에 놓이고, 주변화되고, 보호받고, 배제되는가?
+   - WHAT: 어떤 가치, 이해관계, 개념, 제도, 권력 관계가 이것을 조직하는가?
+   - MOVEMENT: 이 쟁점은 사람, 제도, 공동체를 어떻게 움직이는가?
+   - EMBODIED EVENT: 어떤 체화된 사건 또는 공유 세계를 만들어내는가?
+8. 경쟁 입장들을 가능한 한 가장 강한 형태로 재현하되, 거짓 균형을 만들지 마십시오.
+9. 현재 사실 주장에 대해서는 신뢰할 수 있는 자료로 검증하고 출처를 제시하십시오.
+10. 분명하지만 수정 가능한 판단, 대안, 트레이드오프, 남은 불확실성, 책임 있는 시민 참여와 체화된 관계적 실천의 함의를 제시하십시오.`;
+      }
+
+      return `Use the MRIA 7x5D Meta-Political Philosophy Engine.
+
+Topic or political claim:
+${topic}
+
+Location or political context:
+${context}
+
+Timeframe:
+${timeframe}
+
+Material to analyze:
+${material}
+
+Desired mode:
+${mode}
+
+Mode instruction:
+${modeInstructions.en[mode]}
+
+Primary purpose:
+${purpose}
+
+Relevant philosophical traditions or lenses:
+${lenses}
+
+Preferred output length:
+${length}
+
+Sources supplied:
+${sources}
+
+Required method:
+1. Reconstruct the issue fairly before judging it.
+2. Distinguish verified fact, reported allegation, interpretation, inference, prediction, moral judgment, rhetoric, and unsupported claim.
+3. Apply meta-language: clarify concepts, definitions, premises, frames, metaphors, binaries, omissions, evidence, and rhetoric.
+4. Apply meta-cognition: examine standpoint, selection, framing, emotion, identity, confirmation, consistency, uncertainty, correctability, and formation.
+5. Apply meta-critique: analyze power, institutions, interests, normalization, exclusion, unequal risk, hidden costs, and center-margin relations.
+6. Use relevant 7x5D dimensions: multi-domain reasoning, five thinking modes, formation arc, 5C capacities, learning arc, becoming trajectory, and embodied-enactive integration.
+7. Include WHERE-WHO-WHAT-MOVEMENT-EMBODIED EVENT:
+   - WHERE is this political reality being produced?
+   - WHO is being formed, centered, marginalized, protected, or excluded?
+   - WHAT values, interests, concepts, institutions, and power relations organize it?
+   - How is the issue MOVING people, institutions, and communities?
+   - What EMBODIED EVENT or shared world does it generate?
+8. Represent competing positions in their strongest reasonable form without manufacturing false balance.
+9. For current factual claims, verify with reliable sources and cite them.
+10. Conclude with a clear but revisable judgment, alternatives, trade-offs, remaining uncertainties, and implications for responsible civic participation and embodied relational practice.`;
+    }
+
+    function saveState() {
+      const data = {};
+      fields.forEach(id => data[id] = getValue(id));
+      localStorage.setItem("mria-7x5d-engine", JSON.stringify(data));
+    }
+
+    function loadState() {
+      try {
+        const data = JSON.parse(localStorage.getItem("mria-7x5d-engine") || "{}");
+        fields.forEach(id => {
+          if (data[id]) document.querySelector("#" + id).value = data[id];
+        });
+      } catch (error) {
+        localStorage.removeItem("mria-7x5d-engine");
+      }
+      output.textContent = buildPrompt();
+    }
+
+    function flash(message) {
+      statusEl.textContent = message;
+      window.clearTimeout(flash.timer);
+      flash.timer = window.setTimeout(() => statusEl.textContent = "", 2600);
+    }
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      output.textContent = buildPrompt();
+      saveState();
+      flash(t().status.generated);
+    });
+
+    fields.forEach(id => {
+      document.querySelector("#" + id).addEventListener("input", () => {
+        output.textContent = buildPrompt();
+        saveState();
+      });
+    });
+
+    document.querySelector("#load-example").addEventListener("click", () => {
+      document.querySelector("#topic").value = currentLanguage === "ko" ? "한국 사회는 이념 때문에 갈라졌다." : "Korean society is divided because of ideology.";
+      document.querySelector("#context").value = currentLanguage === "ko" ? "대한민국, 현재 시민적·정치적 양극화." : "South Korea, current civic and political polarization.";
+      document.querySelector("#timeframe").value = currentLanguage === "ko" ? "현재, 역사적 기억과 경제 구조를 함께 고려." : "Current, with attention to historical memory and economic structure.";
+      document.querySelector("#material").value = currentLanguage === "ko" ? "분열의 뿌리가 이념인지, 아니면 돈, 권력, 미디어, 두려움, 제도, 역사적 기억이 더 깊은 힘인지 분석하십시오." : "Analyze whether ideology is the root cause of division, or whether money, power, media, fear, institutions, and historical memory are deeper forces.";
+      document.querySelector("#mode").value = "Full 7x5D Analysis";
+      document.querySelector("#length").value = "Standard";
+      document.querySelector("#purpose").value = currentLanguage === "ko" ? "수업, 공적 글쓰기, 시민 형성." : "Teaching, public writing, and civic formation.";
+      document.querySelector("#lenses").value = currentLanguage === "ko" ? "관계적 정치철학, 정치경제, 민족주의, 보수주의, 진보주의, 비판이론, 돌봄 윤리." : "Relational political philosophy, political economy, nationalism, conservatism, progressivism, critical theory, care ethics.";
+      document.querySelector("#sources").value = currentLanguage === "ko" ? "아직 제공 자료 없음. 현재 주장은 신뢰할 수 있는 자료로 검증하십시오." : "No sources supplied yet; verify current claims with reliable sources.";
+      output.textContent = buildPrompt();
+      saveState();
+      flash(t().status.example);
+    });
+
+    document.querySelector("#clear-form").addEventListener("click", () => {
+      fields.forEach(id => {
+        const element = document.querySelector("#" + id);
+        if (element.tagName === "SELECT") element.selectedIndex = 0;
+        else element.value = "";
+      });
+      localStorage.removeItem("mria-7x5d-engine");
+      output.textContent = buildPrompt();
+      flash(t().status.cleared);
+    });
+
+    document.querySelector("#copy-output").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(output.textContent);
+        flash(t().status.copied);
+      } catch (error) {
+        flash(t().status.copyFailed);
+      }
+    });
+
+    document.querySelector("#download-output").addEventListener("click", () => {
+      const blob = new Blob([output.textContent], { type: "text/markdown;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = currentLanguage === "ko" ? "mria-7x5d-engine-prompt-ko.md" : "mria-7x5d-engine-prompt.md";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      flash(t().status.downloaded);
+    });
+
+    langButtons.en.addEventListener("click", () => applyLanguage("en"));
+    langButtons.ko.addEventListener("click", () => applyLanguage("ko"));
+    document.querySelector("#hero-lang-ko").addEventListener("click", () => {
+      applyLanguage("ko");
+      document.querySelector("#workspace").scrollIntoView({ behavior: "smooth" });
+    });
+
+    loadState();
+    applyLanguage(currentLanguage);
+  </script>
+</body>
+</html>
