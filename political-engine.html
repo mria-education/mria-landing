@@ -865,9 +865,7 @@
       ko: document.querySelector("#lang-ko")
     };
     const queryLanguage = new URLSearchParams(window.location.search).get("lang");
-    let currentLanguage = queryLanguage === "ko" || queryLanguage === "en"
-      ? queryLanguage
-      : localStorage.getItem("mria-7x5d-language") || "en";
+    let currentLanguage = queryLanguage === "ko" || queryLanguage === "en" ? queryLanguage : "en";
 
     const modeInstructions = {
       en: {
@@ -1170,6 +1168,8 @@
     function applyLanguage(language) {
       currentLanguage = language;
       localStorage.setItem("mria-7x5d-language", language);
+      const languageUrl = language === "ko" ? "political-engine.html?lang=ko" : "political-engine.html";
+      window.history.replaceState(null, "", languageUrl);
       document.documentElement.lang = language === "ko" ? "ko" : "en";
       document.title = t().title;
       const description = document.querySelector('meta[name="description"]');
