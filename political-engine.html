@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MRIA 7x5D Meta-Political Philosophy Engine</title>
-  <meta name="description" content="A prompt-building and civic analysis workspace for the MRIA 7x5D Meta-Political Philosophy Engine.">
+  <meta name="description" content="A civic reflection workspace for the MRIA 7x5D Meta-Political Philosophy Engine.">
   <style>
     :root {
       --ink: #17211b;
@@ -569,12 +569,12 @@
       </aside>
     </section>
 
-    <section id="workspace" class="workspace" aria-label="Analysis prompt builder">
+    <section id="workspace" class="workspace" aria-label="Civic reflection workspace">
       <div class="panel">
         <div class="panel-header">
           <div>
             <h2>Analysis Intake</h2>
-            <span>Fill only what you know. The prompt will preserve uncertainty.</span>
+            <span>Fill only what you know. The guide keeps uncertainty visible.</span>
           </div>
         </div>
         <form id="engine-form">
@@ -645,7 +645,7 @@
           </label>
 
           <div class="quick-actions">
-            <button type="submit">Generate prompt</button>
+            <button type="submit">Create guide</button>
             <button type="button" class="secondary" id="load-example">Load example</button>
             <button type="button" class="ghost" id="clear-form">Clear</button>
           </div>
@@ -655,15 +655,12 @@
       <div class="panel">
         <div class="panel-header">
           <div>
-            <h2>Generated Engine Prompt</h2>
-            <span>Use this in ChatGPT, Codex, a classroom, or a research workflow.</span>
+            <h2>Civic Reflection Guide</h2>
+            <span>Use this on screen for discussion, teaching, or personal civic reflection.</span>
           </div>
         </div>
         <div class="output-wrap">
           <div class="output-toolbar">
-            <div class="quick-actions">
-              <button type="button" id="copy-output">Copy</button>
-            </div>
             <div id="status" class="status" role="status" aria-live="polite"></div>
           </div>
           <pre id="output" tabindex="0"></pre>
@@ -788,7 +785,7 @@
     const uiText = {
       en: {
         title: "MRIA 7x5D Meta-Political Philosophy Engine",
-        description: "A prompt-building and civic analysis workspace for the MRIA 7x5D Meta-Political Philosophy Engine.",
+        description: "A civic reflection workspace for the MRIA 7x5D Meta-Political Philosophy Engine.",
         brand: "MRIA 7x5D Engine",
         tagline: "Meta-language, meta-cognition, meta-critique, embodied civic formation",
         nav: ["Analyze", "Workflow"],
@@ -803,9 +800,9 @@
           "Expose power, normalization, institutional interests, center-margin relations, exclusion, and hidden costs."
         ],
         intakeTitle: "Analysis Intake",
-        intakeSub: "Fill only what you know. The prompt will preserve uncertainty.",
-        outputTitle: "Generated Engine Prompt",
-        outputSub: "Use this in ChatGPT, Codex, a classroom, or a research workflow.",
+        intakeSub: "Fill only what you know. The guide keeps uncertainty visible.",
+        outputTitle: "Civic Reflection Guide",
+        outputSub: "Use this on screen for discussion, teaching, or personal civic reflection.",
         labels: {
           topic: "Topic or political claim",
           context: "Political context",
@@ -826,12 +823,11 @@
           lenses: "Liberalism, conservatism, care ethics, nationalism, etc.",
           sources: "List links, documents, authors, or say: no sources supplied."
         },
-        hint: "For current political facts, ask the AI to verify with reliable sources before judging.",
+        hint: "For current political facts, verify with reliable sources before judging.",
         buttons: {
-          generate: "Generate prompt",
+          generate: "Create guide",
           example: "Load example",
-          clear: "Clear",
-          copy: "Copy"
+          clear: "Clear"
         },
         architectureTitle: "Public Analysis Workflow",
         cards: [
@@ -841,16 +837,14 @@
         ],
         footer: ["MRIA 7x5D Meta-Political Philosophy Engine", "For civic wisdom, bridge-space dialogue, and embodied relational practice."],
         status: {
-          generated: "Prompt generated.",
+          generated: "Guide updated.",
           example: "Example loaded.",
-          cleared: "Workspace cleared.",
-          copied: "Copied to clipboard.",
-          copyFailed: "Copy failed. Select the text and copy manually."
+          cleared: "Workspace cleared."
         }
       },
       ko: {
         title: "MRIA 7x5D 메타-정치철학 엔진",
-        description: "MRIA 7x5D 메타-정치철학 엔진을 위한 프롬프트 생성 및 시민 분석 작업공간.",
+        description: "MRIA 7x5D 메타-정치철학 엔진을 위한 시민 성찰 작업공간.",
         brand: "MRIA 7x5D 엔진",
         tagline: "메타언어, 메타인지, 메타비평, 체화된 시민 형성",
         nav: ["분석", "흐름"],
@@ -865,9 +859,9 @@
           "권력, 정상화, 제도적 이해관계, 중심-주변 관계, 배제, 숨겨진 비용을 드러냅니다."
         ],
         intakeTitle: "분석 입력",
-        intakeSub: "아는 내용만 입력하십시오. 프롬프트는 불확실성을 보존합니다.",
-        outputTitle: "생성된 엔진 프롬프트",
-        outputSub: "ChatGPT, Codex, 수업, 연구 워크플로에서 사용할 수 있습니다.",
+        intakeSub: "아는 내용만 입력하십시오. 가이드는 불확실성을 보이게 남겨둡니다.",
+        outputTitle: "시민 성찰 가이드",
+        outputSub: "토론, 수업, 개인적 시민 성찰을 위해 화면에서 사용하십시오.",
         labels: {
           topic: "주제 또는 정치적 주장",
           context: "정치적 맥락",
@@ -888,12 +882,11 @@
           lenses: "자유주의, 보수주의, 돌봄 윤리, 민족주의 등",
           sources: "링크, 문서, 저자, 또는 '제공 자료 없음'이라고 적으십시오."
         },
-        hint: "현재 정치 사실은 판단하기 전에 신뢰할 수 있는 자료로 검증하도록 요청하십시오.",
+        hint: "현재 정치 사실은 판단하기 전에 신뢰할 수 있는 자료로 검증하십시오.",
         buttons: {
-          generate: "프롬프트 생성",
+          generate: "가이드 만들기",
           example: "예시 불러오기",
-          clear: "지우기",
-          copy: "복사"
+          clear: "지우기"
         },
         architectureTitle: "공개 분석 흐름",
         cards: [
@@ -903,11 +896,9 @@
         ],
         footer: ["MRIA 7x5D 메타-정치철학 엔진", "시민적 지혜, 브리지-공간 대화, 체화된 관계적 실천을 위하여."],
         status: {
-          generated: "프롬프트가 생성되었습니다.",
+          generated: "가이드를 업데이트했습니다.",
           example: "예시를 불러왔습니다.",
-          cleared: "작업공간을 비웠습니다.",
-          copied: "클립보드에 복사했습니다.",
-          copyFailed: "복사하지 못했습니다. 텍스트를 선택하여 직접 복사하십시오."
+          cleared: "작업공간을 비웠습니다."
         }
       }
     };
@@ -981,7 +972,6 @@
       formButtons[0].textContent = t().buttons.generate;
       formButtons[1].textContent = t().buttons.example;
       formButtons[2].textContent = t().buttons.clear;
-      setText("#copy-output", t().buttons.copy);
 
       document.querySelectorAll("#mode option").forEach((option, index) => option.textContent = modeLabels[language][index]);
       document.querySelectorAll("#length option").forEach(option => option.textContent = lengthLabels[language][option.value]);
@@ -989,10 +979,10 @@
       setText("#architecture h2", t().architectureTitle);
       setCardContent(t().cards, "#architecture .card");
       setAllText("footer span", t().footer);
-      output.textContent = buildPrompt();
+      output.textContent = buildGuide();
     }
 
-    function buildPrompt() {
+    function buildGuide() {
       const topic = getValue("topic") || "[insert topic or political claim]";
       const context = getValue("context") || "[country, institution, community, or region]";
       const timeframe = getValue("timeframe") || "[current, historical, or specified period]";
@@ -1004,7 +994,7 @@
       const sources = getValue("sources") || "[list supplied sources; if none, state that current facts must be verified]";
 
       if (currentLanguage === "ko") {
-        return `MRIA 7x5D 메타-정치철학 엔진을 사용하십시오.
+        return `시민 성찰 가이드
 
 주제 또는 정치적 주장:
 ${topic === "[insert topic or political claim]" ? "[주제 또는 정치적 주장을 입력하십시오]" : topic}
@@ -1021,9 +1011,6 @@ ${material === "[paste policy, speech, article, debate, ideology, event, movemen
 원하는 분석 유형:
 ${modeLabels.ko[Array.from(document.querySelectorAll("#mode option")).findIndex(option => option.value === mode)]}
 
-분석 지시:
-${modeInstructions.ko[mode]}
-
 주요 목적:
 ${purpose === "[research, teaching, public writing, dialogue, curriculum, or personal discernment]" ? "[연구, 수업, 공적 글쓰기, 대화, 커리큘럼, 개인적 분별]" : purpose}
 
@@ -1036,25 +1023,18 @@ ${length}
 제공한 자료:
 ${sources === "[list supplied sources; if none, state that current facts must be verified]" ? "[제공 자료를 적으십시오. 없으면 현재 사실은 검증이 필요하다고 명시하십시오]" : sources}
 
-필수 방법:
-1. 판단하기 전에 쟁점을 공정하게 재구성하십시오.
-2. 검증된 사실, 보도된 의혹 또는 주장, 해석, 추론, 예측, 도덕 판단, 수사, 근거 없는 주장을 구분하십시오.
-3. 메타언어를 적용하십시오: 개념, 정의, 전제, 프레임, 은유, 이분법, 누락, 증거, 수사를 명료화하십시오.
-4. 메타인지를 적용하십시오: 입장, 선택, 프레임, 감정, 정체성, 확증, 일관성, 불확실성, 수정 가능성, 형성을 성찰하십시오.
-5. 메타비평을 적용하십시오: 권력, 제도, 이해관계, 정상화, 배제, 불균등한 위험, 숨겨진 비용, 중심-주변 관계를 분석하십시오.
-6. MRIA의 내부 분석 엔진을 적용하되, 공개 응답에서는 내부 구조를 노출하지 말고 사용자가 이해할 수 있는 분석 흐름으로 설명하십시오.
-7. WHERE-WHO-WHAT-MOVEMENT-EMBODIED EVENT를 포함하십시오:
-   - WHERE: 이 정치적 현실은 어디에서 생산되고 있는가?
-   - WHO: 누가 형성되고, 중심에 놓이고, 주변화되고, 보호받고, 배제되는가?
-   - WHAT: 어떤 가치, 이해관계, 개념, 제도, 권력 관계가 이것을 조직하는가?
-   - MOVEMENT: 이 쟁점은 사람, 제도, 공동체를 어떻게 움직이는가?
-   - EMBODIED EVENT: 어떤 체화된 사건 또는 공유 세계를 만들어내는가?
-8. 경쟁 입장들을 가능한 한 가장 강한 형태로 재현하되, 거짓 균형을 만들지 마십시오.
-9. 현재 사실 주장에 대해서는 신뢰할 수 있는 자료로 검증하고 출처를 제시하십시오.
-10. 분명하지만 수정 가능한 판단, 대안, 트레이드오프, 남은 불확실성, 책임 있는 시민 참여와 체화된 관계적 실천의 함의를 제시하십시오.`;
+화면에서 함께 확인할 질문:
+1. 주장과 맥락: 이 주장은 무엇을 말하며, 어디에서 힘을 얻고 있습니까?
+2. 사실과 해석: 검증된 사실, 주장, 해석, 추론, 수사를 구분했습니까?
+3. 사람과 공동체: 누가 중심에 놓이고, 누가 주변화되며, 어떤 관계가 형성됩니까?
+4. 권력과 비용: 어떤 제도, 이해관계, 두려움, 숨겨진 비용이 작동합니까?
+5. 체화된 결과: 이 주장이 실제 삶과 공적 관계에서 어떤 사건을 만들어냅니까?
+6. 다음 실천: 판단 전에 누구의 이야기를 더 들어야 하며, 어떤 경계를 넘어 공적으로 경청할 수 있습니까?
+
+주의: 이 가이드는 화면에서만 사용하는 읽기용 성찰 자료입니다. 현재 사실은 신뢰할 수 있는 자료로 직접 검증하십시오.`;
       }
 
-      return `Use the MRIA 7x5D Meta-Political Philosophy Engine.
+      return `Civic Reflection Guide
 
 Topic or political claim:
 ${topic}
@@ -1071,9 +1051,6 @@ ${material}
 Desired analysis type:
 ${mode}
 
-Analysis instruction:
-${modeInstructions.en[mode]}
-
 Primary purpose:
 ${purpose}
 
@@ -1086,22 +1063,15 @@ ${length}
 Sources supplied:
 ${sources}
 
-Required method:
-1. Reconstruct the issue fairly before judging it.
-2. Distinguish verified fact, reported allegation, interpretation, inference, prediction, moral judgment, rhetoric, and unsupported claim.
-3. Apply meta-language: clarify concepts, definitions, premises, frames, metaphors, binaries, omissions, evidence, and rhetoric.
-4. Apply meta-cognition: examine standpoint, selection, framing, emotion, identity, confirmation, consistency, uncertainty, correctability, and formation.
-5. Apply meta-critique: analyze power, institutions, interests, normalization, exclusion, unequal risk, hidden costs, and center-margin relations.
-6. Apply the internal MRIA analysis engine, but do not expose the underlying structure in the public response; translate it into a user-facing analysis flow.
-7. Include WHERE-WHO-WHAT-MOVEMENT-EMBODIED EVENT:
-   - WHERE is this political reality being produced?
-   - WHO is being formed, centered, marginalized, protected, or excluded?
-   - WHAT values, interests, concepts, institutions, and power relations organize it?
-   - How is the issue MOVING people, institutions, and communities?
-   - What EMBODIED EVENT or shared world does it generate?
-8. Represent competing positions in their strongest reasonable form without manufacturing false balance.
-9. For current factual claims, verify with reliable sources and cite them.
-10. Conclude with a clear but revisable judgment, alternatives, trade-offs, remaining uncertainties, and implications for responsible civic participation and embodied relational practice.`;
+Questions to hold on screen:
+1. Claim and context: What is being claimed, and where does this claim gain force?
+2. Fact and interpretation: Have you separated verified fact, claim, interpretation, inference, and rhetoric?
+3. People and communities: Who is centered, who is pushed aside, and what kind of relation is being formed?
+4. Power and cost: What institutions, interests, fears, or hidden costs are active?
+5. Embodied consequence: What does this claim produce in actual public life and shared relationship?
+6. Next practice: Whose story should be heard before judgment, and what boundary can you cross through public listening?
+
+Note: This is a read-only on-screen reflection guide. Verify current facts directly with reliable sources.`;
     }
 
     function saveState() {
@@ -1119,7 +1089,7 @@ Required method:
       } catch (error) {
         localStorage.removeItem("mria-7x5d-engine");
       }
-      output.textContent = buildPrompt();
+      output.textContent = buildGuide();
     }
 
     function flash(message) {
@@ -1130,14 +1100,14 @@ Required method:
 
     form.addEventListener("submit", event => {
       event.preventDefault();
-      output.textContent = buildPrompt();
+      output.textContent = buildGuide();
       saveState();
       flash(t().status.generated);
     });
 
     fields.forEach(id => {
       document.querySelector("#" + id).addEventListener("input", () => {
-        output.textContent = buildPrompt();
+        output.textContent = buildGuide();
         saveState();
       });
     });
@@ -1152,7 +1122,7 @@ Required method:
       document.querySelector("#purpose").value = currentLanguage === "ko" ? "수업, 공적 글쓰기, 시민 형성." : "Teaching, public writing, and civic formation.";
       document.querySelector("#lenses").value = currentLanguage === "ko" ? "관계적 정치철학, 정치경제, 민족주의, 보수주의, 진보주의, 비판이론, 돌봄 윤리." : "Relational political philosophy, political economy, nationalism, conservatism, progressivism, critical theory, care ethics.";
       document.querySelector("#sources").value = currentLanguage === "ko" ? "아직 제공 자료 없음. 현재 주장은 신뢰할 수 있는 자료로 검증하십시오." : "No sources supplied yet; verify current claims with reliable sources.";
-      output.textContent = buildPrompt();
+      output.textContent = buildGuide();
       saveState();
       flash(t().status.example);
     });
@@ -1164,17 +1134,8 @@ Required method:
         else element.value = "";
       });
       localStorage.removeItem("mria-7x5d-engine");
-      output.textContent = buildPrompt();
+      output.textContent = buildGuide();
       flash(t().status.cleared);
-    });
-
-    document.querySelector("#copy-output").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(output.textContent);
-        flash(t().status.copied);
-      } catch (error) {
-        flash(t().status.copyFailed);
-      }
     });
 
     langButtons.en.addEventListener("click", () => applyLanguage("en"));
