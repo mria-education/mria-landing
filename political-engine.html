@@ -608,6 +608,7 @@
         <div class="quick-actions">
           <a class="button-link" href="#workspace">Start an analysis</a>
           <a class="button-link secondary" href="#architecture">View the framework</a>
+          <button type="button" id="hero-lang-ko" class="button-link secondary">한국어로 보기</button>
         </div>
       </div>
 
@@ -863,7 +864,10 @@
       en: document.querySelector("#lang-en"),
       ko: document.querySelector("#lang-ko")
     };
-    let currentLanguage = localStorage.getItem("mria-7x5d-language") || "en";
+    const queryLanguage = new URLSearchParams(window.location.search).get("lang");
+    let currentLanguage = queryLanguage === "ko" || queryLanguage === "en"
+      ? queryLanguage
+      : localStorage.getItem("mria-7x5d-language") || "en";
 
     const modeInstructions = {
       en: {
@@ -946,7 +950,7 @@
         eyebrow: "MRIA civic formation workspace",
         h1: "7x5D Meta-Political Philosophy Engine",
         lead: "Analyze political claims, speeches, policies, ideologies, and civic conflicts by tracing how language, perception, power, place, identity, and embodied consequences form a shared world.",
-        actions: ["Start an analysis", "View the framework"],
+        actions: ["Start an analysis", "View the framework", "View in Korean"],
         triadTitles: ["Meta-language", "Meta-cognition", "Meta-critique"],
         triadBody: [
           "Clarify contested terms, frames, metaphors, premises, categories, evidence, omissions, and rhetoric.",
@@ -1040,7 +1044,7 @@
         eyebrow: "MRIA 시민 형성 작업공간",
         h1: "7x5D 메타-정치철학 엔진",
         lead: "정치적 주장, 연설, 정책, 이념, 시민 갈등을 분석합니다. 언어, 인식, 권력, 장소, 정체성, 체화된 결과가 어떻게 하나의 공유 세계를 형성하는지 추적합니다.",
-        actions: ["분석 시작", "프레임워크 보기"],
+        actions: ["분석 시작", "프레임워크 보기", "한국어로 보기"],
         triadTitles: ["메타언어", "메타인지", "메타비평"],
         triadBody: [
           "논쟁적 용어, 프레임, 은유, 전제, 범주, 증거, 누락, 수사를 명료화합니다.",
@@ -1422,6 +1426,10 @@ Required method:
 
     langButtons.en.addEventListener("click", () => applyLanguage("en"));
     langButtons.ko.addEventListener("click", () => applyLanguage("ko"));
+    document.querySelector("#hero-lang-ko").addEventListener("click", () => {
+      applyLanguage("ko");
+      document.querySelector("#workspace").scrollIntoView({ behavior: "smooth" });
+    });
 
     loadState();
     applyLanguage(currentLanguage);
