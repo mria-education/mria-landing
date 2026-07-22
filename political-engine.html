@@ -21,6 +21,7 @@
       --gold: #aa842b;
       --shadow: 0 18px 50px rgba(23, 33, 27, 0.08);
       --radius: 8px;
+      --content-width: min(2200px, calc(100% - 32px));
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -51,7 +52,7 @@
     }
 
     .nav {
-      width: min(1180px, calc(100% - 32px));
+      width: var(--content-width);
       margin: 0 auto;
       min-height: 68px;
       display: flex;
@@ -146,7 +147,7 @@
     }
 
     main {
-      width: min(1180px, calc(100% - 32px));
+      width: var(--content-width);
       margin: 0 auto;
       padding: 34px 0 72px;
     }
@@ -434,27 +435,6 @@
       margin: 8px 0 0;
     }
 
-    .mode-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-    }
-
-    .mode-chip {
-      border-radius: var(--radius);
-      padding: 12px;
-      background: #fff;
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.88rem;
-    }
-
-    .mode-chip strong {
-      display: block;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-
     footer {
       border-top: 1px solid var(--line);
       padding: 26px 0 38px;
@@ -463,7 +443,7 @@
     }
 
     footer .inner {
-      width: min(1180px, calc(100% - 32px));
+      width: var(--content-width);
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -481,8 +461,7 @@
         max-width: 12ch;
       }
 
-      .cards,
-      .mode-grid {
+      .cards {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -507,7 +486,7 @@
       }
 
       main {
-        width: min(100% - 22px, 1180px);
+        width: calc(100% - 22px);
         padding-top: 22px;
       }
 
@@ -516,8 +495,7 @@
       }
 
       .two-col,
-      .cards,
-      .mode-grid {
+      .cards {
         grid-template-columns: 1fr;
       }
 
@@ -552,8 +530,6 @@
       <nav class="nav-links">
         <a href="#workspace">Analyze</a>
         <a href="#architecture">Workflow</a>
-        <a href="#modes">Modes</a>
-        <a href="#rubric">Rubric</a>
         <div class="language-switch" aria-label="Language">
           <button type="button" id="lang-en" aria-pressed="true">EN</button>
           <button type="button" id="lang-ko" aria-pressed="false">한국어</button>
@@ -625,18 +601,18 @@
 
           <div class="two-col">
             <label>
-              Operating mode
+              Analysis type
               <select id="mode">
-                <option value="Rapid Political Analysis">Mode A: Rapid Political Analysis</option>
-                <option value="Full Analysis">Mode B: Full Analysis</option>
-                <option value="Comparative Philosophy">Mode C: Comparative Philosophy</option>
-                <option value="Speech and Media Analysis">Mode D: Speech and Media Analysis</option>
-                <option value="Policy Evaluation">Mode E: Policy Evaluation</option>
-                <option value="Ideology Audit">Mode F: Ideology Audit</option>
-                <option value="Political Metacognition">Mode G: Political Metacognition</option>
-                <option value="Civic Learning Design">Mode H: Civic Learning Design</option>
-                <option value="Bridge-Space Dialogue">Mode I: Bridge-Space Dialogue</option>
-                <option value="Political Formation Audit">Mode J: Political Formation Audit</option>
+                <option value="Rapid Political Analysis">Type A: Rapid Political Analysis</option>
+                <option value="Full Analysis">Type B: Full Analysis</option>
+                <option value="Comparative Philosophy">Type C: Comparative Philosophy</option>
+                <option value="Speech and Media Analysis">Type D: Speech and Media Analysis</option>
+                <option value="Policy Evaluation">Type E: Policy Evaluation</option>
+                <option value="Ideology Audit">Type F: Ideology Audit</option>
+                <option value="Political Metacognition">Type G: Political Metacognition</option>
+                <option value="Civic Learning Design">Type H: Civic Learning Design</option>
+                <option value="Bridge-Space Dialogue">Type I: Bridge-Space Dialogue</option>
+                <option value="Political Formation Audit">Type J: Political Formation Audit</option>
               </select>
             </label>
             <label>
@@ -718,39 +694,6 @@
       </div>
     </section>
 
-    <section id="modes" class="section">
-      <h2>Operating Modes</h2>
-      <div class="mode-grid">
-        <div class="mode-chip"><strong>A Rapid</strong>Claim, assumptions, evidence, weakness, consequence, judgment.</div>
-        <div class="mode-chip"><strong>B Full Analysis</strong>The complete workflow for major issues and public arguments.</div>
-        <div class="mode-chip"><strong>C Comparative</strong>Compare philosophies, thinkers, systems, or civic traditions.</div>
-        <div class="mode-chip"><strong>D Speech</strong>Analyze language, media, framing, emotion, and identity formation.</div>
-        <div class="mode-chip"><strong>E Policy</strong>Evaluate goals, mechanisms, beneficiaries, burdens, justice, and alternatives.</div>
-        <div class="mode-chip"><strong>F Ideology</strong>Audit ontology, anthropology, epistemology, ethics, and power theory.</div>
-        <div class="mode-chip"><strong>G Metacognition</strong>Examine how a person or group formed its political judgment.</div>
-        <div class="mode-chip"><strong>H Learning</strong>Create lessons, seminars, simulations, and formation exercises.</div>
-        <div class="mode-chip"><strong>I Bridge</strong>Structure non-dehumanizing disagreement across difference.</div>
-        <div class="mode-chip"><strong>J Formation</strong>Evaluate what kind of citizen and community a movement forms.</div>
-      </div>
-    </section>
-
-    <section id="rubric" class="section">
-      <h2>Quality Control Rubric</h2>
-      <div class="cards">
-        <article class="card">
-          <h3>Truthfulness</h3>
-          <p>Conceptual clarity, contextual accuracy, evidence quality, uncertainty, and correction readiness.</p>
-        </article>
-        <article class="card">
-          <h3>Justice and Power</h3>
-          <p>Fair representation, power analysis, attention to marginalized voices, non-dehumanizing language, and hidden costs.</p>
-        </article>
-        <article class="card">
-          <h3>Formation</h3>
-          <p>Meta-cognitive reflexivity, integrated analysis, embodied consequence analysis, practical usefulness, and transformative learning potential.</p>
-        </article>
-      </div>
-    </section>
   </main>
 
   <footer>
@@ -801,28 +744,28 @@
 
     const modeLabels = {
       en: [
-        "Mode A: Rapid Political Analysis",
-        "Mode B: Full Analysis",
-        "Mode C: Comparative Philosophy",
-        "Mode D: Speech and Media Analysis",
-        "Mode E: Policy Evaluation",
-        "Mode F: Ideology Audit",
-        "Mode G: Political Metacognition",
-        "Mode H: Civic Learning Design",
-        "Mode I: Bridge-Space Dialogue",
-        "Mode J: Political Formation Audit"
+        "Type A: Rapid Political Analysis",
+        "Type B: Full Analysis",
+        "Type C: Comparative Philosophy",
+        "Type D: Speech and Media Analysis",
+        "Type E: Policy Evaluation",
+        "Type F: Ideology Audit",
+        "Type G: Political Metacognition",
+        "Type H: Civic Learning Design",
+        "Type I: Bridge-Space Dialogue",
+        "Type J: Political Formation Audit"
       ],
       ko: [
-        "모드 A: 신속 정치 분석",
-        "모드 B: 전체 분석",
-        "모드 C: 비교 정치철학",
-        "모드 D: 연설 및 미디어 분석",
-        "모드 E: 정책 평가",
-        "모드 F: 이념 감사",
-        "모드 G: 정치적 메타인지",
-        "모드 H: 시민 학습 설계",
-        "모드 I: 브리지-공간 대화",
-        "모드 J: 정치적 형성 감사"
+        "유형 A: 신속 정치 분석",
+        "유형 B: 전체 분석",
+        "유형 C: 비교 정치철학",
+        "유형 D: 연설 및 미디어 분석",
+        "유형 E: 정책 평가",
+        "유형 F: 이념 감사",
+        "유형 G: 정치적 메타인지",
+        "유형 H: 시민 학습 설계",
+        "유형 I: 브리지-공간 대화",
+        "유형 J: 정치적 형성 감사"
       ]
     };
 
@@ -849,7 +792,7 @@
         description: "A prompt-building and civic analysis workspace for the MRIA 7x5D Meta-Political Philosophy Engine.",
         brand: "MRIA 7x5D Engine",
         tagline: "Meta-language, meta-cognition, meta-critique, embodied civic formation",
-        nav: ["Analyze", "Workflow", "Modes", "Rubric"],
+        nav: ["Analyze", "Workflow"],
         eyebrow: "MRIA civic formation workspace",
         h1: "7x5D Meta-Political Philosophy Engine",
         lead: "Analyze political claims, speeches, policies, ideologies, and civic conflicts by tracing how language, perception, power, place, identity, and embodied consequences form a shared world.",
@@ -869,7 +812,7 @@
           context: "Political context",
           timeframe: "Timeframe",
           material: "Material to analyze",
-          mode: "Operating mode",
+          mode: "Analysis type",
           length: "Output length",
           purpose: "Primary purpose",
           lenses: "Relevant lenses",
@@ -898,25 +841,6 @@
           ["WHERE-WHO-WHAT", "Map political space, formed identities, at-stake values, movement across center and margin, and the embodied event produced in actual life."],
           ["Evidence Discipline", "Distinguish verified fact, allegation, interpretation, inference, prediction, moral judgment, rhetoric, and unsupported claims."]
         ],
-        modesTitle: "Operating Modes",
-        modeChips: [
-          ["A Rapid", "Claim, assumptions, evidence, weakness, consequence, judgment."],
-          ["B Full Analysis", "The complete workflow for major issues and public arguments."],
-          ["C Comparative", "Compare philosophies, thinkers, systems, or civic traditions."],
-          ["D Speech", "Analyze language, media, framing, emotion, and identity formation."],
-          ["E Policy", "Evaluate goals, mechanisms, beneficiaries, burdens, justice, and alternatives."],
-          ["F Ideology", "Audit ontology, anthropology, epistemology, ethics, and power theory."],
-          ["G Metacognition", "Examine how a person or group formed its political judgment."],
-          ["H Learning", "Create lessons, seminars, simulations, and formation exercises."],
-          ["I Bridge", "Structure non-dehumanizing disagreement across difference."],
-          ["J Formation", "Evaluate what kind of citizen and community a movement forms."]
-        ],
-        rubricTitle: "Quality Control Rubric",
-        rubricCards: [
-          ["Truthfulness", "Conceptual clarity, contextual accuracy, evidence quality, uncertainty, and correction readiness."],
-          ["Justice and Power", "Fair representation, power analysis, attention to marginalized voices, non-dehumanizing language, and hidden costs."],
-          ["Formation", "Meta-cognitive reflexivity, integrated analysis, embodied consequence analysis, practical usefulness, and transformative learning potential."]
-        ],
         footer: ["MRIA 7x5D Meta-Political Philosophy Engine", "For civic wisdom, bridge-space dialogue, and embodied relational practice."],
         status: {
           generated: "Prompt generated.",
@@ -932,7 +856,7 @@
         description: "MRIA 7x5D 메타-정치철학 엔진을 위한 프롬프트 생성 및 시민 분석 작업공간.",
         brand: "MRIA 7x5D 엔진",
         tagline: "메타언어, 메타인지, 메타비평, 체화된 시민 형성",
-        nav: ["분석", "흐름", "모드", "평가표"],
+        nav: ["분석", "흐름"],
         eyebrow: "MRIA 시민 형성 작업공간",
         h1: "7x5D 메타-정치철학 엔진",
         lead: "정치적 주장, 연설, 정책, 이념, 시민 갈등을 분석합니다. 언어, 인식, 권력, 장소, 정체성, 체화된 결과가 어떻게 하나의 공유 세계를 형성하는지 추적합니다.",
@@ -952,7 +876,7 @@
           context: "정치적 맥락",
           timeframe: "시간 범위",
           material: "분석 자료",
-          mode: "작동 모드",
+          mode: "분석 유형",
           length: "출력 길이",
           purpose: "주요 목적",
           lenses: "관련 렌즈",
@@ -980,25 +904,6 @@
           ["주장 → 맥락 → 결과", ["정치적 주장을 명확하게 진술합니다.", "맥락, 전제, 영향을 받는 공동체를 찾습니다.", "판단하기 전에 체화된 결과를 명명합니다."]],
           ["WHERE-WHO-WHAT", "정치적 공간, 형성되는 정체성, 걸려 있는 가치, 중심과 주변을 가로지르는 움직임, 실제 삶에서 만들어지는 embodied event를 지도화합니다."],
           ["증거 규율", "검증된 사실, 의혹 또는 주장, 해석, 추론, 예측, 도덕 판단, 수사, 근거 없는 주장을 구분합니다."]
-        ],
-        modesTitle: "작동 모드",
-        modeChips: [
-          ["A 신속", "주장, 전제, 증거, 약점, 결과, 판단."],
-          ["B 전체 분석", "중요한 쟁점과 공적 논증을 위한 전체 워크플로."],
-          ["C 비교", "철학, 사상가, 체계, 시민 전통을 비교."],
-          ["D 연설", "언어, 미디어, 프레임, 감정, 정체성 형성 분석."],
-          ["E 정책", "목표, 메커니즘, 수혜자, 부담, 정의, 대안 평가."],
-          ["F 이념", "존재론, 사람 이해, 인식론, 윤리, 권력이론 감사."],
-          ["G 메타인지", "개인이나 집단이 정치적 판단을 어떻게 형성했는지 성찰."],
-          ["H 학습", "수업, 세미나, 시뮬레이션, 형성 활동 제작."],
-          ["I 브리지", "차이 속에서 사람을 대상화하지 않는 이견 대화 구성."],
-          ["J 형성", "운동이 어떤 시민과 공동체를 형성하는지 평가."]
-        ],
-        rubricTitle: "품질 관리 평가표",
-        rubricCards: [
-          ["진실성", "개념적 명료성, 맥락적 정확성, 증거의 질, 불확실성, 수정 준비성."],
-          ["정의와 권력", "공정한 재현, 권력 분석, 주변화된 목소리, 사람을 대상화하지 않는 언어, 숨겨진 비용."],
-          ["형성", "메타인지적 성찰성, 통합 분석, embodied consequence 분석, 실제 유용성, 변혁적 학습 가능성."]
         ],
         footer: ["MRIA 7x5D 메타-정치철학 엔진", "시민적 지혜, 브리지-공간 대화, 체화된 관계적 실천을 위하여."],
         status: {
@@ -1089,15 +994,6 @@
 
       setText("#architecture h2", t().architectureTitle);
       setCardContent(t().cards, "#architecture .card");
-      setText("#modes h2", t().modesTitle);
-      document.querySelectorAll(".mode-chip").forEach((chip, index) => {
-        chip.querySelector("strong").textContent = t().modeChips[index][0];
-        chip.childNodes.forEach(node => {
-          if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim()) node.nodeValue = t().modeChips[index][1];
-        });
-      });
-      setText("#rubric h2", t().rubricTitle);
-      setCardContent(t().rubricCards, "#rubric .card");
       setAllText("footer span", t().footer);
       output.textContent = buildPrompt();
     }
@@ -1128,10 +1024,10 @@ ${timeframe === "[current, historical, or specified period]" ? "[현재, 역사�
 분석 자료:
 ${material === "[paste policy, speech, article, debate, ideology, event, movement, or question]" ? "[정책, 연설, 기사, 토론, 이념, 사건, 운동, 질문을 붙여넣으십시오]" : material}
 
-원하는 모드:
+원하는 분석 유형:
 ${modeLabels.ko[Array.from(document.querySelectorAll("#mode option")).findIndex(option => option.value === mode)]}
 
-모드 지시:
+분석 지시:
 ${modeInstructions.ko[mode]}
 
 주요 목적:
@@ -1178,10 +1074,10 @@ ${timeframe}
 Material to analyze:
 ${material}
 
-Desired mode:
+Desired analysis type:
 ${mode}
 
-Mode instruction:
+Analysis instruction:
 ${modeInstructions.en[mode]}
 
 Primary purpose:
