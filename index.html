@@ -538,60 +538,126 @@
     flex-direction: column;
   }
 
-  .motion-link {
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    width: 100%;
+  .motion-action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     margin-top: auto;
-    font-family: var(--display); font-size: 11.5px; letter-spacing: 0.1em;
-    text-transform: uppercase; text-decoration: none;
-    color: var(--on-gold);
-    border: 1px solid var(--gold); border-radius: 22px;
-    background: var(--gold);
-    box-shadow: 0 8px 18px rgba(31,78,121,0.16);
-    padding: 10px 14px; min-height: 44px;
-    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s, transform 0.16s;
+    padding-top: 16px;
   }
-  body.lang-ko .motion-link { font-family: var(--ko); letter-spacing: 0.02em; }
-  .motion-link:hover {
-    background: var(--gold-l);
-    border-color: var(--gold-l);
-    box-shadow: 0 10px 22px rgba(31,78,121,0.22);
-    transform: translateY(-1px);
-  }
-  .motion-offering {
-    margin-top: 14px;
-    border: 1px dashed var(--line);
+  .motion-action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    min-height: 58px;
+    border: 1px solid var(--line-soft);
     border-left: 3px solid var(--cardcolor, var(--gold));
     border-radius: var(--radius);
     background: var(--surface-muted);
-    padding: 12px 12px;
+    color: var(--paper);
+    padding: 10px 10px 10px 12px;
+    text-decoration: none;
   }
-  .motion-offering strong {
+  .motion-action-row.is-link {
+    border-color: var(--line);
+    background: var(--surface);
+    box-shadow: 0 8px 18px rgba(31,78,121,0.10);
+    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s, transform 0.16s;
+  }
+  .motion-action-row.is-link:hover {
+    border-color: var(--gold);
+    background: rgba(31,78,121,0.07);
+    box-shadow: 0 10px 22px rgba(31,78,121,0.16);
+    transform: translateY(-1px);
+  }
+  .motion-action-main {
+    display: block;
+    min-width: 0;
+  }
+  .motion-action-main strong {
     display: block;
     font-family: var(--display);
     font-size: 12px;
     letter-spacing: 0.08em;
+    line-height: 1.25;
     color: var(--gold-l);
-    line-height: 1.35;
+    text-transform: uppercase;
   }
-  body.lang-ko .motion-offering strong { font-family: var(--ko); letter-spacing: 0.02em; }
-  .motion-offering span {
+  body.lang-ko .motion-action-main strong {
+    font-family: var(--ko);
+    letter-spacing: 0.02em;
+  }
+  .motion-action-main span {
     display: block;
-    margin-top: 4px;
-    font-size: 13px;
-    font-style: italic;
-    line-height: 1.55;
+    margin-top: 3px;
     color: var(--text-soft);
-  }
-  .motion-offering a {
-    display: inline-flex;
-    margin-top: 9px;
-    color: var(--gold-l);
     font-size: 12px;
-    font-weight: 600;
-    text-decoration: none;
+    font-style: italic;
+    line-height: 1.4;
   }
-  .motion-offering a:hover { text-decoration: underline; }
+  .motion-action-badge {
+    flex: 0 0 auto;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--gold-l);
+    background: rgba(31,78,121,0.07);
+    font-family: var(--display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    padding: 7px 9px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  body.lang-ko .motion-action-badge {
+    font-family: var(--ko);
+    letter-spacing: 0.02em;
+  }
+
+  .offering-grid { align-items: stretch; }
+  .offering-grid .sem-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .discipline-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .discipline-list li {
+    border: 1px solid var(--line-soft);
+    border-radius: 999px;
+    background: var(--surface-muted);
+    color: var(--text-soft);
+    font-size: 12px;
+    line-height: 1.2;
+    padding: 7px 10px;
+  }
+  .section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 18px;
+    color: var(--gold-l);
+    font-family: var(--display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  body.lang-ko .section-link {
+    font-family: var(--ko);
+    letter-spacing: 0.02em;
+  }
+  .section-link:hover { text-decoration: underline; }
 
   /* subsection inside a section (e.g. How MRIA Works within About) */
   .sem-sub { margin-top: 52px; scroll-margin-top: 24px; }
@@ -634,6 +700,8 @@
   body.routed.route-core #core,
   body.routed.route-formation #formation,
   body.routed.route-motions #motions,
+  body.routed.route-course-offerings #course-offerings,
+  body.routed.route-intake-apps #intake-apps,
   body.routed.route-learning #learning,
   body.routed.route-participation #participation { display: block; }
   body.routed main > .sem { padding-top: 40px; padding-bottom: 56px; }
@@ -678,6 +746,8 @@
       <a href="#core" data-i18n="nav_core">Meta Core</a>
       <a href="#formation" data-i18n="nav_formation">Formation</a>
       <a href="#motions" data-i18n="nav_motions">Five Motions</a>
+      <a href="#course-offerings" data-i18n="nav_courses">Courses</a>
+      <a href="#intake-apps" data-i18n="nav_intakes">Intake Apps</a>
       <a href="#learning" data-i18n="nav_learning">Learning</a>
       <a href="#participation" data-i18n="nav_contact">Contact</a>
     </nav>
@@ -934,37 +1004,211 @@
           <h3><span class="only-en">Cognition in Motion</span><span class="only-ko" lang="ko">Cognition — 운동 중에</span></h3>
           <p class="only-en">Wisdom, discernment, and transformative understanding.</p>
           <p class="only-ko" lang="ko">지혜, 분별, 삶을 바꾸는 이해.</p>
-          <a class="motion-link" href="pathways.html#cognition-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
+          <div class="motion-action-list" aria-label="Cognition in Motion offerings">
+            <a class="motion-action-row is-link" href="pathways.html#cognition-in-motion">
+              <span class="motion-action-main"><strong><span class="only-en">Begin pathway</span><span class="only-ko" lang="ko">경로 시작</span></strong><span class="only-en">Free seven-movement formation walk.</span><span class="only-ko" lang="ko">무료 일곱 움직임 형성 경로.</span></span>
+              <span class="motion-action-badge"><span class="only-en">Open</span><span class="only-ko" lang="ko">열기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#courses-cognition">
+              <span class="motion-action-main"><strong><span class="only-en">Course offering</span><span class="only-ko" lang="ko">강좌 제공</span></strong><span class="only-en">Gated subject courses will attach here.</span><span class="only-ko" lang="ko">게이트가 있는 주제별 강좌가 여기에 연결됩니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#intakes-cognition">
+              <span class="motion-action-main"><strong><span class="only-en">Intake apps</span><span class="only-ko" lang="ko">인테이크 앱</span></strong><span class="only-en">No intake app is attached yet.</span><span class="only-ko" lang="ko">아직 연결된 인테이크 앱이 없습니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+          </div>
         </article>
         <article class="sem-card" id="motion-communication" style="--cardcolor:#AFA9EC">
           <h3><span class="only-en">Communication in Motion</span><span class="only-ko" lang="ko">Communication — 운동 중에</span></h3>
           <p class="only-en">Interpretive crossing and relational listening across worlds — including language, translation, and cross-cultural understanding.</p>
           <p class="only-ko" lang="ko">서로 다른 세계를 가로지르는 해석의 건넘과 관계적 경청 — 언어, 번역, 문화 간 이해를 포함합니다.</p>
-          <div class="motion-offering">
-            <strong><span class="only-en">Civic Engine</span><span class="only-ko" lang="ko">Civic Engine</span></strong>
-            <span class="only-en">A Communication in Motion intake offering for civic narrative reflection — display-only, in development, gated.</span>
-            <span class="only-ko" lang="ko">시민적 이야기를 성찰하기 위한 Communication in Motion의 준비 중인 도구 — 현재는 보기 전용입니다.</span>
-            <a href="political-engine.html" data-engine-link><span class="only-en">Open Civic Engine</span><span class="only-ko" lang="ko">Civic Engine 열기</span><span aria-hidden="true"> →</span></a>
+          <div class="motion-action-list" aria-label="Communication in Motion offerings">
+            <a class="motion-action-row is-link" href="pathways.html#communication-in-motion">
+              <span class="motion-action-main"><strong><span class="only-en">Begin pathway</span><span class="only-ko" lang="ko">경로 시작</span></strong><span class="only-en">Free seven-movement formation walk.</span><span class="only-ko" lang="ko">무료 일곱 움직임 형성 경로.</span></span>
+              <span class="motion-action-badge"><span class="only-en">Open</span><span class="only-ko" lang="ko">열기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#courses-communication">
+              <span class="motion-action-main"><strong><span class="only-en">Course offering</span><span class="only-ko" lang="ko">강좌 제공</span></strong><span class="only-en">Gated language and crossing courses will attach here.</span><span class="only-ko" lang="ko">게이트가 있는 언어와 건넘 강좌가 여기에 연결됩니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#intakes-communication">
+              <span class="motion-action-main"><strong><span class="only-en">Intake apps</span><span class="only-ko" lang="ko">인테이크 앱</span></strong><span class="only-en">Civic Engine: display-only, in development.</span><span class="only-ko" lang="ko">Civic Engine: 보기 전용, 개발 중.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
           </div>
-          <a class="motion-link" href="pathways.html#communication-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
         </article>
         <article class="sem-card" id="motion-culture" style="--cardcolor:#FAC775">
           <h3><span class="only-en">Culture in Motion</span><span class="only-ko" lang="ko">Culture — 운동 중에</span></h3>
           <p class="only-en">Cultural difference held without domination; justice-oriented learning and narrative exchange.</p>
           <p class="only-ko" lang="ko">문화적 차이를 지배하지 않고 함께 붙드는 배움, 정의를 향한 이야기의 교환.</p>
-          <a class="motion-link" href="pathways.html#culture-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
+          <div class="motion-action-list" aria-label="Culture in Motion offerings">
+            <a class="motion-action-row is-link" href="pathways.html#culture-in-motion">
+              <span class="motion-action-main"><strong><span class="only-en">Begin pathway</span><span class="only-ko" lang="ko">경로 시작</span></strong><span class="only-en">Free seven-movement formation walk.</span><span class="only-ko" lang="ko">무료 일곱 움직임 형성 경로.</span></span>
+              <span class="motion-action-badge"><span class="only-en">Open</span><span class="only-ko" lang="ko">열기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#courses-culture">
+              <span class="motion-action-main"><strong><span class="only-en">Course offering</span><span class="only-ko" lang="ko">강좌 제공</span></strong><span class="only-en">Gated culture and justice courses will attach here.</span><span class="only-ko" lang="ko">게이트가 있는 문화와 정의 강좌가 여기에 연결됩니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#intakes-culture">
+              <span class="motion-action-main"><strong><span class="only-en">Intake apps</span><span class="only-ko" lang="ko">인테이크 앱</span></strong><span class="only-en">No intake app is attached yet.</span><span class="only-ko" lang="ko">아직 연결된 인테이크 앱이 없습니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+          </div>
         </article>
         <article class="sem-card" id="motion-care" style="--cardcolor:#F0997B">
           <h3><span class="only-en">Care in Motion</span><span class="only-ko" lang="ko">Care — 운동 중에</span></h3>
           <p class="only-en">Accompaniment, dignity recovery, and restoration. Sacred and crisis moments belong to embodied human presence, never to AI mediation.</p>
           <p class="only-ko" lang="ko">동행, 존엄의 회복, 관계의 회복. 신성한 순간과 위기의 순간은 AI가 아니라 실제 사람의 함께 있음에 속합니다.</p>
-          <a class="motion-link" href="pathways.html#care-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
+          <div class="motion-action-list" aria-label="Care in Motion offerings">
+            <a class="motion-action-row is-link" href="pathways.html#care-in-motion">
+              <span class="motion-action-main"><strong><span class="only-en">Begin pathway</span><span class="only-ko" lang="ko">경로 시작</span></strong><span class="only-en">Free seven-movement formation walk.</span><span class="only-ko" lang="ko">무료 일곱 움직임 형성 경로.</span></span>
+              <span class="motion-action-badge"><span class="only-en">Open</span><span class="only-ko" lang="ko">열기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#courses-care">
+              <span class="motion-action-main"><strong><span class="only-en">Course offering</span><span class="only-ko" lang="ko">강좌 제공</span></strong><span class="only-en">Gated care and formation courses will attach here.</span><span class="only-ko" lang="ko">게이트가 있는 돌봄과 형성 강좌가 여기에 연결됩니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#intakes-care">
+              <span class="motion-action-main"><strong><span class="only-en">Intake apps</span><span class="only-ko" lang="ko">인테이크 앱</span></strong><span class="only-en">Care intake apps remain contract-gated; no data collection here.</span><span class="only-ko" lang="ko">Care 인테이크 앱은 계약 검토 게이트 아래 있으며, 여기서는 데이터를 수집하지 않습니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+          </div>
         </article>
         <article class="sem-card" id="motion-communion" style="--cardcolor:#85B7EB">
           <h3><span class="only-en">Communion in Motion</span><span class="only-ko" lang="ko">Communion — 운동 중에</span></h3>
           <p class="only-en">Shared communal life — where becoming is received, named, and sent together.</p>
           <p class="only-ko" lang="ko">함께 나누는 공동체의 삶 — 됨(becoming)이 함께 받아들여지고, 이름 붙여지고, 세상으로 나아가는 곳.</p>
-          <a class="motion-link" href="pathways.html#communion-in-motion"><span class="only-en">Begin the pathway</span><span class="only-ko" lang="ko">형성 경로 시작하기</span><span aria-hidden="true">→</span></a>
+          <div class="motion-action-list" aria-label="Communion in Motion offerings">
+            <a class="motion-action-row is-link" href="pathways.html#communion-in-motion">
+              <span class="motion-action-main"><strong><span class="only-en">Begin pathway</span><span class="only-ko" lang="ko">경로 시작</span></strong><span class="only-en">Free seven-movement formation walk.</span><span class="only-ko" lang="ko">무료 일곱 움직임 형성 경로.</span></span>
+              <span class="motion-action-badge"><span class="only-en">Open</span><span class="only-ko" lang="ko">열기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#courses-communion">
+              <span class="motion-action-main"><strong><span class="only-en">Course offering</span><span class="only-ko" lang="ko">강좌 제공</span></strong><span class="only-en">Gated communal formation courses will attach here.</span><span class="only-ko" lang="ko">게이트가 있는 공동체 형성 강좌가 여기에 연결됩니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+            <a class="motion-action-row is-link" href="#intakes-communion">
+              <span class="motion-action-main"><strong><span class="only-en">Intake apps</span><span class="only-ko" lang="ko">인테이크 앱</span></strong><span class="only-en">No intake app is attached yet.</span><span class="only-ko" lang="ko">아직 연결된 인테이크 앱이 없습니다.</span></span>
+              <span class="motion-action-badge"><span class="only-en">View</span><span class="only-ko" lang="ko">보기</span><span aria-hidden="true"> →</span></span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ COURSE OFFERINGS ============ -->
+    <section class="sem" id="course-offerings" aria-labelledby="course-offerings-h">
+      <div class="only-en">
+        <p class="kicker">Course Offerings</p>
+        <h2 id="course-offerings-h">Liberal arts courses are grouped by the Five Motions.</h2>
+        <p class="lead">Each course belongs to a Motion because it forms a way of knowing, speaking, living with culture, caring for persons, or building shared life. Courses are gated by default unless MRIA deliberately offers one free.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">강좌 제공</p>
+        <h2>리버럴아츠 강좌는 다섯 운동을 따라 묶입니다.</h2>
+        <p class="lead">각 강좌는 앎, 말하기, 문화와 함께 살기, 사람을 돌보기, 함께 사는 삶을 형성하기 때문에 하나의 운동에 연결됩니다. 강좌는 MRIA가 의도적으로 무료로 제공하지 않는 한 기본적으로 게이트 아래 있습니다.</p>
+      </div>
+      <div class="card-grid offering-grid" style="--cols:5">
+        <article class="sem-card" id="courses-cognition" style="--cardcolor:#5DCAA5">
+          <h3><span class="only-en">Cognition in Motion</span><span class="only-ko" lang="ko">Cognition — 운동 중에</span></h3>
+          <p class="only-en">Wisdom, reasoning, interpretation, and disciplined inquiry.</p>
+          <p class="only-ko" lang="ko">지혜, 추론, 해석, 훈련된 탐구.</p>
+          <ul class="discipline-list">
+            <li>Philosophy</li><li>Mathematics</li><li>Biblical Studies</li><li>Theology</li><li>Logic</li><li>Ethics</li><li>Research Methods</li><li>AI Literacy</li>
+          </ul>
+          <a class="section-link" href="#motion-cognition"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+        </article>
+        <article class="sem-card" id="courses-communication" style="--cardcolor:#AFA9EC">
+          <h3><span class="only-en">Communication in Motion</span><span class="only-ko" lang="ko">Communication — 운동 중에</span></h3>
+          <p class="only-en">Language, expression, translation, listening, and interpretive crossing.</p>
+          <p class="only-ko" lang="ko">언어, 표현, 번역, 경청, 해석의 건넘.</p>
+          <ul class="discipline-list">
+            <li>Writing</li><li>Rhetoric</li><li>Literature</li><li>Linguistics</li><li>Translation</li><li>Public Speaking</li><li>Media Studies</li><li>Debate</li>
+          </ul>
+          <a class="section-link" href="#motion-communication"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+        </article>
+        <article class="sem-card" id="courses-culture" style="--cardcolor:#FAC775">
+          <h3><span class="only-en">Culture in Motion</span><span class="only-ko" lang="ko">Culture — 운동 중에</span></h3>
+          <p class="only-en">History, society, power, identity, art, religion, and global life.</p>
+          <p class="only-ko" lang="ko">역사, 사회, 권력, 정체성, 예술, 종교, 세계적 삶.</p>
+          <ul class="discipline-list">
+            <li>History</li><li>Anthropology</li><li>Sociology</li><li>Political Science</li><li>Economics</li><li>Global Studies</li><li>Art History</li><li>Comparative Religion</li>
+          </ul>
+          <a class="section-link" href="#motion-culture"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+        </article>
+        <article class="sem-card" id="courses-care" style="--cardcolor:#F0997B">
+          <h3><span class="only-en">Care in Motion</span><span class="only-ko" lang="ko">Care — 운동 중에</span></h3>
+          <p class="only-en">Dignity-centered formation, accompaniment, development, and care boundaries.</p>
+          <p class="only-ko" lang="ko">존엄 중심의 형성, 동행, 발달, 돌봄의 경계.</p>
+          <ul class="discipline-list">
+            <li>Psychology</li><li>Education</li><li>Human Development</li><li>Spiritual Formation</li><li>Pastoral Care</li><li>Counseling Foundations</li><li>Trauma Studies</li><li>Leadership Formation</li>
+          </ul>
+          <a class="section-link" href="#motion-care"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+        </article>
+        <article class="sem-card" id="courses-communion" style="--cardcolor:#85B7EB">
+          <h3><span class="only-en">Communion in Motion</span><span class="only-ko" lang="ko">Communion — 운동 중에</span></h3>
+          <p class="only-en">Common life, collaboration, civic responsibility, and conflict transformation.</p>
+          <p class="only-ko" lang="ko">함께 사는 삶, 협력, 시민적 책임, 갈등 전환.</p>
+          <ul class="discipline-list">
+            <li>Civic Studies</li><li>Peace Studies</li><li>Conflict Transformation</li><li>Community Development</li><li>Service Learning</li><li>Leadership</li><li>Interfaith Dialogue</li><li>Organizational Studies</li>
+          </ul>
+          <a class="section-link" href="#motion-communion"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ INTAKE APPS ============ -->
+    <section class="sem" id="intake-apps" aria-labelledby="intake-apps-h">
+      <div class="only-en">
+        <p class="kicker">Intake Apps</p>
+        <h2 id="intake-apps-h">Related intake apps attach to Motions, but they are not classes.</h2>
+        <p class="lead">Intake apps are guided mirror tools for narrative self-verification and human review. They do not score, diagnose, rank, or collect information on this public page. Any live intake remains gated by its own contract, reviewer model, legal review, and privacy boundary.</p>
+      </div>
+      <div class="only-ko" lang="ko">
+        <p class="kicker">인테이크 앱</p>
+        <h2>관련 인테이크 앱은 운동에 연결되지만, 강좌는 아닙니다.</h2>
+        <p class="lead">인테이크 앱은 서사를 정직한 거울로 되읽고 사람의 검토로 이어지게 하는 도구입니다. 이 공개 페이지에서는 점수, 진단, 등급, 정보 수집을 하지 않습니다. 실제 인테이크는 각각의 계약, 검토자 모델, 법적 검토, 개인정보 경계 아래에서만 열립니다.</p>
+      </div>
+      <div class="card-grid offering-grid" style="--cols:5">
+        <article class="sem-card" id="intakes-cognition" style="--cardcolor:#5DCAA5">
+          <h3><span class="only-en">Cognition in Motion</span><span class="only-ko" lang="ko">Cognition — 운동 중에</span></h3>
+          <p class="only-en">No intake app is attached yet. Future tools would need to protect discernment from becoming a score or readiness label.</p>
+          <p class="only-ko" lang="ko">아직 연결된 인테이크 앱이 없습니다. 향후 도구가 생기더라도 분별을 점수나 준비도 라벨로 바꾸지 않도록 보호해야 합니다.</p>
+          <span class="status-chip"><span class="only-en">Future only</span><span class="only-ko" lang="ko">향후 가능</span></span>
+          <a class="section-link" href="#motion-cognition"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+        </article>
+        <article class="sem-card" id="intakes-communication" style="--cardcolor:#AFA9EC">
+          <h3><span class="only-en">Communication in Motion</span><span class="only-ko" lang="ko">Communication — 운동 중에</span></h3>
+          <p class="only-en">Civic Engine is the first public Communication intake surface: a display-only civic narrative mirror, in development and gated.</p>
+          <p class="only-ko" lang="ko">Civic Engine은 첫 번째 공개 Communication 인테이크 표면입니다. 시민적 서사를 비추는 보기 전용 거울이며, 개발 중이고 게이트 아래 있습니다.</p>
+          <span class="status-chip"><span class="only-en">In development</span><span class="only-ko" lang="ko">개발 중</span></span>
+          <div class="btn-row">
+            <a class="btn-ghost" href="political-engine.html" data-engine-link><span class="only-en">Open Civic Engine</span><span class="only-ko" lang="ko">Civic Engine 열기</span><span aria-hidden="true"> →</span></a>
+            <a class="btn-ghost" href="#motion-communication"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+          </div>
+        </article>
+        <article class="sem-card" id="intakes-culture" style="--cardcolor:#FAC775">
+          <h3><span class="only-en">Culture in Motion</span><span class="only-ko" lang="ko">Culture — 운동 중에</span></h3>
+          <p class="only-en">No intake app is attached yet. A future culture intake would need to guard against stereotyping, extraction, and premature disclosure.</p>
+          <p class="only-ko" lang="ko">아직 연결된 인테이크 앱이 없습니다. 향후 문화 인테이크가 생긴다면 고정관념, 추출, 이른 공개를 막아야 합니다.</p>
+          <span class="status-chip"><span class="only-en">Future only</span><span class="only-ko" lang="ko">향후 가능</span></span>
+          <a class="section-link" href="#motion-culture"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+        </article>
+        <article class="sem-card" id="intakes-care" style="--cardcolor:#F0997B">
+          <h3><span class="only-en">Care in Motion</span><span class="only-ko" lang="ko">Care — 운동 중에</span></h3>
+          <p class="only-en">Care intake apps are seeded for spiritual/personality formation and depression/addiction support, but remain contract-gated with human review and legal/privacy gates before any collection.</p>
+          <p class="only-ko" lang="ko">Care 인테이크 앱은 영성·인성 형성과 우울·중독 지원을 위한 씨앗으로 기록되어 있지만, 정보 수집 전까지 사람의 검토, 법적 검토, 개인정보 경계 아래에 머뭅니다.</p>
+          <span class="status-chip"><span class="only-en">Contract-gated</span><span class="only-ko" lang="ko">계약 검토 게이트</span></span>
+          <a class="section-link" href="#motion-care"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
+        </article>
+        <article class="sem-card" id="intakes-communion" style="--cardcolor:#85B7EB">
+          <h3><span class="only-en">Communion in Motion</span><span class="only-ko" lang="ko">Communion — 운동 중에</span></h3>
+          <p class="only-en">No intake app is attached yet. Future communal tools would need to protect consent, shared agency, and embodied community accountability.</p>
+          <p class="only-ko" lang="ko">아직 연결된 인테이크 앱이 없습니다. 향후 공동체 도구가 생긴다면 동의, 함께하는 주체성, 몸으로 책임지는 공동체성을 보호해야 합니다.</p>
+          <span class="status-chip"><span class="only-en">Future only</span><span class="only-ko" lang="ko">향후 가능</span></span>
+          <a class="section-link" href="#motion-communion"><span class="only-en">Back to Motion</span><span class="only-ko" lang="ko">운동으로 돌아가기</span><span aria-hidden="true"> ↑</span></a>
         </article>
       </div>
     </section>
@@ -1353,8 +1597,8 @@ window.RHIZOME_CONTENT = {
         ko: ["지혜", "분별", "MG · MW"]
       },
       body: {
-        en: "<p>Cognition in Motion holds open the matrix space where perception is disrupted, assumptions exposed, and understanding becomes embodied wisdom.</p><p>It refuses extractive education — the commodification of knowledge, the gatekeeping of interpretation. Learning here is participatory relocation: the knower is moved, not merely informed.</p>",
-        ko: "<p>Cognition in Motion은 인식이 흔들리고, 숨은 전제가 드러나며, 이해가 몸으로 실천되는 지혜가 되는 matrix space를 열어 둡니다.</p><p>지식을 상품처럼 다루거나 해석을 독점하는 추출적 교육을 거부합니다. 이곳의 학습은 참여하며 새롭게 자리 잡는 일입니다. 아는 사람은 단순히 정보를 받는 데서 끝나지 않고 움직입니다.</p>"
+        en: "<p>Cognition in Motion holds open the matrix space where perception is disrupted, assumptions exposed, and understanding becomes embodied wisdom.</p><p>It refuses extractive education — the commodification of knowledge, the gatekeeping of interpretation. Learning here is participatory relocation: the knower is moved, not merely informed.</p><p><strong>Offering path:</strong> the free pathway begins the walk; course offerings gather philosophy, mathematics, biblical studies, theology, logic, ethics, research methods, and AI literacy; intake apps are future only and must never turn discernment into a score or readiness label.</p>",
+        ko: "<p>Cognition in Motion은 인식이 흔들리고, 숨은 전제가 드러나며, 이해가 몸으로 실천되는 지혜가 되는 matrix space를 열어 둡니다.</p><p>지식을 상품처럼 다루거나 해석을 독점하는 추출적 교육을 거부합니다. 이곳의 학습은 참여하며 새롭게 자리 잡는 일입니다. 아는 사람은 단순히 정보를 받는 데서 끝나지 않고 움직입니다.</p><p><strong>제공 경로:</strong> 무료 경로가 걷기를 시작하게 하고, 강좌는 철학, 수학, 성경학, 신학, 논리학, 윤리학, 연구 방법, AI 문해력을 묶습니다. 인테이크 앱은 향후 가능 영역이며, 분별을 점수나 준비도 라벨로 바꾸면 안 됩니다.</p>"
       },
       www: {
         en: ["WHERE — situatedness of knowing; named position before interpretation", "WHO — interpreter becoming; knower relocated not merely informed", "WHAT — participatory interpretation; understanding embodied into action"],
@@ -1379,8 +1623,8 @@ window.RHIZOME_CONTENT = {
         ko: ["대화", "건넘", "MW"]
       },
       body: {
-        en: "<p>Communication in Motion holds open the matrix space between worlds — where language fails, difference becomes gift, and genuine dialogue crosses the boundary neither party could cross alone.</p><p>It insists that the margin's voice reconfigures the center — not the reverse. The interpretive crossing produces mutual repositioning: neither party unchanged.</p>",
-        ko: "<p>Communication in Motion은 서로 다른 세계 사이의 matrix space를 열어 둡니다 — 언어가 한계에 부딪히고, 차이가 선물이 되며, 진정한 대화가 혼자서는 넘을 수 없는 경계를 함께 넘는 곳입니다.</p><p>주변부의 목소리가 중심을 다시 보게 한다고 말합니다 — 그 반대가 아닙니다. 해석의 건넘은 서로를 새롭게 자리 잡게 합니다. 어느 쪽도 이전 그대로 돌아가지 않습니다.</p>"
+        en: "<p>Communication in Motion holds open the matrix space between worlds — where language fails, difference becomes gift, and genuine dialogue crosses the boundary neither party could cross alone.</p><p>It insists that the margin's voice reconfigures the center — not the reverse. The interpretive crossing produces mutual repositioning: neither party unchanged.</p><p><strong>Offering path:</strong> the free pathway begins the walk; course offerings gather writing, rhetoric, literature, linguistics, translation, public speaking, media studies, and debate; intake apps include the display-only Civic Engine as a civic narrative mirror in development.</p>",
+        ko: "<p>Communication in Motion은 서로 다른 세계 사이의 matrix space를 열어 둡니다 — 언어가 한계에 부딪히고, 차이가 선물이 되며, 진정한 대화가 혼자서는 넘을 수 없는 경계를 함께 넘는 곳입니다.</p><p>주변부의 목소리가 중심을 다시 보게 한다고 말합니다 — 그 반대가 아닙니다. 해석의 건넘은 서로를 새롭게 자리 잡게 합니다. 어느 쪽도 이전 그대로 돌아가지 않습니다.</p><p><strong>제공 경로:</strong> 무료 경로가 걷기를 시작하게 하고, 강좌는 글쓰기, 수사학, 문학, 언어학, 번역, 발표, 미디어 연구, 토론을 묶습니다. 인테이크 앱에는 개발 중인 시민적 서사 거울인 보기 전용 Civic Engine이 연결됩니다.</p>"
       },
       www: {
         en: ["WHERE — boundary between worlds; disorientation as threshold", "WHO — boundary-crosser emerging; carrier of meaning across difference", "WHAT — mutual repositioning; neither party unchanged"],
@@ -1405,8 +1649,8 @@ window.RHIZOME_CONTENT = {
         ko: ["공유된 이야기", "존엄", "MC"]
       },
       body: {
-        en: "<p>Culture in Motion holds open the matrix space of shared human worlds — where memory, creativity, dignity, and difference meet, and where the center/margin topology of every cultural arrangement is exposed and reordered.</p><p>Culture is the visible geometry of relational life. Power is the configuration of space. MRIA asks of every cultural topology: Where does this arrangement locate power, vulnerability, and shared dignity?</p>",
-        ko: "<p>Culture in Motion은 사람들이 함께 살아온 세계들의 matrix space를 열어 둡니다 — 기억, 창조성, 존엄, 차이가 만나고, 문화 안의 중심과 주변의 자리 구조가 드러나 다시 놓이는 곳입니다.</p><p>문화는 관계적 삶이 보이는 방식입니다. 권력은 사람들이 어디에 놓이는가와 깊이 연결됩니다. MRIA는 모든 문화적 배치에 묻습니다: 이 배치는 권력, 취약성, 공유된 존엄을 어디에 두고 있습니까?</p>"
+        en: "<p>Culture in Motion holds open the matrix space of shared human worlds — where memory, creativity, dignity, and difference meet, and where the center/margin topology of every cultural arrangement is exposed and reordered.</p><p>Culture is the visible geometry of relational life. Power is the configuration of space. MRIA asks of every cultural topology: Where does this arrangement locate power, vulnerability, and shared dignity?</p><p><strong>Offering path:</strong> the free pathway begins the walk; course offerings gather history, anthropology, sociology, political science, economics, global studies, art history, and comparative religion; intake apps are future only and must guard against stereotyping, extraction, and premature disclosure.</p>",
+        ko: "<p>Culture in Motion은 사람들이 함께 살아온 세계들의 matrix space를 열어 둡니다 — 기억, 창조성, 존엄, 차이가 만나고, 문화 안의 중심과 주변의 자리 구조가 드러나 다시 놓이는 곳입니다.</p><p>문화는 관계적 삶이 보이는 방식입니다. 권력은 사람들이 어디에 놓이는가와 깊이 연결됩니다. MRIA는 모든 문화적 배치에 묻습니다: 이 배치는 권력, 취약성, 공유된 존엄을 어디에 두고 있습니까?</p><p><strong>제공 경로:</strong> 무료 경로가 걷기를 시작하게 하고, 강좌는 역사, 인류학, 사회학, 정치학, 경제학, 글로벌 연구, 미술사, 비교종교를 묶습니다. 인테이크 앱은 향후 가능 영역이며, 고정관념, 추출, 이른 공개를 막아야 합니다.</p>"
       },
       www: {
         en: ["WHERE — cultural inheritance; center/margin dynamics named", "WHO — repositioned cultural self; neither enclosed nor rootless", "WHAT — restorative coexistence; healing the center/margin fracture"],
@@ -1431,8 +1675,8 @@ window.RHIZOME_CONTENT = {
         ko: ["치유", "동행", "MG · MC", "⫞ 안식일"]
       },
       body: {
-        en: "<p>Care in Motion holds open the matrix space of rupture — where fragmentation, wound, and loss have disrupted the relational field, and where covenantal accompaniment makes re-entry into life-giving relationship possible again.</p><p><em>Not rescue — accompaniment.</em> The Three-Stage triage is mandatory: never apply formation modes to a person in Cyclical Imprisonment. That misdiagnosis is pastoral malpractice.</p><p><strong>Sabbath Brake ⫞</strong> operative here: no AI mediation for dying, acute grief, trauma, crisis. Embodied human presence only.</p>",
-        ko: "<p>Care in Motion은 깨어짐의 matrix space를 열어 둡니다 — 분열, 상처, 상실이 관계의 장을 흔든 곳에서, 약속에 기반한 동행이 생명을 주는 관계로 다시 들어갈 길을 열어 줍니다.</p><p><em>구조가 아니라 동행.</em> Three-Stage 분류는 필수입니다. 순환적 갇힘에 있는 사람에게 형성 방식을 적용해서는 안 됩니다. 그것은 잘못된 판단이며 목회적 과실입니다.</p><p><strong>안식일 브레이크 ⫞</strong> 작동: 임종, 급성 슬픔, 트라우마, 위기에는 AI 매개 없음. 실제 사람의 함께 있음만.</p>"
+        en: "<p>Care in Motion holds open the matrix space of rupture — where fragmentation, wound, and loss have disrupted the relational field, and where covenantal accompaniment makes re-entry into life-giving relationship possible again.</p><p><em>Not rescue — accompaniment.</em> The Three-Stage triage is mandatory: never apply formation modes to a person in Cyclical Imprisonment. That misdiagnosis is pastoral malpractice.</p><p><strong>Sabbath Brake ⫞</strong> operative here: no AI mediation for dying, acute grief, trauma, crisis. Embodied human presence only.</p><p><strong>Offering path:</strong> the free pathway begins the walk; course offerings gather psychology, education, human development, spiritual formation, pastoral care, counseling foundations, trauma studies, and leadership formation; intake apps are contract-gated for spiritual/personality formation and depression/addiction support, with human review and legal/privacy gates before any collection.</p>",
+        ko: "<p>Care in Motion은 깨어짐의 matrix space를 열어 둡니다 — 분열, 상처, 상실이 관계의 장을 흔든 곳에서, 약속에 기반한 동행이 생명을 주는 관계로 다시 들어갈 길을 열어 줍니다.</p><p><em>구조가 아니라 동행.</em> Three-Stage 분류는 필수입니다. 순환적 갇힘에 있는 사람에게 형성 방식을 적용해서는 안 됩니다. 그것은 잘못된 판단이며 목회적 과실입니다.</p><p><strong>안식일 브레이크 ⫞</strong> 작동: 임종, 급성 슬픔, 트라우마, 위기에는 AI 매개 없음. 실제 사람의 함께 있음만.</p><p><strong>제공 경로:</strong> 무료 경로가 걷기를 시작하게 하고, 강좌는 심리학, 교육, 사람 발달, 영적 형성, 목회적 돌봄, 상담 기초, 트라우마 연구, 리더십 형성을 묶습니다. 인테이크 앱은 영성·인성 형성과 우울·중독 지원을 위해 계약 검토 게이트 아래 있으며, 정보 수집 전 사람의 검토, 법적 검토, 개인정보 경계를 거쳐야 합니다.</p>"
       },
       www: {
         en: ["WHERE — cyclical imprisonment; rupture not yet received", "WHO — dignity received again; person ready to cross threshold", "WHAT — covenantal presence; not rescue but accompaniment"],
@@ -1457,8 +1701,8 @@ window.RHIZOME_CONTENT = {
         ko: ["공유된 삶", "미래 자아", "MW · MC"]
       },
       body: {
-        en: "<p>Communion in Motion holds open the matrix space of shared life — where isolated becoming gives way to communal becoming, and where the Future Self is not only individual but communal.</p><p>This is the life-space's eschatological pressure point. It asks: <em>are we trusting in deceptive words — \"relational commons, relational commons\" — while failing to practice justice at our own margins?</em></p><p>The communal Future Self is named with Formation Permanence: once arrived, it does not revert.</p>",
-        ko: "<p>Communion in Motion은 함께 나누는 삶의 matrix space를 열어 둡니다 — 고립된 됨(becoming)이 공동체 안의 됨으로 이어지고, 미래 자아가 개인만의 것이 아니라 공동체 안에서도 드러나는 곳입니다.</p><p>이곳은 삶의 공간이 가장 깊이 시험받는 지점입니다. 이렇게 묻습니다: <em>우리는 \"관계 공유지, 관계 공유지\"라고 말하면서도, 우리 자신의 주변부에서는 정의를 실천하지 않고 있지 않습니까?</em></p><p>공동체 안의 미래 자아는 형성 영속성으로 이름 붙여집니다. 진정으로 도착하면, 단순히 이전으로 돌아가지 않습니다.</p>"
+        en: "<p>Communion in Motion holds open the matrix space of shared life — where isolated becoming gives way to communal becoming, and where the Future Self is not only individual but communal.</p><p>This is the life-space's eschatological pressure point. It asks: <em>are we trusting in deceptive words — \"relational commons, relational commons\" — while failing to practice justice at our own margins?</em></p><p>The communal Future Self is named with Formation Permanence: once arrived, it does not revert.</p><p><strong>Offering path:</strong> the free pathway begins the walk; course offerings gather civic studies, peace studies, conflict transformation, community development, service learning, leadership, interfaith dialogue, and organizational studies; intake apps are future only and must protect consent, shared agency, and embodied community accountability.</p>",
+        ko: "<p>Communion in Motion은 함께 나누는 삶의 matrix space를 열어 둡니다 — 고립된 됨(becoming)이 공동체 안의 됨으로 이어지고, 미래 자아가 개인만의 것이 아니라 공동체 안에서도 드러나는 곳입니다.</p><p>이곳은 삶의 공간이 가장 깊이 시험받는 지점입니다. 이렇게 묻습니다: <em>우리는 \"관계 공유지, 관계 공유지\"라고 말하면서도, 우리 자신의 주변부에서는 정의를 실천하지 않고 있지 않습니까?</em></p><p>공동체 안의 미래 자아는 형성 영속성으로 이름 붙여집니다. 진정으로 도착하면, 단순히 이전으로 돌아가지 않습니다.</p><p><strong>제공 경로:</strong> 무료 경로가 걷기를 시작하게 하고, 강좌는 시민학, 평화학, 갈등 전환, 공동체 개발, 서비스 러닝, 리더십, 종교 간 대화, 조직 연구를 묶습니다. 인테이크 앱은 향후 가능 영역이며, 동의, 함께하는 주체성, 몸으로 책임지는 공동체성을 보호해야 합니다.</p>"
       },
       www: {
         en: ["WHERE — post-crossing isolation; Future Self arrived, not yet held", "WHO — communal Future Self; named with Formation Permanence", "WHAT — embodied covenantal life; sent toward the Outside together"],
@@ -1525,7 +1769,8 @@ window.RHIZOME_CONTENT = {
         classes_label: "Formation tracks",
         close: "Close",
         nav_rhizome: "Rhizome", nav_about: "About", nav_core: "Meta Core",
-        nav_formation: "Formation", nav_motions: "Five Motions", nav_learning: "Learning",
+        nav_formation: "Formation", nav_motions: "Five Motions",
+        nav_courses: "Courses", nav_intakes: "Intake Apps", nav_learning: "Learning",
         nav_contact: "Contact",
         footer: "© 2026 MRIA Education · MetaReality Relational Intelligence Architecture · anonymous & read-only · no personal data collected",
         groups: { architecture: "MetaReality", node: "Life-Space Nodes", layer: "MRIA Layers", "5c": "5C in Motion" },
@@ -1544,7 +1789,8 @@ window.RHIZOME_CONTENT = {
         classes_label: "형성 트랙",
         close: "닫기",
         nav_rhizome: "리좀", nav_about: "소개", nav_core: "메타 코어",
-        nav_formation: "형성", nav_motions: "다섯 운동", nav_learning: "학습",
+        nav_formation: "형성", nav_motions: "다섯 운동",
+        nav_courses: "강좌", nav_intakes: "인테이크 앱", nav_learning: "학습",
         nav_contact: "연락",
         footer: "© 2026 MRIA Education · 메타리얼리티 관계적 지성 아키텍처 · 익명 · 읽기 전용 · 개인정보 수집 없음",
         groups: { architecture: "MetaReality", node: "생명 공간 노드", layer: "MRIA 층위", "5c": "5C 운동 중에" },
@@ -2016,9 +2262,10 @@ window.RHIZOME_CONTENT = {
     /* ============================================================
        SECTION ROUTER — one section visible at a time (progressive)
        ============================================================ */
-    var ROUTES = ["rhizome","about","core","formation","motions","learning","participation"];
+    var ROUTES = ["rhizome","about","core","formation","motions","course-offerings","intake-apps","learning","participation"];
     var ROUTE_CLASSES = ["route-home","route-rhizome","route-about","route-core","route-formation",
-                         "route-motions","route-learning","route-participation"];
+                         "route-motions","route-course-offerings","route-intake-apps",
+                         "route-learning","route-participation"];
 
     function currentRoute() {
       var h = (location.hash || "").replace(/^#/, "");
